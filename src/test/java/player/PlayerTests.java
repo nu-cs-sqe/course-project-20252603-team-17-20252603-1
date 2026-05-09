@@ -27,4 +27,12 @@ public class PlayerTests {
 
         assertEquals("Black Player", player.getName());
     }
+
+    @Test
+    void getColorReturnsWhitePlayerColor() {
+        Player player = new Player("White Player", "WHITE");
+
+        assertEquals("WHITE", player.getColor());
+    }
+
 }
