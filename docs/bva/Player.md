@@ -5,7 +5,7 @@
 | Test Case ID | State of the System | Expected Output | Implemented? |
 |-------------|---------------------|-----------------|--------------|
 | PLAYER-COLOR-001 | A White player exists. `getColor()` is called. | Returns `WHITE`. | :x: |
-| PLAYER-COLOR-002 | A Black player exists. `getColor()` is called. | Returns `BLACK`. | :x: |
+| PLAYER-COLOR-002 | A Black player exists. `getColor()` is called. | Returns `BLACK`. | :white_check_mark: |
 
 ---
 
