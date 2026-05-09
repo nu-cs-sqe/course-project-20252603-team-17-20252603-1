@@ -13,6 +13,6 @@
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
 |-------------|---------------------|-----------------|--------------|
-| PLAYER-NAME-001 | Player is created with name `"White Player"`. `getName()` is called. | Returns `"White Player"`. | :x: |
+| PLAYER-NAME-001 | Player is created with name `"White Player"`. `getName()` is called. | Returns `"White Player"`. | :white_check_mark: |
 | PLAYER-NAME-002 | Player is created with name `"Black Player"`. `getName()` is called. | Returns `"Black Player"`. | :x: |
 | PLAYER-NAME-003 | Player is created with an empty name `""`. | System either accepts empty name or rejects it, depending on team design decision. | :x: |
