@@ -35,4 +35,11 @@ public class PlayerTests {
         assertEquals("WHITE", player.getColor());
     }
 
+    @Test
+    void constructorRejectsEmptyPlayerName() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Player("", "WHITE");
+        });
+    }
+
 }

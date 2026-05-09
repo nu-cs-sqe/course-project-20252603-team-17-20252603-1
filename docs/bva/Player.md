@@ -15,4 +15,4 @@
 |-------------|---------------------|-----------------|--------------|
 | PLAYER-NAME-001 | Player is created with name `"White Player"`. `getName()` is called. | Returns `"White Player"`. | :white_check_mark: |
 | PLAYER-NAME-002 | Player is created with name `"Black Player"`. `getName()` is called. | Returns `"Black Player"`. | :white_check_mark: |
-| PLAYER-NAME-003 | Player is created with an empty name `""`. | System either accepts empty name or rejects it, depending on team design decision. | :x: |
+| PLAYER-NAME-003 | Player is created with an empty name `""`. | System rejects empty name by throwing an IllegalArgumentException. | :white_check_mark: |
