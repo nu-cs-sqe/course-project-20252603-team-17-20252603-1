@@ -2,13 +2,14 @@ package Board;
 
 public class Board {
 
-    Piece[][] state;
+    public Piece[][] state; // temporarily public, revert to private once movePiece complete
 
     public Board() {
         this.state = new Piece[8][8];
     }
 
     public void initializeBoard() {
+        this.state = new Piece[8][8];
         // first create the top row, which will be the first
         // row at the top assuming that you are sitting on the
         // white side.

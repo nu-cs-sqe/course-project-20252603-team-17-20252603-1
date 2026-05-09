@@ -64,4 +64,32 @@ public class BoardTests {
         assertEquals(32, pieceCount);
     }
 
+    @Test
+    void initializeBoardResetsBoardToStandardStartingPosition() {
+        Board board = new Board();
+
+        board.initializeBoard();
+
+        // Mess up the board manually (ONLY TEMPORARY, ONCE MOVEPIECE DONE, RE-PRIVATIZE STATE)
+        board.state[0][0] = null;
+        board.state[3][3] = new Piece("QUEEN", "WHITE");
+        board.state[7][4] = new Piece("PAWN", "BLACK");
+
+        // Re-initialize
+        board.initializeBoard();
+
+        // Verify the messed-up squares were reset
+        Piece blackRook = board.getPieceAt(0, 0);
+        assertNotNull(blackRook);
+        assertEquals("ROOK", blackRook.getType());
+        assertEquals("BLACK", blackRook.getColor());
+
+        assertNull(board.getPieceAt(3, 3));
+
+        Piece whiteKing = board.getPieceAt(7, 4);
+        assertNotNull(whiteKing);
+        assertEquals("KING", whiteKing.getType());
+        assertEquals("WHITE", whiteKing.getColor());
+    }
+
 }
