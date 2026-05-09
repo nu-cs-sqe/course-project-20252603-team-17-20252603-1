@@ -4,8 +4,8 @@
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
 |-------------|---------------------|-----------------|--------------|
-| BOARD-INIT-001 | A new empty board exists. `initializeBoard()` is called. | The board becomes an 8x8 chess board with all 32 pieces in their correct starting positions. | :x: |
-| BOARD-INIT-002 | A board already has pieces on it. `initializeBoard()` is called again. | The board resets to the standard chess starting position with no leftover pieces from the previous state. | :x: |
+| BOARD-INIT-001 | A new empty board exists. `initializeBoard()` is called. | The board becomes an 8x8 chess board with all 32 pieces in their correct starting positions. | yes          |
+| BOARD-INIT-002 | A board already has pieces on it. `initializeBoard()` is called again. | The board resets to the standard chess starting position with no leftover pieces from the previous state. | :x:          |
 
 ---
 
