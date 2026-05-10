@@ -26,4 +26,15 @@ public class GameTests {
         assertEquals("BLACK", game.getCurrentPlayer().getColor());
     }
 
+    @Test
+    void switchTurnChangesCurrentPlayerBackToWhite() {
+        Game game = new Game();
+
+        game.startNewGame();
+        game.switchTurn();
+        game.switchTurn();
+
+        assertEquals("WHITE", game.getCurrentPlayer().getColor());
+    }
+
 }
