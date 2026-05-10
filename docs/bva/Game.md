@@ -12,8 +12,8 @@
 ## Method under test: `getCurrentPlayer()`
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
-|-------------|---------------------|-----------------|--------------|
-| GAME-CURRENT-001 | A new game has just started. | Returns the White player because White moves first in chess. | :x: |
+|-------------|---------------------|-----------------|-----------|
+| GAME-CURRENT-001 | A new game has just started. | Returns the White player because White moves first in chess. | :white_check_mark: |
 | GAME-CURRENT-002 | White has completed one valid move. | Returns the Black player. | :x: |
 | GAME-CURRENT-003 | Black has completed one valid move after White. | Returns the White player. | :x: |
 
