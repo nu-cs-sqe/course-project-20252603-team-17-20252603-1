@@ -130,4 +130,14 @@ public class BoardTests {
         assertEquals(expected.getType(), actual.getType());
     }
 
+    @Test
+    void getPieceAt33ReturnsNull() {
+        Board board = new Board();
+        board.initializeBoard();
+
+        Piece actual = board.getPieceAt(3, 3);
+
+        assertNull(actual);
+    }
+
 }

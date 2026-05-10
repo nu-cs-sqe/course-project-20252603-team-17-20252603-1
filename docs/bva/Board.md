@@ -16,7 +16,7 @@
 | BOARD-GET-001 | Board is initialized. `getPieceAt(0, 0)` is called. | Returns Black rook. | yes          |
 | BOARD-GET-002 | Board is initialized. `getPieceAt(0, 4)` is called. | Returns Black king. | yes          |
 | BOARD-GET-003 | Board is initialized. `getPieceAt(7, 4)` is called. | Returns White king. | yes          |
-| BOARD-GET-004 | Board is initialized. `getPieceAt(3, 3)` is called. | Returns `null` because the square is empty at the start. | :x:          |
+| BOARD-GET-004 | Board is initialized. `getPieceAt(3, 3)` is called. | Returns `null` because the square is empty at the start. | yes          |
 | BOARD-GET-005 | Board is initialized. `getPieceAt(-1, 0)` is called. | Throws an error or returns invalid result because row is below board boundary. | :x:          |
 | BOARD-GET-006 | Board is initialized. `getPieceAt(8, 0)` is called. | Throws an error or returns invalid result because row is above board boundary. | :x:          |
 | BOARD-GET-007 | Board is initialized. `getPieceAt(0, -1)` is called. | Throws an error or returns invalid result because column is below board boundary. | :x:          |
