@@ -4,8 +4,8 @@
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
 |-------------|---------------------|-----------------|--------------|
-| PLAYER-COLOR-001 | A White player exists. `getColor()` is called. | Returns `WHITE`. | :x: |
-| PLAYER-COLOR-002 | A Black player exists. `getColor()` is called. | Returns `BLACK`. | :x: |
+| PLAYER-COLOR-001 | A White player exists. `getColor()` is called. | Returns `WHITE`. | :white_check_mark: |
+| PLAYER-COLOR-002 | A Black player exists. `getColor()` is called. | Returns `BLACK`. | :white_check_mark: |
 
 ---
 
@@ -13,6 +13,6 @@
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
 |-------------|---------------------|-----------------|--------------|
-| PLAYER-NAME-001 | Player is created with name `"White Player"`. `getName()` is called. | Returns `"White Player"`. | :x: |
-| PLAYER-NAME-002 | Player is created with name `"Black Player"`. `getName()` is called. | Returns `"Black Player"`. | :x: |
-| PLAYER-NAME-003 | Player is created with an empty name `""`. | System either accepts empty name or rejects it, depending on team design decision. | :x: |
+| PLAYER-NAME-001 | Player is created with name `"White Player"`. `getName()` is called. | Returns `"White Player"`. | :white_check_mark: |
+| PLAYER-NAME-002 | Player is created with name `"Black Player"`. `getName()` is called. | Returns `"Black Player"`. | :white_check_mark: |
+| PLAYER-NAME-003 | Player is created with an empty name `""`. | System rejects empty name by throwing an IllegalArgumentException. | :white_check_mark: |
