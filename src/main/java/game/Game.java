@@ -28,4 +28,8 @@ public class Game {
             currentPlayer = whitePlayer;
         }
     }
+
+    public boolean isGameOver() {
+        return false;
+    }
 }

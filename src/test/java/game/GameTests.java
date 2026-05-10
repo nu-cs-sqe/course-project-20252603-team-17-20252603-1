@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class GameTests {
 
@@ -35,6 +37,15 @@ public class GameTests {
         game.switchTurn();
 
         assertEquals("WHITE", game.getCurrentPlayer().getColor());
+    }
+
+    @Test
+    void isGameOverReturnsFalseForNewGame() {
+        Game game = new Game();
+
+        game.startNewGame();
+
+        assertFalse(game.isGameOver());
     }
 
 }

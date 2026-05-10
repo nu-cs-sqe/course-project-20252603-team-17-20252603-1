@@ -31,7 +31,7 @@
 ## Method under test: `isGameOver()`
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
-|-------------|---------------------|-----------------|--------------|
-| GAME-OVER-001 | A new game has started and no moves have been made. | Returns `false`. | :x: |
+|-------------|---------------------|-----------------|-----------|
+| GAME-OVER-001 | A new game has started and no moves have been made. | Returns `false`. | :white_check_mark: |
 | GAME-OVER-002 | A checkmate position has been reached. | Returns `true`. | :x: |
 | GAME-OVER-003 | A draw condition has been reached. | Returns `true`. | :x: |
