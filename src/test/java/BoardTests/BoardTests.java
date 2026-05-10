@@ -140,4 +140,16 @@ public class BoardTests {
         assertNull(actual);
     }
 
+    @Test
+    void getPieceAtNegOneZeroErrors() {
+        Board board = new Board();
+        board.initializeBoard();
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            board.getPieceAt(-1, 0);
+        });
+    }
+
+
+
 }
