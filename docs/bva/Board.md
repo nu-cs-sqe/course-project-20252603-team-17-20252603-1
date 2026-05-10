@@ -31,9 +31,9 @@
 | BOARD-BOUNDS-001 | Board exists. `isWithinBounds(0, 0)` is called. | Returns `true`. | yes          |
 | BOARD-BOUNDS-002 | Board exists. `isWithinBounds(7, 7)` is called. | Returns `true`. | yes          |
 | BOARD-BOUNDS-003 | Board exists. `isWithinBounds(-1, 0)` is called. | Returns `false`. | yes          |
-| BOARD-BOUNDS-004 | Board exists. `isWithinBounds(8, 0)` is called. | Returns `false`. | yes            |
-| BOARD-BOUNDS-005 | Board exists. `isWithinBounds(0, -1)` is called. | Returns `false`. | :x:          |
-| BOARD-BOUNDS-006 | Board exists. `isWithinBounds(0, 8)` is called. | Returns `false`. | :x:          |
+| BOARD-BOUNDS-004 | Board exists. `isWithinBounds(8, 0)` is called. | Returns `false`. | yes          |
+| BOARD-BOUNDS-005 | Board exists. `isWithinBounds(0, -1)` is called. | Returns `false`. | yes          |
+| BOARD-BOUNDS-006 | Board exists. `isWithinBounds(0, 8)` is called. | Returns `false`. | yes          |
 
 ---
 
