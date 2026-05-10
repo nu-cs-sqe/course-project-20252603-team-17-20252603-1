@@ -106,4 +106,16 @@ public class BoardTests {
         assertEquals(expected.getType(), actual.getType());
     }
 
+    @Test
+    void getPieceAt04ReturnsBlackRook() {
+        Board board = new Board();
+        board.initializeBoard();
+
+        Piece expected = new Piece("KING", "BLACK");
+        Piece actual = board.getPieceAt(0, 4);
+
+        assertEquals(expected.getColor(), actual.getColor());
+        assertEquals(expected.getType(), actual.getType());
+    }
+
 }
