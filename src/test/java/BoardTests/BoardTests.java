@@ -150,6 +150,16 @@ public class BoardTests {
         });
     }
 
+    @Test
+    void getPieceAtEightZeroErrors() {
+        Board board = new Board();
+        board.initializeBoard();
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            board.getPieceAt(8, 0);
+        });
+    }
+
 
 
 }
