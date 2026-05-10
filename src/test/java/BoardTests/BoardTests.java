@@ -199,6 +199,14 @@ public class BoardTests {
         assertTrue(board.isWithinBounds(7,7));
     }
 
+    @Test
+    void isWithinBoundsNegOneZeroReturnsFalse() {
+        Board board = new Board();
+        board.initializeBoard();
+
+        assertFalse(board.isWithinBounds(-1,0));
+    }
+
 
 
 

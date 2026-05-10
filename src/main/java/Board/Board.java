@@ -23,7 +23,7 @@ public class Board {
     }
 
     public Piece getPieceAt(int row, int col) {
-        if (!(row >= 0 && row < 8) || !(col >= 0 && col < 8)) {
+        if (!isWithinBounds(row, col)) {
             throw new IllegalArgumentException("INVALID POSITION");
         }
 
@@ -31,7 +31,7 @@ public class Board {
     }
 
     public boolean isWithinBounds(int row, int col) {
-        return true;
+        return (row >= 0 && row < 8) && (col >= 0 && col < 8);
     }
 
     private Piece[] generateBoundaryRows(String color) {
