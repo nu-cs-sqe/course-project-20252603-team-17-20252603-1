@@ -30,6 +30,10 @@ public class Board {
         return this.state[row][col];
     }
 
+    public boolean isWithinBounds(int row, int col) {
+        return true;
+    }
+
     private Piece[] generateBoundaryRows(String color) {
         Piece[] row = new Piece[8];
 
