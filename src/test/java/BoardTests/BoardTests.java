@@ -181,6 +181,17 @@ public class BoardTests {
     }
 
 
+    // isWithinBounds tests
+
+    @Test
+    void isWithinBounds00ReturnsTrue() {
+        Board board = new Board();
+        board.initializeBoard();
+
+        assertTrue(board.isWithinBounds(0,0));
+    }
+
+
 
 
 

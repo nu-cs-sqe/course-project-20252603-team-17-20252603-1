@@ -18,9 +18,9 @@
 | BOARD-GET-003 | Board is initialized. `getPieceAt(7, 4)` is called. | Returns White king. | yes          |
 | BOARD-GET-004 | Board is initialized. `getPieceAt(3, 3)` is called. | Returns `null` because the square is empty at the start. | yes          |
 | BOARD-GET-005 | Board is initialized. `getPieceAt(-1, 0)` is called. | Throws an error or returns invalid result because row is below board boundary. | yes          |
-| BOARD-GET-006 | Board is initialized. `getPieceAt(8, 0)` is called. | Throws an error or returns invalid result because row is above board boundary. | :x:          |
-| BOARD-GET-007 | Board is initialized. `getPieceAt(0, -1)` is called. | Throws an error or returns invalid result because column is below board boundary. | :x:          |
-| BOARD-GET-008 | Board is initialized. `getPieceAt(0, 8)` is called. | Throws an error or returns invalid result because column is above board boundary. | :x:          |
+| BOARD-GET-006 | Board is initialized. `getPieceAt(8, 0)` is called. | Throws an error or returns invalid result because row is above board boundary. | yes          |
+| BOARD-GET-007 | Board is initialized. `getPieceAt(0, -1)` is called. | Throws an error or returns invalid result because column is below board boundary. | yes          |
+| BOARD-GET-008 | Board is initialized. `getPieceAt(0, 8)` is called. | Throws an error or returns invalid result because column is above board boundary. | yes            |
 
 ---
 
