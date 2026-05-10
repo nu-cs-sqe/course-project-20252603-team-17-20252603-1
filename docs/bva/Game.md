@@ -14,7 +14,7 @@
 | Test Case ID | State of the System | Expected Output | Implemented? |
 |-------------|---------------------|-----------------|-----------|
 | GAME-CURRENT-001 | A new game has just started. | Returns the White player because White moves first in chess. | :white_check_mark: |
-| GAME-CURRENT-002 | White has completed one valid move. | Returns the Black player. | :x: |
+| GAME-CURRENT-002 | White has completed one valid move. | Returns the Black player. | :white_check_mark: |
 | GAME-CURRENT-003 | Black has completed one valid move after White. | Returns the White player. | :x: |
 
 ---
@@ -22,8 +22,8 @@
 ## Method under test: `switchTurn()`
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
-|-------------|---------------------|-----------------|--------------|
-| GAME-TURN-001 | It is White's turn. `switchTurn()` is called. | Current player changes to Black. | :x: |
+|-------------|---------------------|-----------------|-----------|
+| GAME-TURN-001 | It is White's turn. `switchTurn()` is called. | Current player changes to Black. | :white_check_mark: |
 | GAME-TURN-002 | It is Black's turn. `switchTurn()` is called. | Current player changes to White. | :x: |
 
 ---
