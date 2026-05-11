@@ -231,6 +231,68 @@ public class BoardTests {
         assertFalse(board.isWithinBounds(0,8));
     }
 
+    @Test
+    void movePieceWhitePawnOneSquareForwardMovesPiece() {
+        Board board = new Board();
+        board.initializeBoard();
+        assertTrue(board.movePiece(6, 0, 5, 0));
+        assertNull(board.getPieceAt(6, 0));
+        Piece moved = board.getPieceAt(5, 0);
+        assertNotNull(moved);
+        assertEquals("PAWN", moved.getType());
+        assertEquals("WHITE", moved.getColor());
+    }
+    @Test
+    void movePieceWhitePawnTwoSquaresForwardFromStartRank() {
+        Board board = new Board();
+        board.initializeBoard();
+        assertTrue(board.movePiece(6, 0, 4, 0));
+        assertNull(board.getPieceAt(6, 0));
+        assertNull(board.getPieceAt(5, 0));
+        Piece moved = board.getPieceAt(4, 0);
+        assertNotNull(moved);
+        assertEquals("PAWN", moved.getType());
+        assertEquals("WHITE", moved.getColor());
+    }
+
+    @Test
+    void movePieceWhitePawnThreeSquaresForwardIsRejected() {
+        Board board = new Board();
+        board.initializeBoard();
+        assertFalse(board.movePiece(6, 0, 3, 0));
+        Piece stillThere = board.getPieceAt(6, 0);
+        assertNotNull(stillThere);
+        assertEquals("PAWN", stillThere.getType());
+        assertEquals("WHITE", stillThere.getColor());
+        assertNull(board.getPieceAt(3, 0));
+    }
+    @Test
+    void movePieceFromEmptySquareIsRejected() {
+        Board board = new Board();
+        board.initializeBoard();
+        assertFalse(board.movePiece(3, 3, 4, 3));
+        assertNull(board.getPieceAt(4, 3));
+    }
+    @Test
+    void movePieceWithStartOutOfBoundsIsRejected() {
+        Board board = new Board();
+        board.initializeBoard();
+        assertFalse(board.movePiece(-1, 0, 0, 0));
+    }
+
+    @Test
+    void movePieceWithEndOutOfBoundsIsRejected() {
+        Board board = new Board();
+        board.initializeBoard();
+        assertFalse(board.movePiece(0, 0, 8, 0));
+        Piece unchanged = board.getPieceAt(0, 0);
+        assertNotNull(unchanged);
+        assertEquals("ROOK", unchanged.getType());
+        assertEquals("BLACK", unchanged.getColor());
+    }
+
+
+
 
 
 
