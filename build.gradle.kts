@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    checkstyle
     id("com.github.spotbugs") version "6.5.4"
 }
 
@@ -39,4 +40,16 @@ tasks.withType<com.github.spotbugs.snom.SpotBugsTask>().configureEach {
     reports.create("html") {
         required.set(true)
     }
+}
+
+tasks.withType<Checkstyle>().configureEach {
+    reports {
+        xml.required = false
+        html.required = true
+        html.stylesheet = resources.text.fromFile("config/checkstyle/checkstyle-noframes-severity-sorted.xsl")
+    }
+}
+
+checkstyle{
+    isIgnoreFailures = false
 }
