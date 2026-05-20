@@ -34,6 +34,68 @@ public class Board {
         return (row >= 0 && row < 8) && (col >= 0 && col < 8);
     }
 
+    public boolean movePiece(int startRow, int startCol, int endRow, int endCol) {
+        if (!isWithinBounds(startRow, startCol) || !isWithinBounds(endRow, endCol)) {
+            return false;
+        }
+        Piece piece = state[startRow][startCol];
+        if (piece == null) {
+            return false;
+        }
+        if (state[endRow][endCol] != null) {
+            return false;
+        }
+        if (!"PAWN".equals(piece.getType())) {
+            return false;
+        }
+        if ("WHITE".equals(piece.getColor())) {
+            if (!isLegalWhitePawnForward(startRow, startCol, endRow, endCol)) {
+                return false;
+            }
+        } else if ("BLACK".equals(piece.getColor())) {
+            if (!isLegalBlackPawnForward(startRow, startCol, endRow, endCol)) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+        state[endRow][endCol] = piece;
+        state[startRow][startCol] = null;
+        return true;
+    }
+    
+
+    private boolean isLegalWhitePawnForward(int startRow, int startCol, int endRow, int endCol) {
+        if (endCol != startCol) {
+            return false;
+        }
+        int delta = endRow - startRow;
+        if (delta == -1) {
+            return true;
+        }
+        if (delta == -2 && startRow == 6) {
+            return state[startRow - 1][startCol] == null;
+        }
+        return false;
+    }
+
+
+    private boolean isLegalBlackPawnForward(int startRow, int startCol, int endRow, int endCol) {
+        if (endCol != startCol) {
+            return false;
+        }
+        int delta = endRow - startRow;
+        if (delta == 1) {
+            return true;
+        }
+        if (delta == 2 && startRow == 1) {
+            return state[startRow + 1][startCol] == null;
+        }
+        return false;
+    }
+
+
+
     private Piece[] generateBoundaryRows(String color) {
         Piece[] row = new Piece[8];
 
