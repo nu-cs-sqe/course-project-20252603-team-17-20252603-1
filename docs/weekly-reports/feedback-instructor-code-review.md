@@ -9,6 +9,12 @@ The following chapters of the textbook are considered: Chapter 1, 2, 3, 4, 5, 6,
 Please note that this feedback does not include evaluation of your progress, the proper use of linters, the quality of your test cases, or your compliance of TDD/BDD workflow.  
 You can find the weekly feedback from your dedicated PM/TA for that.
 
+## Week 7 Code Review
+I don't think there's new code since I last gave my code review feedback,
+so there is no new comment. Please see last week's comment below.
+
+Please approve and merge the PR once the team has read the feedback. Thanks!
+
 ## Week 6 Code Review
 I have read every line of production code currently in the main branch. A couple of things:
 
@@ -16,5 +22,6 @@ I have read every line of production code currently in the main branch. A couple
 Look forward to reviewing more of your domain logic in the next review.
 2. There is use of magic numbers in `Board` that should be improved.
 3. Design wise, it is better to use an Enum than a string for the color.
+4. Be consistent of package naming convention: Are the names capitalized? For Java, the default convention is to use all lower cases for package names (liek board, player, etc.)
 
 Please approve and merge the PR once the team has read the feedback. Thanks!
