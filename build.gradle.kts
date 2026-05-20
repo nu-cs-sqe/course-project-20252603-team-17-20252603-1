@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("com.github.spotbugs") version "6.5.4"
 }
 
 group = "nu.csse.sqe"
@@ -26,4 +27,16 @@ tasks.compileJava {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+spotbugs {
+    effort.set(com.github.spotbugs.snom.Effort.MAX)
+    reportLevel.set(com.github.spotbugs.snom.Confidence.MEDIUM)
+    ignoreFailures.set(true)
+}
+
+tasks.withType<com.github.spotbugs.snom.SpotBugsTask>().configureEach {
+    reports.create("html") {
+        required.set(true)
+    }
 }
