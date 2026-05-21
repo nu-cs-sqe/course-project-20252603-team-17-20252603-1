@@ -12,10 +12,10 @@
 
 ## Method under test: `getBoard()`
 
-| Test Case ID | State of the System | Expected Output | Implemented? |
-|-------------|---------------------|-----------------|--------------|
-| GAME-BOARD-001 | A game has not started yet. `getBoard()` is called. | Returns `null` because no board has been created yet. | :x: |
-| GAME-BOARD-002 | A game has started. `getBoard()` is called. | Returns the current initialized `Board`. | :x: |
+| Test Case ID | State of the System | Expected Output | Implemented?       |
+|-------------|---------------------|-----------------|--------------------|
+| GAME-BOARD-001 | A game has not started yet. `getBoard()` is called. | Returns `null` because no board has been created yet. | :white_check_mark: |
+| GAME-BOARD-002 | A game has started. `getBoard()` is called. | Returns the current initialized `Board`. | :white_check_mark: |
 
 ## Method under test: `getCurrentPlayer()`
 

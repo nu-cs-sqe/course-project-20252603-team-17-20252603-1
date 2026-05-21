@@ -83,4 +83,11 @@ public class GameTests {
         assertNotSame(firstBoard, secondBoard);
     }
 
+    @Test
+    void getBoardReturnsNullBeforeGameStarts() {
+        Game game = new Game();
+
+        assertNull(game.getBoard());
+    }
+
 }
