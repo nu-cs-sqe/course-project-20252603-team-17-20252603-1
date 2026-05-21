@@ -1,14 +1,11 @@
-package BoardTests;
-
-import Board.Board;
-import Board.Piece;
-import org.junit.jupiter.api.Test;
+package board;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class BoardTests {
     @Test
-    void initializeBoardCreatesStandardChessStartingPosition() {
+    void initializeBoardCreatesStandardChessStartingLPosition() {
         Board board = new Board();
 
         board.initializeBoard();
