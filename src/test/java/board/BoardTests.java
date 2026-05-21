@@ -1,7 +1,5 @@
-package BoardTests;
+package board;
 
-import Board.Board;
-import Board.Piece;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
