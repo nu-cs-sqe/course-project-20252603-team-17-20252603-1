@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import board.Board;
+
 
 public class GameTests {
 
@@ -46,6 +48,15 @@ public class GameTests {
         game.startNewGame();
 
         assertFalse(game.isGameOver());
+    }
+
+    @Test
+    void startNewGameCreatesBoard() {
+        Game game = new Game();
+
+        game.startNewGame();
+
+        assertNotNull(game.getBoard());
     }
 
 }
