@@ -2,11 +2,11 @@
 
 ## Method under test: `startNewGame()`
 
-| Test Case ID | State of the System | Expected Output | Implemented? |
-|-------------|---------------------|-----------------|--------------|
-| GAME-START-001 | No game is currently active. `startNewGame()` is called. | A new `Board` is created for the game. | :x: |
-| GAME-START-002 | No game is currently active. `startNewGame()` is called. | The new board is initialized with the starting chess pieces. | :x: |
-| GAME-START-003 | A game is already active. `startNewGame()` is called again. | The existing board is replaced with a clean, newly initialized board. No old board state remains. | :x: |
+| Test Case ID | State of the System | Expected Output | Implemented?       |
+|-------------|---------------------|-----------------|--------------------|
+| GAME-START-001 | No game is currently active. `startNewGame()` is called. | A new `Board` is created for the game. | :white_check_mark: |
+| GAME-START-002 | No game is currently active. `startNewGame()` is called. | The new board is initialized with the starting chess pieces. | :x:                |
+| GAME-START-003 | A game is already active. `startNewGame()` is called again. | The existing board is replaced with a clean, newly initialized board. No old board state remains. | :x:                |
 
 ---
 

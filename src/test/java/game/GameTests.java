@@ -59,4 +59,15 @@ public class GameTests {
         assertNotNull(game.getBoard());
     }
 
+    @Test
+    void startNewGameInitializesBoard() {
+        Game game = new Game();
+
+        game.startNewGame();
+
+        Board board = game.getBoard();
+
+        assertNotNull(board.getPieceAt(6, 0));
+    }
+
 }
