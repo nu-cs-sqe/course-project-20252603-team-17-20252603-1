@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import board.Board;
+
 
 public class GameTests {
 
@@ -46,6 +48,46 @@ public class GameTests {
         game.startNewGame();
 
         assertFalse(game.isGameOver());
+    }
+
+    @Test
+    void startNewGameCreatesBoard() {
+        Game game = new Game();
+
+        game.startNewGame();
+
+        assertNotNull(game.getBoard());
+    }
+
+    @Test
+    void startNewGameInitializesBoard() {
+        Game game = new Game();
+
+        game.startNewGame();
+
+        Board board = game.getBoard();
+
+        assertNotNull(board.getPieceAt(6, 0));
+    }
+    @Test
+    void startNewGameAgainResetsBoard() {
+        Game game = new Game();
+
+        game.startNewGame();
+        Board firstBoard = game.getBoard();
+
+        game.startNewGame();
+        Board secondBoard = game.getBoard();
+
+        assertNotNull(secondBoard);
+        assertNotSame(firstBoard, secondBoard);
+    }
+
+    @Test
+    void getBoardReturnsNullBeforeGameStarts() {
+        Game game = new Game();
+
+        assertNull(game.getBoard());
     }
 
 }

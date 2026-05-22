@@ -1,6 +1,7 @@
 package game;
 
 import player.Player;
+import board.Board;
 
 public class Game {
 
@@ -8,11 +9,20 @@ public class Game {
     private Player whitePlayer;
     private Player blackPlayer;
 
+    private Board board;
+
     public void startNewGame() {
         whitePlayer = new Player("White Player", "WHITE");
         blackPlayer = new Player("Black Player", "BLACK");
 
+        this.board = new Board();
+        this.board.initializeBoard();
+
         currentPlayer = whitePlayer;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public Player getCurrentPlayer() {
