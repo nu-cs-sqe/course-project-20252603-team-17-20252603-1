@@ -39,6 +39,16 @@ public class Game {
         }
     }
 
+    public boolean makeMove(int startRow, int startCol, int endRow, int endCol) {
+        boolean moveSuccessful = board.movePiece(startRow, startCol, endRow, endCol);
+
+        if (moveSuccessful) {
+            switchTurn();
+        }
+
+        return moveSuccessful;
+    }
+
     public boolean isGameOver() {
         return false;
     }
