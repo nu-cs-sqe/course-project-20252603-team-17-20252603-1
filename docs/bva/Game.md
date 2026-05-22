@@ -2,12 +2,20 @@
 
 ## Method under test: `startNewGame()`
 
-| Test Case ID | State of the System | Expected Output | Implemented? |
-|-------------|---------------------|-----------------|--------------|
-| GAME-START-001 | No game is currently active. `startNewGame()` is called. | A new chess game is created, the board is initialized, two players are created, White is set as the first player, and the game status becomes active. | :x: |
-| GAME-START-002 | A game is already active. `startNewGame()` is called again. | The system either resets the current game or creates a new clean game state, depending on team design decision. No old board state should remain. | :x: |
+| Test Case ID | State of the System | Expected Output | Implemented?       |
+|-------------|---------------------|-----------------|--------------------|
+| GAME-START-001 | No game is currently active. `startNewGame()` is called. | A new `Board` is created for the game. | :white_check_mark: |
+| GAME-START-002 | No game is currently active. `startNewGame()` is called. | The new board is initialized with the starting chess pieces. | :white_check_mark: |
+| GAME-START-003 | A game is already active. `startNewGame()` is called again. | The existing board is replaced with a clean, newly initialized board. No old board state remains. | :white_check_mark: |
 
 ---
+
+## Method under test: `getBoard()`
+
+| Test Case ID | State of the System | Expected Output | Implemented?       |
+|-------------|---------------------|-----------------|--------------------|
+| GAME-BOARD-001 | A game has not started yet. `getBoard()` is called. | Returns `null` because no board has been created yet. | :white_check_mark: |
+| GAME-BOARD-002 | A game has started. `getBoard()` is called. | Returns the current initialized `Board`. | :white_check_mark: |
 
 ## Method under test: `getCurrentPlayer()`
 
