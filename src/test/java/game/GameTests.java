@@ -127,6 +127,17 @@ public class GameTests {
         assertEquals("WHITE",game.getCurrentPlayer().getColor());
     }
 
+    @Test
+    void playerCannotMoveOpponentsPiece() {
+        Game game = new Game();
+
+        game.startNewGame();
+
+        boolean moved = game.makeMove(1, 0, 2, 0);
+
+        assertFalse(moved);
+        assertEquals("WHITE", game.getCurrentPlayer().getColor());
+    }
 
 
 }
