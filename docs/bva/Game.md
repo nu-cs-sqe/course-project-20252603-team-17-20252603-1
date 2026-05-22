@@ -53,9 +53,9 @@
 ## Method under test: `makeMove(startRow, startCol, endRow, endCol)`
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
-|-------------|---------------------|-----------------|--------------|
-| GAME-MOVE-001 | It is White's turn. White moves a pawn from `(6, 0)` to `(5, 0)`. | Returns `true`, moves the pawn, and changes the current player to Black. | :x: |
-| GAME-MOVE-002 | It is Black's turn. Black moves a pawn from `(1, 0)` to `(2, 0)`. | Returns `true`, moves the pawn, and changes the current player to White. | :x: |
+|-------------|---------------------|-----------------|--------|
+| GAME-MOVE-001 | It is White's turn. White moves a pawn from `(6, 0)` to `(5, 0)`. | Returns `true`, moves the pawn, and changes the current player to Black. | :white_check_mark: |
+| GAME-MOVE-002 | It is Black's turn. Black moves a pawn from `(1, 0)` to `(2, 0)`. | Returns `true`, moves the pawn, and changes the current player to White. | :white_check_mark: |
 | GAME-MOVE-003 | It is White's turn. White attempts an invalid pawn move from `(6, 0)` to `(3, 0)`. | Returns `false`, does not move the pawn, and keeps the current player as White. | :x: |
 | GAME-MOVE-004 | It is White's turn. White attempts to move a Black pawn from `(1, 0)` to `(2, 0)`. | Returns `false`, does not move the Black pawn, and keeps the current player as White. | :x: |
 | GAME-MOVE-005 | It is White's turn. White attempts to move from an empty square `(4, 4)` to `(5, 4)`. | Returns `false`, does not change the board, and keeps the current player as White. | :x: |

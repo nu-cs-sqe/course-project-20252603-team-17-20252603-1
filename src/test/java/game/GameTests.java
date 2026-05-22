@@ -102,4 +102,18 @@ public class GameTests {
         assertEquals("BLACK", game.getCurrentPlayer().getColor());
     }
 
+    @Test
+    void validBlackPawnMoveSwitchesTurnBackToWhite() {
+        Game game = new Game();
+
+        game.startNewGame();
+        game.makeMove(6, 0, 5, 0);
+
+        boolean moved = game.makeMove(1, 0, 2, 0);
+
+        assertTrue(moved);
+        assertEquals("WHITE",game.getCurrentPlayer().getColor());
+    }
+
+
 }
