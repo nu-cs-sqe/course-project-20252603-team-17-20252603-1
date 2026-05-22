@@ -115,5 +115,18 @@ public class GameTests {
         assertEquals("WHITE",game.getCurrentPlayer().getColor());
     }
 
+    @Test
+    void invalidMoveDoesNotSwitchTurn() {
+        Game game = new Game();
+
+        game.startNewGame();
+
+        boolean moved = game.makeMove(6, 0, 3, 0);
+
+        assertFalse(moved);
+        assertEquals("WHITE",game.getCurrentPlayer().getColor());
+    }
+
+
 
 }
