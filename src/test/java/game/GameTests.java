@@ -90,4 +90,54 @@ public class GameTests {
         assertNull(game.getBoard());
     }
 
+    @Test
+    void validWhitePawnMoveSwitchesTurnToBlack() {
+        Game game = new Game();
+
+        game.startNewGame();
+
+        boolean moved = game.makeMove(6, 0, 5, 0);
+
+        assertTrue(moved);
+        assertEquals("BLACK", game.getCurrentPlayer().getColor());
+    }
+
+    @Test
+    void validBlackPawnMoveSwitchesTurnBackToWhite() {
+        Game game = new Game();
+
+        game.startNewGame();
+        game.makeMove(6, 0, 5, 0);
+
+        boolean moved = game.makeMove(1, 0, 2, 0);
+
+        assertTrue(moved);
+        assertEquals("WHITE",game.getCurrentPlayer().getColor());
+    }
+
+    @Test
+    void invalidMoveDoesNotSwitchTurn() {
+        Game game = new Game();
+
+        game.startNewGame();
+
+        boolean moved = game.makeMove(6, 0, 3, 0);
+
+        assertFalse(moved);
+        assertEquals("WHITE",game.getCurrentPlayer().getColor());
+    }
+
+    @Test
+    void playerCannotMoveOpponentsPiece() {
+        Game game = new Game();
+
+        game.startNewGame();
+
+        boolean moved = game.makeMove(1, 0, 2, 0);
+
+        assertFalse(moved);
+        assertEquals("WHITE", game.getCurrentPlayer().getColor());
+    }
+
+
 }
