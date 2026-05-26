@@ -18,4 +18,4 @@
 | PIECE-TYPE-003 | A Rook piece exists. `getType()` is called. | Returns `ROOK`. | :white_check_mark:          |
 | PIECE-TYPE-004 | A Bishop piece exists. `getType()` is called. | Returns `BISHOP`. | :white_check_mark:          |
 | PIECE-TYPE-005 | A Knight piece exists. `getType()` is called. | Returns `KNIGHT`. | :white_check_mark:          |
-| PIECE-TYPE-006 | A Pawn piece exists. `getType()` is called. | Returns `PAWN`. | :x:          |
+| PIECE-TYPE-006 | A Pawn piece exists. `getType()` is called. | Returns `PAWN`. | :white_check_mark:          |
