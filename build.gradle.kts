@@ -2,6 +2,8 @@ plugins {
     id("java")
     checkstyle
     id("com.github.spotbugs") version "6.5.4"
+    jacoco
+    id("info.solidsoft.pitest") version "1.15.0"
 }
 
 group = "nu.csse.sqe"
@@ -28,6 +30,7 @@ tasks.compileJava {
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 spotbugs {
@@ -52,4 +55,37 @@ tasks.withType<Checkstyle>().configureEach {
 
 checkstyle{
     isIgnoreFailures = true
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+
+    reports {
+        xml.required.set(false)
+        csv.required.set(false)
+        html.required.set(true)
+        html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco"))
+    }
+}
+
+tasks.build {
+    dependsOn("pitest")
+}
+
+pitest {
+    targetClasses.set(setOf("board.*", "game.*", "piece.*", "player.*"))
+    targetTests.set(setOf("board.*", "game.*", "piece.*", "player.*"))
+
+    junit5PluginVersion.set("1.2.1")
+    pitestVersion.set("1.15.0")
+
+    threads.set(4)
+    outputFormats.set(setOf("HTML"))
+    timestampedReports.set(false)
+    testSourceSets.set(listOf(sourceSets.test.get()))
+    mainSourceSets.set(listOf(sourceSets.main.get()))
+    jvmArgs.set(listOf("-Xmx1024m"))
+    useClasspathFile.set(true)
+    fileExtensionsToFilter.addAll("xml")
+    exportLineCoverage.set(true)
 }

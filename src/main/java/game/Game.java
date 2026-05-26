@@ -1,4 +1,5 @@
 package game;
+import board.Piece;
 
 import player.Player;
 import board.Board;
@@ -38,6 +39,29 @@ public class Game {
             currentPlayer = whitePlayer;
         }
     }
+
+
+    public boolean makeMove(int startRow, int startCol, int
+            endRow, int endCol) {
+        Piece piece = board.getPieceAt(startRow, startCol);
+
+        if (piece == null) {
+            return false;
+        }
+
+        if (!piece.getColor().equals(currentPlayer.getColor())) {
+            return false;
+        }
+
+        boolean moveSuccessful = board.movePiece(startRow, startCol, endRow, endCol);
+
+        if (moveSuccessful) {
+            switchTurn();
+        }
+
+        return moveSuccessful;
+    }
+
 
     public boolean isGameOver() {
         return false;
