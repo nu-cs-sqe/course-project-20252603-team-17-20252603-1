@@ -3,8 +3,8 @@
 ## Method under test: `getColor()`
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
-|-------------|---------------------|-----------------|--------------|
-| PIECE-COLOR-001 | A White piece exists. `getColor()` is called. | Returns `WHITE`. | :x: |
+|-------------|---------------------|-----------------|-----------|
+| PIECE-COLOR-001 | A White piece exists. `getColor()` is called. | Returns `WHITE`. | :white_check_mark: |
 | PIECE-COLOR-002 | A Black piece exists. `getColor()` is called. | Returns `BLACK`. | :x: |
 
 ---

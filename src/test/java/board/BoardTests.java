@@ -290,7 +290,12 @@ public class BoardTests {
     }
 
 
+    @Test
+    void whitePieceReturnsWhite() {
+        Piece piece = new Piece("PAWN", "WHITE");
 
+        assertEquals("WHITE", piece.getColor());
+    }
 
 
 
