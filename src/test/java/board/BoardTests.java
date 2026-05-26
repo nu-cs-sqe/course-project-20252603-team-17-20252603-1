@@ -311,6 +311,14 @@ public class BoardTests {
         assertEquals("KING", piece.getType());
     }
 
+    @Test
+    void queenPieceReturnsQueen() {
+        Piece piece = new Piece("QUEEN", "WHITE");
+
+        assertEquals("QUEEN", piece.getType());
+    }
+
+
 
 
 
