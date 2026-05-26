@@ -304,6 +304,14 @@ public class BoardTests {
         assertEquals("BLACK", piece.getColor());
     }
 
+    @Test
+    void kingPieceReturnsKing() {
+        Piece piece = new Piece("KING", "WHITE");
+
+        assertEquals("KING", piece.getType());
+    }
+
+
 
 
 
