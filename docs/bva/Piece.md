@@ -15,7 +15,7 @@
 |-------------|---------------------|-----------------|--------------|
 | PIECE-TYPE-001 | A King piece exists. `getType()` is called. | Returns `KING`. | :white_check_mark:  |
 | PIECE-TYPE-002 | A Queen piece exists. `getType()` is called. | Returns `QUEEN`. | :white_check_mark:          |
-| PIECE-TYPE-003 | A Rook piece exists. `getType()` is called. | Returns `ROOK`. | :x:          |
+| PIECE-TYPE-003 | A Rook piece exists. `getType()` is called. | Returns `ROOK`. | :white_check_mark:          |
 | PIECE-TYPE-004 | A Bishop piece exists. `getType()` is called. | Returns `BISHOP`. | :x:          |
 | PIECE-TYPE-005 | A Knight piece exists. `getType()` is called. | Returns `KNIGHT`. | :x:          |
 | PIECE-TYPE-006 | A Pawn piece exists. `getType()` is called. | Returns `PAWN`. | :x:          |
