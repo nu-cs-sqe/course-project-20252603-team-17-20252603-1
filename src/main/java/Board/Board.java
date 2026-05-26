@@ -2,7 +2,7 @@ package board;
 
 public class Board {
 
-    public Piece[][] state; //TODO: temporarily public, revert to private once movePiece complete
+    private Piece[][] state;
 
     public Board() {
         this.state = new Piece[8][8];
