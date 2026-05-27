@@ -139,5 +139,14 @@ public class GameTests {
         assertEquals("WHITE", game.getCurrentPlayer().getColor());
     }
 
+    @Test
+    void makeMoveBeforeStartNewGameReturnsFalse() {
+        Game game = new Game();
+
+        boolean moved = game.makeMove(6, 0, 5, 0);
+
+        assertFalse(moved);
+    }
+
 
 }
