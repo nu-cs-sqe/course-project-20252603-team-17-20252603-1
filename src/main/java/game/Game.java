@@ -46,6 +46,11 @@ public class Game {
         if (board == null || currentPlayer == null) {
             return false;
         }
+
+        if (!board.isWithinBounds(startRow, startCol)) {
+            return false;
+        }
+
         Piece piece = board.getPieceAt(startRow, startCol);
         if (piece == null) {
             return false;
