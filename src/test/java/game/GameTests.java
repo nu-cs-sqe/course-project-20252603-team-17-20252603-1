@@ -148,5 +148,17 @@ public class GameTests {
         assertFalse(moved);
     }
 
+    @Test
+    void moveFromEmptySquareReturnsFalseAndDoesNotSwitchTurn() {
+        Game game = new Game();
+        game.startNewGame();
+
+        boolean moved = game.makeMove(4, 4, 5, 4);
+
+        assertFalse(moved);
+        assertEquals("WHITE", game.getCurrentPlayer().getColor());
+    }
+
+
 
 }
