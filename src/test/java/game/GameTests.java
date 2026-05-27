@@ -159,6 +159,20 @@ public class GameTests {
         assertEquals("WHITE", game.getCurrentPlayer().getColor());
     }
 
+    @Test
+    void moveFromOutOfBoundsStartReturnsFalseAndDoesNotSwitchTurn() {
+        Game game = new Game();
+        game.startNewGame();
+
+        boolean moved = game.makeMove(-1, 0, 0, 0);
+
+        assertFalse(moved);
+        assertEquals("WHITE", game.getCurrentPlayer().getColor());
+    }
+
+
+
+
 
 
 }
