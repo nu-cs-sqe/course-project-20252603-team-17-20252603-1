@@ -182,9 +182,18 @@ public class GameTests {
         assertNotNull(game.getBoard().getPieceAt(6, 0));
     }
 
+    @Test
+    void moveToOccupiedSquareReturnsFalseAndDoesNotSwitchTurn() {
+        Game game = new Game();
+        game.startNewGame();
 
+        boolean moved = game.makeMove(6, 0, 7, 0);
 
-
+        assertFalse(moved);
+        assertEquals("WHITE", game.getCurrentPlayer().getColor());
+        assertNotNull(game.getBoard().getPieceAt(6, 0));
+        assertNotNull(game.getBoard().getPieceAt(7, 0));
+    }
 
 
 
