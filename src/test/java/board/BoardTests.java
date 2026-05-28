@@ -370,10 +370,20 @@ public class BoardTests {
     }
 
 
+    @Test
+    void movePieceBlackPawnTwoSquaresForwardFromStartRank() {
+        Board board = new Board();
+        board.initializeBoard();
 
+        assertTrue(board.movePiece(1, 0, 3, 0));
+        assertNull(board.getPieceAt(1, 0));
+        assertNull(board.getPieceAt(2, 0));
 
-
-
+        Piece moved = board.getPieceAt(3, 0);
+        assertNotNull(moved);
+        assertEquals("PAWN", moved.getType());
+        assertEquals("BLACK", moved.getColor());
+    }
 
 
 
