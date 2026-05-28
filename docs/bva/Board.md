@@ -48,3 +48,4 @@
 | BOARD-MOVE-005 | Board is initialized. `movePiece(-1, 0, 0, 0)` is called. | Move is rejected because the starting row is outside the board.                                         | :white_check_mark: |
 | BOARD-MOVE-006 | Board is initialized. `movePiece(0, 0, 8, 0)` is called. | Move is rejected because the ending row is outside the board.                                           | :white_check_mark: |
 | BOARD-MOVE-007 | Board is initialized. Black pawn is at `(1, 0)`. `movePiece(1, 0, 2, 0)` is called. | Pawn moves one square forward. Starting square becomes empty and ending square contains the Black pawn. | :white_check_mark: |
+| BOARD-MOVE-008 | Board is initialized. Black pawn is at `(1, 0)`. `movePiece(1, 0, 3, 0)` is called. | Pawn moves two squares forward because it is the pawn's first move.                                     | :x: |
