@@ -39,11 +39,12 @@
 
 ## Method under test: `movePiece(int startRow, int startCol, int endRow, int endCol)`
 
-| Test Case ID | State of the System | Expected Output | Implemented? |
-|-------------|---------------------|-----------------|----------|
+| Test Case ID | State of the System | Expected Output                                                                                         | Implemented? |
+|-------------|---------------------|---------------------------------------------------------------------------------------------------------|----------|
 | BOARD-MOVE-001 | Board is initialized. White pawn is at `(6, 0)`. `movePiece(6, 0, 5, 0)` is called. | Pawn moves one square forward. Starting square becomes empty and ending square contains the White pawn. | :white_check_mark: |
-| BOARD-MOVE-002 | Board is initialized. White pawn is at `(6, 0)`. `movePiece(6, 0, 4, 0)` is called. | Pawn moves two squares forward because it is the pawn's first move. | :white_check_mark: |
-| BOARD-MOVE-003 | Board is initialized. White pawn is at `(6, 0)`. `movePiece(6, 0, 3, 0)` is called. | Move is rejected because a pawn cannot move three squares. | :white_check_mark: |
-| BOARD-MOVE-004 | Board is initialized. Empty square at `(3, 3)`. `movePiece(3, 3, 4, 3)` is called. | Move is rejected because there is no piece at the starting square. | :white_check_mark: |
-| BOARD-MOVE-005 | Board is initialized. `movePiece(-1, 0, 0, 0)` is called. | Move is rejected because the starting row is outside the board. | :white_check_mark: |
-| BOARD-MOVE-006 | Board is initialized. `movePiece(0, 0, 8, 0)` is called. | Move is rejected because the ending row is outside the board. | :white_check_mark: |
+| BOARD-MOVE-002 | Board is initialized. White pawn is at `(6, 0)`. `movePiece(6, 0, 4, 0)` is called. | Pawn moves two squares forward because it is the pawn's first move.                                     | :white_check_mark: |
+| BOARD-MOVE-003 | Board is initialized. White pawn is at `(6, 0)`. `movePiece(6, 0, 3, 0)` is called. | Move is rejected because a pawn cannot move three squares.                                              | :white_check_mark: |
+| BOARD-MOVE-004 | Board is initialized. Empty square at `(3, 3)`. `movePiece(3, 3, 4, 3)` is called. | Move is rejected because there is no piece at the starting square.                                      | :white_check_mark: |
+| BOARD-MOVE-005 | Board is initialized. `movePiece(-1, 0, 0, 0)` is called. | Move is rejected because the starting row is outside the board.                                         | :white_check_mark: |
+| BOARD-MOVE-006 | Board is initialized. `movePiece(0, 0, 8, 0)` is called. | Move is rejected because the ending row is outside the board.                                           | :white_check_mark: |
+| BOARD-MOVE-007 | Board is initialized. Black pawn is at `(1, 0)`. `movePiece(1, 0, 2, 0)` is called. | Pawn moves one square forward. Starting square becomes empty and ending square contains the Black pawn. | :x: |
