@@ -386,7 +386,23 @@ public class BoardTests {
     }
 
 
+    @Test
+    void movePiecePawnCannotMoveForwardIntoOccupiedSquare() {
+        Board board = new Board();
+        board.initializeBoard();
 
+        assertFalse(board.movePiece(6, 0, 7, 0));
+
+        Piece pawn = board.getPieceAt(6, 0);
+        assertNotNull(pawn);
+        assertEquals("PAWN", pawn.getType());
+        assertEquals("WHITE", pawn.getColor());
+
+        Piece rook = board.getPieceAt(7, 0);
+        assertNotNull(rook);
+        assertEquals("ROOK", rook.getType());
+        assertEquals("WHITE", rook.getColor());
+    }
 
 
 
