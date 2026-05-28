@@ -43,22 +43,25 @@ public class Game {
 
     public boolean makeMove(int startRow, int startCol, int
             endRow, int endCol) {
-        Piece piece = board.getPieceAt(startRow, startCol);
+        if (board == null || currentPlayer == null) {
+            return false;
+        }
 
+        if (!board.isWithinBounds(startRow, startCol)) {
+            return false;
+        }
+
+        Piece piece = board.getPieceAt(startRow, startCol);
         if (piece == null) {
             return false;
         }
-
         if (!piece.getColor().equals(currentPlayer.getColor())) {
             return false;
         }
-
         boolean moveSuccessful = board.movePiece(startRow, startCol, endRow, endCol);
-
         if (moveSuccessful) {
             switchTurn();
         }
-
         return moveSuccessful;
     }
 
