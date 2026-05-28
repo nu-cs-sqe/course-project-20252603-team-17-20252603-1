@@ -423,5 +423,37 @@ public class BoardTests {
     }
 
 
+    private void placePiece(Board board, int row, int col, Piece piece) {
+        try {
+            java.lang.reflect.Field stateField = Board.class.getDeclaredField("state");
+            stateField.setAccessible(true);
+            Piece[][] state = (Piece[][]) stateField.get(board);
+            state[row][col] = piece;
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void movePiecePawnCannotCaptureStraightForward() {
+        Board board = new Board();
+        board.initializeBoard();
+        placePiece(board, 5, 0, new Piece("PAWN", "BLACK"));
+
+        assertFalse(board.movePiece(6, 0, 5, 0));
+
+        Piece whitePawn = board.getPieceAt(6, 0);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        Piece blackPawn = board.getPieceAt(5, 0);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+    }
+
+
+
 
 }
