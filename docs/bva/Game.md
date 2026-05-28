@@ -63,4 +63,4 @@
 | GAME-MOVE-007 | It is White's turn. White attempts to move a pawn from `(6, 0)` to an out-of-bounds square `(8, 0)`. | Returns `false`, does not change the board, and keeps the current player as White. | :white_check_mark:               |
 | GAME-MOVE-008 | A game has not started yet. `makeMove(6, 0, 5, 0)` is called. | Returns `false` because no board exists yet. | :white_check_mark:               |
 | GAME-MOVE-009 | It is White's turn. White attempts to move a pawn from `(6, 0)` to an occupied square `(7, 0)`. | Returns `false`, does not move the pawn, and keeps the current player as White. | :white_check_mark:               |
-| GAME-MOVE-010 | It is White's turn. White attempts an invalid knight move from `(7, 1)` to `(6, 1)`. | Returns `false`, does not move the knight, and keeps the current player as White. | :x:               |
+| GAME-MOVE-010 | It is White's turn. White attempts an invalid knight move from `(7, 1)` to `(6, 1)`. | Returns `false`, does not move the knight, and keeps the current player as White. | :white_check_mark:               |

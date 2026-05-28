@@ -195,6 +195,19 @@ public class GameTests {
         assertNotNull(game.getBoard().getPieceAt(7, 0));
     }
 
+    @Test
+    void invalidKnightMoveReturnsFalseAndDoesNotSwitchTurn() {
+        Game game = new Game();
+        game.startNewGame();
+
+        boolean moved = game.makeMove(7, 1, 6, 1);
+
+        assertFalse(moved);
+        assertEquals("WHITE", game.getCurrentPlayer().getColor());
+        assertNotNull(game.getBoard().getPieceAt(7, 1));
+    }
+
+
 
 
 }
