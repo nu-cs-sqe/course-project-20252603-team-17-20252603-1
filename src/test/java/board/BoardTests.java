@@ -453,6 +453,22 @@ public class BoardTests {
         assertEquals("BLACK", blackPawn.getColor());
     }
 
+    @Test
+    void movePieceBlackPawnCanCaptureDiagonally() {
+        Board board = new Board();
+        board.initializeBoard();
+        placePiece(board, 2, 1, new Piece("PAWN", "WHITE"));
+
+        assertTrue(board.movePiece(1, 0, 2, 1));
+        assertNull(board.getPieceAt(1, 0));
+
+        Piece moved = board.getPieceAt(2, 1);
+        assertNotNull(moved);
+        assertEquals("PAWN", moved.getType());
+        assertEquals("BLACK", moved.getColor());
+    }
+
+
 
 
 
