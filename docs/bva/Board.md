@@ -50,4 +50,6 @@
 | BOARD-MOVE-007 | Board is initialized. Black pawn is at `(1, 0)`. `movePiece(1, 0, 2, 0)` is called.                               | Pawn moves one square forward. Starting square becomes empty and ending square contains the Black pawn. | :white_check_mark: |
 | BOARD-MOVE-008 | Board is initialized. Black pawn is at `(1, 0)`. `movePiece(1, 0, 3, 0)` is called.                               | Pawn moves two squares forward because it is the pawn's first move.                                     | :white_check_mark: |
 | BOARD-MOVE-009 | Board is initialized. White pawn is at `(6, 0)` and White rook is at `(7, 0)`. `movePiece(6, 0, 7, 0)` is called. | Move is rejected because pawns cannot move forward into an occupied square. Both pieces remain in place. | :white_check_mark: |
+| BOARD-MOVE-010 | Black pawn is on `(5, 1)` and White pawn is on `(6, 0)`. `movePiece(6, 0, 5, 1)` is called. | White pawn captures diagonally. Starting square becomes empty and ending square contains the White pawn. | :x: |
+
 
