@@ -34,6 +34,8 @@ public class Board {
         return (row >= 0 && row < 8) && (col >= 0 && col < 8);
     }
 
+
+
     public boolean movePiece(int startRow, int startCol, int endRow, int endCol) {
         if (!isWithinBounds(startRow, startCol) || !isWithinBounds(endRow, endCol)) {
             return false;
@@ -42,57 +44,65 @@ public class Board {
         if (piece == null) {
             return false;
         }
-        if (state[endRow][endCol] != null) {
+        Piece destination = state[endRow][endCol];
+        if (destination != null && destination.getColor().equals(piece.getColor())) {
             return false;
         }
+
         if (!"PAWN".equals(piece.getType())) {
             return false;
         }
-        if ("WHITE".equals(piece.getColor())) {
-            if (!isLegalWhitePawnForward(startRow, startCol, endRow, endCol)) {
-                return false;
-            }
-        } else if ("BLACK".equals(piece.getColor())) {
-            if (!isLegalBlackPawnForward(startRow, startCol, endRow, endCol)) {
-                return false;
-            }
-        } else {
+        if (!isLegalPawnMove(startRow, startCol, endRow, endCol)) {
             return false;
         }
+
         state[endRow][endCol] = piece;
         state[startRow][startCol] = null;
         return true;
     }
-    
 
-    private boolean isLegalWhitePawnForward(int startRow, int startCol, int endRow, int endCol) {
-        if (endCol != startCol) {
+    private boolean isLegalPawnMove(int startRow, int startCol, int endRow, int endCol) {
+        Piece piece = state[startRow][startCol];
+        Piece destination = state[endRow][endCol];
+
+        int direction;
+        int startRank;
+        String opponentColor;
+
+        if ("WHITE".equals(piece.getColor())) {
+            direction = -1;
+            startRank = 6;
+            opponentColor = "BLACK";
+        } else if ("BLACK".equals(piece.getColor())) {
+            direction = 1;
+            startRank = 1;
+            opponentColor = "WHITE";
+        } else {
             return false;
         }
-        int delta = endRow - startRow;
-        if (delta == -1) {
-            return true;
+
+        int rowDelta = endRow - startRow;
+        int colDelta = endCol - startCol;
+
+        if (colDelta == 0 && destination == null) {
+            if (rowDelta == direction) {
+                return true;
+            }
+
+            if (rowDelta == 2 * direction && startRow == startRank) {
+                return state[startRow + direction][startCol] == null;
+            }
         }
-        if (delta == -2 && startRow == 6) {
-            return state[startRow - 1][startCol] == null;
+
+        if (Math.abs(colDelta) == 1 && rowDelta == direction) {
+            return destination != null && opponentColor.equals(destination.getColor());
         }
+
         return false;
     }
 
 
-    private boolean isLegalBlackPawnForward(int startRow, int startCol, int endRow, int endCol) {
-        if (endCol != startCol) {
-            return false;
-        }
-        int delta = endRow - startRow;
-        if (delta == 1) {
-            return true;
-        }
-        if (delta == 2 && startRow == 1) {
-            return state[startRow + 1][startCol] == null;
-        }
-        return false;
-    }
+
 
 
 
@@ -120,4 +130,7 @@ public class Board {
 
         return row;
     }
+
+
+
 }
