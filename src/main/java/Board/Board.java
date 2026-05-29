@@ -69,6 +69,11 @@ public class Board {
             if (!isLegalQueenMove(startRow, startCol, endRow, endCol)) {
                 return false;
             }
+        } else if ("KING".equals(piece.getType())) {
+            if (!isLegalKingMove(startRow, startCol, endRow, endCol)) {
+                return false;
+            }
+
         } else {
             return false;
         }
@@ -76,6 +81,13 @@ public class Board {
         state[endRow][endCol] = piece;
         state[startRow][startCol] = null;
         return true;
+    }
+
+    private boolean isLegalKingMove(int startRow, int startCol, int endRow, int endCol) {
+        int rowDelta = Math.abs(endRow - startRow);
+        int colDelta = Math.abs(endCol - startCol);
+
+        return rowDelta <= 1 && colDelta <= 1 && (rowDelta != 0 || colDelta != 0);
     }
 
     private boolean isLegalQueenMove(int startRow, int startCol, int endRow, int endCol) {
