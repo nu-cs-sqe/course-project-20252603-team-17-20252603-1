@@ -67,8 +67,32 @@ public class Board {
     }
 
     private boolean isLegalRookMove(int startRow, int startCol, int endRow, int endCol) {
-        return startRow == endRow || startCol == endCol;
+        if (startRow != endRow && startCol != endCol) {
+            return false;
+        }
+        return isPathClear(startRow, startCol, endRow, endCol);
     }
+
+    private boolean isPathClear(int startRow, int startCol, int endRow, int endCol) {
+        int rowStep = Integer.compare(endRow, startRow);
+        int colStep = Integer.compare(endCol, startCol);
+
+        int row = startRow + rowStep;
+        int col = startCol + colStep;
+
+        while (row != endRow || col != endCol) {
+            if (state[row][col] != null) {
+                return false;
+            }
+
+            row += rowStep;
+            col += colStep;
+        }
+
+        return true;
+    }
+
+
 
     private boolean isLegalPawnMove(int startRow, int startCol, int endRow, int endCol) {
         Piece piece = state[startRow][startCol];
