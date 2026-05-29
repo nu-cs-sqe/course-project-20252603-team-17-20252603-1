@@ -680,4 +680,20 @@ public class BoardTests {
         assertNull(board.getPieceAt(2, 2));
     }
 
+    @Test
+    void movePieceKingCannotMoveTwoSquares() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+
+        assertFalse(board.movePiece(4, 4, 6, 4));
+
+        Piece king = board.getPieceAt(4, 4);
+        assertNotNull(king);
+        assertEquals("KING", king.getType());
+        assertEquals("WHITE", king.getColor());
+
+        assertNull(board.getPieceAt(6, 4));
+    }
+
+
 }
