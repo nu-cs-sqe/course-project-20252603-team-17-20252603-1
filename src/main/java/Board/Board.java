@@ -49,16 +49,25 @@ public class Board {
             return false;
         }
 
-        if (!"PAWN".equals(piece.getType())) {
-            return false;
-        }
-        if (!isLegalPawnMove(startRow, startCol, endRow, endCol)) {
+        if ("PAWN".equals(piece.getType())) {
+            if (!isLegalPawnMove(startRow, startCol, endRow, endCol)) {
+                return false;
+            }
+        } else if ("ROOK".equals(piece.getType())) {
+            if (!isLegalRookMove(startRow, startCol, endRow, endCol)) {
+                return false;
+            }
+        } else {
             return false;
         }
 
         state[endRow][endCol] = piece;
         state[startRow][startCol] = null;
         return true;
+    }
+
+    private boolean isLegalRookMove(int startRow, int startCol, int endRow, int endCol) {
+        return startRow == endRow || startCol == endCol;
     }
 
     private boolean isLegalPawnMove(int startRow, int startCol, int endRow, int endCol) {

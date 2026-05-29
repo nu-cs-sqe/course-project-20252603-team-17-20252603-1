@@ -55,6 +55,7 @@
 | BOARD-MOVE-012 | White pawn is on `(2, 1)` and Black pawn is on `(1, 0)`. `movePiece(1, 0, 2, 1)` is called. | Black pawn captures diagonally. Starting square becomes empty and ending square contains the Black pawn.          | :white_check_mark: |
 | BOARD-MOVE-013 | Black pawn is at `(1, 0)` and White pawn is directly in front at `(2, 0)`. `movePiece(1, 0, 2, 0)` is called. | Move is rejected because pawns cannot capture straight forward. Both pieces remain in place.                      | :white_check_mark: |
 | BOARD-MOVE-014 | White pawn is at `(6, 0)` and Black pawn is at `(4, 0)`. `movePiece(6, 0, 4, 0)` is called. | Move is rejected because pawns cannot move two squares into an occupied destination. Both pieces remain in place. | :white_check_mark: |
+| BOARD-MOVE-015 | White rook is at `(4, 4)` and the path to `(4, 7)` is clear. `movePiece(4, 4, 4, 7)` is called. | Rook moves horizontally. Starting square becomes empty and ending square contains the White rook.                 | :white_check_mark: |
 
 
 
