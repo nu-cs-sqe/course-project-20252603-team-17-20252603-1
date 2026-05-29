@@ -625,5 +625,24 @@ public class BoardTests {
         assertEquals("WHITE", moved.getColor());
     }
 
+    @Test
+    void movePieceCannotCaptureSameColorPiece() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("ROOK", "WHITE"));
+        placePiece(board, 4, 7, new Piece("PAWN", "WHITE"));
+
+        assertFalse(board.movePiece(4, 4, 4, 7));
+
+        Piece rook = board.getPieceAt(4, 4);
+        assertNotNull(rook);
+        assertEquals("ROOK", rook.getType());
+        assertEquals("WHITE", rook.getColor());
+
+        Piece pawn = board.getPieceAt(4, 7);
+        assertNotNull(pawn);
+        assertEquals("PAWN", pawn.getType());
+        assertEquals("WHITE", pawn.getColor());
+    }
+
 
 }
