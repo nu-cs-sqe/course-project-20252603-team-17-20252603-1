@@ -520,6 +520,21 @@ public class BoardTests {
         assertEquals("WHITE", moved.getColor());
     }
 
+    @Test
+    void movePieceRookMovesVertically() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("ROOK", "WHITE"));
+
+        assertTrue(board.movePiece(4, 4, 1, 4));
+        assertNull(board.getPieceAt(4, 4));
+
+        Piece moved = board.getPieceAt(1, 4);
+        assertNotNull(moved);
+        assertEquals("ROOK", moved.getType());
+        assertEquals("WHITE", moved.getColor());
+    }
+
+
 
 
 
