@@ -555,6 +555,19 @@ public class BoardTests {
         assertNull(board.getPieceAt(4, 7));
     }
 
+    @Test
+    void movePieceBishopMovesDiagonally() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("BISHOP", "WHITE"));
+
+        assertTrue(board.movePiece(4, 4, 1, 1));
+        assertNull(board.getPieceAt(4, 4));
+
+        Piece moved = board.getPieceAt(1, 1);
+        assertNotNull(moved);
+        assertEquals("BISHOP", moved.getType());
+        assertEquals("WHITE", moved.getColor());
+    }
 
 
 }
