@@ -57,8 +57,12 @@ public class Board {
             if (!isLegalRookMove(startRow, startCol, endRow, endCol)) {
                 return false;
             }
-        } else if  ("BISHOP".equals(piece.getType())){
+        } else if  ("BISHOP".equals(piece.getType())) {
             if (!isLegalBishopMove(startRow, startCol, endRow, endCol)) {
+                return false;
+            }
+        } else if ("KNIGHT".equals(piece.getType())){
+            if (!isLegalKnightMove(startRow, startCol, endRow, endCol)) {
                 return false;
             }
         } else {
@@ -68,6 +72,13 @@ public class Board {
         state[endRow][endCol] = piece;
         state[startRow][startCol] = null;
         return true;
+    }
+
+    private boolean isLegalKnightMove(int startRow, int startCol, int endRow, int endCol) {
+        int rowDelta = Math.abs(endRow - startRow);
+        int colDelta = Math.abs(endCol - startCol);
+
+        return (rowDelta == 2 && colDelta == 1) || (rowDelta == 1 && colDelta == 2);
     }
 
     private boolean isLegalBishopMove(int startRow, int startCol, int endRow, int endCol) {
