@@ -659,5 +659,25 @@ public class BoardTests {
         assertEquals("WHITE", moved.getColor());
     }
 
+    @Test
+    void movePieceBishopBlockedByPieceIsRejected() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("BISHOP", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertFalse(board.movePiece(4, 4, 2, 2));
+
+        Piece bishop = board.getPieceAt(4, 4);
+        assertNotNull(bishop);
+        assertEquals("BISHOP", bishop.getType());
+        assertEquals("WHITE", bishop.getColor());
+
+        Piece blocker = board.getPieceAt(3, 3);
+        assertNotNull(blocker);
+        assertEquals("PAWN", blocker.getType());
+        assertEquals("BLACK", blocker.getColor());
+
+        assertNull(board.getPieceAt(2, 2));
+    }
 
 }

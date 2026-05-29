@@ -65,6 +65,8 @@
 | BOARD-MOVE-022 | White king is at `(4, 4)`. `movePiece(4, 4, 5, 5)` is called. | King moves one square. Starting square becomes empty and ending square contains the White king. | :white_check_mark: |
 | BOARD-MOVE-023 | White rook is at `(4, 4)` and White pawn is at `(4, 7)`. `movePiece(4, 4, 4, 7)` is called. | Move is rejected because a piece cannot capture a same-color piece. Both pieces remain in place. | :white_check_mark: |
 | BOARD-MOVE-024 | White rook is at `(4, 4)` and Black pawn is at `(4, 7)` with a clear path. `movePiece(4, 4, 4, 7)` is called. | White rook captures the Black pawn. Starting square becomes empty and ending square contains the White rook. | :white_check_mark: |
+| BOARD-MOVE-025 | White bishop is at `(4, 4)` and another piece is blocking the diagonal path at `(3, 3)`. `movePiece(4, 4, 2, 2)` is called. | Move is rejected because the bishop's path is blocked. Both pieces remain in place. | :white_check_mark: |
+
 
 
 
