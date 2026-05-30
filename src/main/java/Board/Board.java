@@ -34,6 +34,8 @@ public class Board {
         return (row >= 0 && row < 8) && (col >= 0 && col < 8);
     }
 
+
+
     public boolean movePiece(int startRow, int startCol, int endRow, int endCol) {
         if (!isWithinBounds(startRow, startCol) || !isWithinBounds(endRow, endCol)) {
             return false;
@@ -42,57 +44,143 @@ public class Board {
         if (piece == null) {
             return false;
         }
-        if (state[endRow][endCol] != null) {
+        Piece destination = state[endRow][endCol];
+        if (destination != null && destination.getColor().equals(piece.getColor())) {
             return false;
         }
-        if (!"PAWN".equals(piece.getType())) {
-            return false;
-        }
-        if ("WHITE".equals(piece.getColor())) {
-            if (!isLegalWhitePawnForward(startRow, startCol, endRow, endCol)) {
+
+        if ("PAWN".equals(piece.getType())) {
+            if (!isLegalPawnMove(startRow, startCol, endRow, endCol)) {
                 return false;
             }
-        } else if ("BLACK".equals(piece.getColor())) {
-            if (!isLegalBlackPawnForward(startRow, startCol, endRow, endCol)) {
+        } else if ("ROOK".equals(piece.getType())) {
+            if (!isLegalRookMove(startRow, startCol, endRow, endCol)) {
                 return false;
             }
+        } else if  ("BISHOP".equals(piece.getType())) {
+            if (!isLegalBishopMove(startRow, startCol, endRow, endCol)) {
+                return false;
+            }
+        } else if ("KNIGHT".equals(piece.getType())){
+            if (!isLegalKnightMove(startRow, startCol, endRow, endCol)) {
+                return false;
+            }
+        }  else if ("QUEEN".equals(piece.getType())) {
+            if (!isLegalQueenMove(startRow, startCol, endRow, endCol)) {
+                return false;
+            }
+        } else if ("KING".equals(piece.getType())) {
+            if (!isLegalKingMove(startRow, startCol, endRow, endCol)) {
+                return false;
+            }
+
         } else {
             return false;
         }
+
         state[endRow][endCol] = piece;
         state[startRow][startCol] = null;
         return true;
     }
-    
 
-    private boolean isLegalWhitePawnForward(int startRow, int startCol, int endRow, int endCol) {
-        if (endCol != startCol) {
+    private boolean isLegalKingMove(int startRow, int startCol, int endRow, int endCol) {
+        int rowDelta = Math.abs(endRow - startRow);
+        int colDelta = Math.abs(endCol - startCol);
+
+        return rowDelta <= 1 && colDelta <= 1 && (rowDelta != 0 || colDelta != 0);
+    }
+
+    private boolean isLegalQueenMove(int startRow, int startCol, int endRow, int endCol) {
+        return isLegalRookMove(startRow, startCol, endRow, endCol)
+                || isLegalBishopMove(startRow, startCol, endRow, endCol);
+    }
+
+    private boolean isLegalKnightMove(int startRow, int startCol, int endRow, int endCol) {
+        int rowDelta = Math.abs(endRow - startRow);
+        int colDelta = Math.abs(endCol - startCol);
+
+        return (rowDelta == 2 && colDelta == 1) || (rowDelta == 1 && colDelta == 2);
+    }
+
+    private boolean isLegalBishopMove(int startRow, int startCol, int endRow, int endCol) {
+        if (Math.abs(endRow - startRow) != Math.abs(endCol - startCol)) {
             return false;
         }
-        int delta = endRow - startRow;
-        if (delta == -1) {
-            return true;
+
+        return isPathClear(startRow, startCol, endRow, endCol);
+    }
+
+
+    private boolean isLegalRookMove(int startRow, int startCol, int endRow, int endCol) {
+        if (startRow != endRow && startCol != endCol) {
+            return false;
         }
-        if (delta == -2 && startRow == 6) {
-            return state[startRow - 1][startCol] == null;
+        return isPathClear(startRow, startCol, endRow, endCol);
+    }
+
+    private boolean isPathClear(int startRow, int startCol, int endRow, int endCol) {
+        int rowStep = Integer.compare(endRow, startRow);
+        int colStep = Integer.compare(endCol, startCol);
+
+        int row = startRow + rowStep;
+        int col = startCol + colStep;
+
+        while (row != endRow || col != endCol) {
+            if (state[row][col] != null) {
+                return false;
+            }
+
+            row += rowStep;
+            col += colStep;
         }
+
+        return true;
+    }
+
+
+
+    private boolean isLegalPawnMove(int startRow, int startCol, int endRow, int endCol) {
+        Piece piece = state[startRow][startCol];
+        Piece destination = state[endRow][endCol];
+
+        int direction;
+        int startRank;
+        String opponentColor;
+
+        if ("WHITE".equals(piece.getColor())) {
+            direction = -1;
+            startRank = 6;
+            opponentColor = "BLACK";
+        } else if ("BLACK".equals(piece.getColor())) {
+            direction = 1;
+            startRank = 1;
+            opponentColor = "WHITE";
+        } else {
+            return false;
+        }
+
+        int rowDelta = endRow - startRow;
+        int colDelta = endCol - startCol;
+
+        if (colDelta == 0 && destination == null) {
+            if (rowDelta == direction) {
+                return true;
+            }
+
+            if (rowDelta == 2 * direction && startRow == startRank) {
+                return state[startRow + direction][startCol] == null;
+            }
+        }
+
+        if (Math.abs(colDelta) == 1 && rowDelta == direction) {
+            return destination != null && opponentColor.equals(destination.getColor());
+        }
+
         return false;
     }
 
 
-    private boolean isLegalBlackPawnForward(int startRow, int startCol, int endRow, int endCol) {
-        if (endCol != startCol) {
-            return false;
-        }
-        int delta = endRow - startRow;
-        if (delta == 1) {
-            return true;
-        }
-        if (delta == 2 && startRow == 1) {
-            return state[startRow + 1][startCol] == null;
-        }
-        return false;
-    }
+
 
 
 
@@ -120,4 +208,7 @@ public class Board {
 
         return row;
     }
+
+
+
 }

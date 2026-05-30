@@ -355,16 +355,345 @@ public class BoardTests {
         assertEquals("PAWN", piece.getType());
     }
 
+    @Test
+    void movePieceBlackPawnOneSquareForwardMovesPiece() {
+        Board board = new Board();
+        board.initializeBoard();
+
+        assertTrue(board.movePiece(1, 0, 2, 0));
+        assertNull(board.getPieceAt(1, 0));
+
+        Piece moved = board.getPieceAt(2, 0);
+        assertNotNull(moved);
+        assertEquals("PAWN", moved.getType());
+        assertEquals("BLACK", moved.getColor());
+    }
 
 
+    @Test
+    void movePieceBlackPawnTwoSquaresForwardFromStartRank() {
+        Board board = new Board();
+        board.initializeBoard();
+
+        assertTrue(board.movePiece(1, 0, 3, 0));
+        assertNull(board.getPieceAt(1, 0));
+        assertNull(board.getPieceAt(2, 0));
+
+        Piece moved = board.getPieceAt(3, 0);
+        assertNotNull(moved);
+        assertEquals("PAWN", moved.getType());
+        assertEquals("BLACK", moved.getColor());
+    }
 
 
+    @Test
+    void movePiecePawnCannotMoveForwardIntoOccupiedSquare() {
+        Board board = new Board();
+        board.initializeBoard();
+
+        assertFalse(board.movePiece(6, 0, 7, 0));
+
+        Piece pawn = board.getPieceAt(6, 0);
+        assertNotNull(pawn);
+        assertEquals("PAWN", pawn.getType());
+        assertEquals("WHITE", pawn.getColor());
+
+        Piece rook = board.getPieceAt(7, 0);
+        assertNotNull(rook);
+        assertEquals("ROOK", rook.getType());
+        assertEquals("WHITE", rook.getColor());
+    }
+
+    @Test
+    void movePiecePawnCanCaptureDiagonally() {
+        Board board = new Board();
+        board.initializeBoard();
+
+        assertTrue(board.movePiece(1, 1, 3, 1));
+        assertTrue(board.movePiece(3, 1, 4, 1));
+        assertTrue(board.movePiece(4, 1, 5, 1));
+
+        assertTrue(board.movePiece(6, 0, 5, 1));
+        assertNull(board.getPieceAt(6, 0));
+
+        Piece moved = board.getPieceAt(5, 1);
+        assertNotNull(moved);
+        assertEquals("PAWN", moved.getType());
+        assertEquals("WHITE", moved.getColor());
+    }
 
 
+    private void placePiece(Board board, int row, int col, Piece piece) {
+        try {
+            java.lang.reflect.Field stateField = Board.class.getDeclaredField("state");
+            stateField.setAccessible(true);
+            Piece[][] state = (Piece[][]) stateField.get(board);
+            state[row][col] = piece;
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    @Test
+    void movePiecePawnCannotCaptureStraightForward() {
+        Board board = new Board();
+        board.initializeBoard();
+        placePiece(board, 5, 0, new Piece("PAWN", "BLACK"));
 
+        assertFalse(board.movePiece(6, 0, 5, 0));
 
+        Piece whitePawn = board.getPieceAt(6, 0);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
 
+        Piece blackPawn = board.getPieceAt(5, 0);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+    }
+
+    @Test
+    void movePieceBlackPawnCanCaptureDiagonally() {
+        Board board = new Board();
+        board.initializeBoard();
+        placePiece(board, 2, 1, new Piece("PAWN", "WHITE"));
+
+        assertTrue(board.movePiece(1, 0, 2, 1));
+        assertNull(board.getPieceAt(1, 0));
+
+        Piece moved = board.getPieceAt(2, 1);
+        assertNotNull(moved);
+        assertEquals("PAWN", moved.getType());
+        assertEquals("BLACK", moved.getColor());
+    }
+
+    @Test
+    void movePieceBlackPawnCannotCaptureStraightForward() {
+        Board board = new Board();
+        board.initializeBoard();
+        placePiece(board, 2, 0, new Piece("PAWN", "WHITE"));
+
+        assertFalse(board.movePiece(1, 0, 2, 0));
+
+        Piece blackPawn = board.getPieceAt(1, 0);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+
+        Piece whitePawn = board.getPieceAt(2, 0);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+    }
+
+    @Test
+    void movePiecePawnCannotMoveTwoSquaresIntoOccupiedDestination() {
+        Board board = new Board();
+        board.initializeBoard();
+        placePiece(board, 4, 0, new Piece("PAWN", "BLACK"));
+
+        assertFalse(board.movePiece(6, 0, 4, 0));
+
+        Piece whitePawn = board.getPieceAt(6, 0);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        Piece blackPawn = board.getPieceAt(4, 0);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+    }
+
+    @Test
+    void movePieceRookMovesHorizontally() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("ROOK", "WHITE"));
+
+        assertTrue(board.movePiece(4, 4, 4, 7));
+        assertNull(board.getPieceAt(4, 4));
+
+        Piece moved = board.getPieceAt(4, 7);
+        assertNotNull(moved);
+        assertEquals("ROOK", moved.getType());
+        assertEquals("WHITE", moved.getColor());
+    }
+
+    @Test
+    void movePieceRookMovesVertically() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("ROOK", "WHITE"));
+
+        assertTrue(board.movePiece(4, 4, 1, 4));
+        assertNull(board.getPieceAt(4, 4));
+
+        Piece moved = board.getPieceAt(1, 4);
+        assertNotNull(moved);
+        assertEquals("ROOK", moved.getType());
+        assertEquals("WHITE", moved.getColor());
+    }
+
+    @Test
+    void movePieceRookBlockedByPieceIsRejected() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("ROOK", "WHITE"));
+        placePiece(board, 4, 6, new Piece("PAWN", "BLACK"));
+
+        assertFalse(board.movePiece(4, 4, 4, 7));
+
+        Piece rook = board.getPieceAt(4, 4);
+        assertNotNull(rook);
+        assertEquals("ROOK", rook.getType());
+        assertEquals("WHITE", rook.getColor());
+
+        Piece blocker = board.getPieceAt(4, 6);
+        assertNotNull(blocker);
+        assertEquals("PAWN", blocker.getType());
+        assertEquals("BLACK", blocker.getColor());
+
+        assertNull(board.getPieceAt(4, 7));
+    }
+
+    @Test
+    void movePieceBishopMovesDiagonally() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("BISHOP", "WHITE"));
+
+        assertTrue(board.movePiece(4, 4, 1, 1));
+        assertNull(board.getPieceAt(4, 4));
+
+        Piece moved = board.getPieceAt(1, 1);
+        assertNotNull(moved);
+        assertEquals("BISHOP", moved.getType());
+        assertEquals("WHITE", moved.getColor());
+    }
+
+    @Test
+    void movePieceKnightMovesInLShape() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("KNIGHT", "WHITE"));
+
+        assertTrue(board.movePiece(4, 4, 2, 5));
+        assertNull(board.getPieceAt(4, 4));
+
+        Piece moved = board.getPieceAt(2, 5);
+        assertNotNull(moved);
+        assertEquals("KNIGHT", moved.getType());
+        assertEquals("WHITE", moved.getColor());
+    }
+
+    @Test
+    void movePieceQueenMovesStraight() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("QUEEN", "WHITE"));
+
+        assertTrue(board.movePiece(4, 4, 4, 1));
+        assertNull(board.getPieceAt(4, 4));
+
+        Piece moved = board.getPieceAt(4, 1);
+        assertNotNull(moved);
+        assertEquals("QUEEN", moved.getType());
+        assertEquals("WHITE", moved.getColor());
+    }
+
+    @Test
+    void movePieceQueenMovesDiagonally() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("QUEEN", "WHITE"));
+
+        assertTrue(board.movePiece(4, 4, 1, 1));
+        assertNull(board.getPieceAt(4, 4));
+
+        Piece moved = board.getPieceAt(1, 1);
+        assertNotNull(moved);
+        assertEquals("QUEEN", moved.getType());
+        assertEquals("WHITE", moved.getColor());
+    }
+
+    @Test
+    void movePieceKingMovesOneSquare() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+
+        assertTrue(board.movePiece(4, 4, 5, 5));
+        assertNull(board.getPieceAt(4, 4));
+
+        Piece moved = board.getPieceAt(5, 5);
+        assertNotNull(moved);
+        assertEquals("KING", moved.getType());
+        assertEquals("WHITE", moved.getColor());
+    }
+
+    @Test
+    void movePieceCannotCaptureSameColorPiece() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("ROOK", "WHITE"));
+        placePiece(board, 4, 7, new Piece("PAWN", "WHITE"));
+
+        assertFalse(board.movePiece(4, 4, 4, 7));
+
+        Piece rook = board.getPieceAt(4, 4);
+        assertNotNull(rook);
+        assertEquals("ROOK", rook.getType());
+        assertEquals("WHITE", rook.getColor());
+
+        Piece pawn = board.getPieceAt(4, 7);
+        assertNotNull(pawn);
+        assertEquals("PAWN", pawn.getType());
+        assertEquals("WHITE", pawn.getColor());
+    }
+
+    @Test
+    void movePieceCanCaptureOpponentPiece() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("ROOK", "WHITE"));
+        placePiece(board, 4, 7, new Piece("PAWN", "BLACK"));
+
+        assertTrue(board.movePiece(4, 4, 4, 7));
+        assertNull(board.getPieceAt(4, 4));
+
+        Piece moved = board.getPieceAt(4, 7);
+        assertNotNull(moved);
+        assertEquals("ROOK", moved.getType());
+        assertEquals("WHITE", moved.getColor());
+    }
+
+    @Test
+    void movePieceBishopBlockedByPieceIsRejected() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("BISHOP", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertFalse(board.movePiece(4, 4, 2, 2));
+
+        Piece bishop = board.getPieceAt(4, 4);
+        assertNotNull(bishop);
+        assertEquals("BISHOP", bishop.getType());
+        assertEquals("WHITE", bishop.getColor());
+
+        Piece blocker = board.getPieceAt(3, 3);
+        assertNotNull(blocker);
+        assertEquals("PAWN", blocker.getType());
+        assertEquals("BLACK", blocker.getColor());
+
+        assertNull(board.getPieceAt(2, 2));
+    }
+
+    @Test
+    void movePieceKingCannotMoveTwoSquares() {
+        Board board = new Board();
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+
+        assertFalse(board.movePiece(4, 4, 6, 4));
+
+        Piece king = board.getPieceAt(4, 4);
+        assertNotNull(king);
+        assertEquals("KING", king.getType());
+        assertEquals("WHITE", king.getColor());
+
+        assertNull(board.getPieceAt(6, 4));
+    }
 
 
 }
