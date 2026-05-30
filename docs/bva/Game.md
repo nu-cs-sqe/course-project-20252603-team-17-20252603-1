@@ -43,9 +43,8 @@
 | Test Case ID | State of the System | Expected Output | Implemented? |
 |-------------|---------------------|-----------------|-----------|
 | GAME-OVER-001 | A new game has started and no moves have been made. | Returns `false`. | :white_check_mark: |
-| GAME-OVER-002 | A checkmate position has been reached. | Returns `true`. | :x: |
-| GAME-OVER-003 | A draw condition has been reached. | Returns `true`. | :x: |
-
+| GAME-OVER-002 | Black king has been captured by White. | Returns `true` and winner is White. | :x: |
+| GAME-OVER-003 | White king has been captured by Black. | Returns `true` and winner is Black. | :x: |
 ---
 
 ---
@@ -64,3 +63,4 @@
 | GAME-MOVE-008 | A game has not started yet. `makeMove(6, 0, 5, 0)` is called. | Returns `false` because no board exists yet. | :white_check_mark:               |
 | GAME-MOVE-009 | It is White's turn. White attempts to move a pawn from `(6, 0)` to an occupied square `(7, 0)`. | Returns `false`, does not move the pawn, and keeps the current player as White. | :white_check_mark:               |
 | GAME-MOVE-010 | It is White's turn. White attempts an invalid knight move from `(7, 1)` to `(6, 1)`. | Returns `false`, does not move the knight, and keeps the current player as White. | :white_check_mark:               |
+| GAME-MOVE-011 | The game is already over because a king has been captured. A player attempts another move. | Returns `false`, does not change the board, and does not change the winner. | :x: |
