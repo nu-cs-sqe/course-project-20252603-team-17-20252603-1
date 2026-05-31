@@ -4,7 +4,10 @@ plugins {
     id("com.github.spotbugs") version "6.5.4"
     jacoco
     id("info.solidsoft.pitest") version "1.15.0"
+    application
 }
+
+
 
 group = "nu.csse.sqe"
 version = "1.0"
@@ -16,6 +19,10 @@ repositories {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+}
+
+application {
+    mainClass.set("ui.Main")
 }
 
 java {
@@ -31,6 +38,10 @@ tasks.compileJava {
 tasks.test {
     useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
 }
 
 spotbugs {
