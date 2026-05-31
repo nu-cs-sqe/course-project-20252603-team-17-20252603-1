@@ -12,6 +12,9 @@ public class Game {
 
     private Board board;
 
+    private boolean gameOver;
+    private String winnerColor;
+
     public void startNewGame() {
         whitePlayer = new Player("White Player", "WHITE");
         blackPlayer = new Player("Black Player", "BLACK");
@@ -20,6 +23,9 @@ public class Game {
         this.board.initializeBoard();
 
         currentPlayer = whitePlayer;
+
+        gameOver = false;
+        winnerColor = null;
     }
 
     public Board getBoard() {
@@ -28,6 +34,10 @@ public class Game {
 
     public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public String getWinnerColor() {
+        return winnerColor;
     }
 
     public void switchTurn() {
@@ -43,11 +53,16 @@ public class Game {
 
     public boolean makeMove(int startRow, int startCol, int
             endRow, int endCol) {
+
+        if (gameOver) {
+            return false;
+        }
+
         if (board == null || currentPlayer == null) {
             return false;
         }
 
-        if (!board.isWithinBounds(startRow, startCol)) {
+        if (!board.isWithinBounds(startRow, startCol) || !board.isWithinBounds(endRow, endCol)) {
             return false;
         }
 
@@ -58,15 +73,26 @@ public class Game {
         if (!piece.getColor().equals(currentPlayer.getColor())) {
             return false;
         }
+
+        Piece destinationPiece = board.getPieceAt(endRow, endCol);
+
         boolean moveSuccessful = board.movePiece(startRow, startCol, endRow, endCol);
-        if (moveSuccessful) {
-            switchTurn();
+
+        if(!moveSuccessful) { return false; }
+
+        if (destinationPiece != null && "KING".equals(destinationPiece.getType())) {
+            gameOver = true;
+            winnerColor = currentPlayer.getColor();
+            return true;
         }
-        return moveSuccessful;
+
+        switchTurn();
+
+        return true;
     }
 
 
     public boolean isGameOver() {
-        return false;
+        return gameOver;
     }
 }
