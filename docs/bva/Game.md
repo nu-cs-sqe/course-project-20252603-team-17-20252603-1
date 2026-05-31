@@ -40,11 +40,11 @@
 
 ## Method under test: `isGameOver()`
 
-| Test Case ID | State of the System | Expected Output | Implemented? |
-|-------------|---------------------|-----------------|-----------|
+| Test Case ID | State of the System | Expected Output | Implemented?       |
+|-------------|---------------------|-----------------|--------------------|
 | GAME-OVER-001 | A new game has started and no moves have been made. | Returns `false`. | :white_check_mark: |
-| GAME-OVER-002 | Black king has been captured by White. | Returns `true` and winner is White. | :x: |
-| GAME-OVER-003 | White king has been captured by Black. | Returns `true` and winner is Black. | :x: |
+| GAME-OVER-002 | Black king has been captured by White. | Returns `true` and winner is White. | :white_check_mark: |
+| GAME-OVER-003 | White king has been captured by Black. | Returns `true` and winner is Black. | :x:                |
 ---
 
 ---

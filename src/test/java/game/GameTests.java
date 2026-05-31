@@ -228,7 +228,28 @@ public class GameTests {
         assertEquals("WHITE", game.getWinnerColor());
     }
 
+    @Test
+    void capturingWhiteKingMakesGameOverAndBlackWins() {
+        Game game = new Game();
+        game.startNewGame();
 
+        assertTrue(game.makeMove(6, 0, 5, 0)); // White filler
+        assertTrue(game.makeMove(1, 4, 3, 4)); // Black opens queen path
+
+        assertTrue(game.makeMove(6, 1, 5, 1)); // White filler
+        assertTrue(game.makeMove(0, 3, 4, 7)); // Black queen out
+
+        assertTrue(game.makeMove(6, 2, 5, 2)); // White filler
+        assertTrue(game.makeMove(4, 7, 6, 5)); // Black queen near king
+
+        assertTrue(game.makeMove(6, 3, 5, 3)); // White filler
+
+        boolean moved = game.makeMove(6, 5, 7, 4); // Black queen captures White king
+
+        assertTrue(moved);
+        assertTrue(game.isGameOver());
+        assertEquals("BLACK", game.getWinnerColor());
+    }
 
 
 }
