@@ -251,5 +251,29 @@ public class GameTests {
         assertEquals("BLACK", game.getWinnerColor());
     }
 
+    @Test
+    void moveAfterGameOverIsRejected() {
+        Game game = new Game();
+        game.startNewGame();
+
+        assertTrue(game.makeMove(6, 4, 4, 4)); // White opens queen path
+        assertTrue(game.makeMove(1, 0, 2, 0)); // Black filler
+
+        assertTrue(game.makeMove(7, 3, 3, 7)); // White queen out
+        assertTrue(game.makeMove(1, 1, 2, 1)); // Black filler
+
+        assertTrue(game.makeMove(3, 7, 1, 5)); // White queen near king
+        assertTrue(game.makeMove(1, 3, 2, 3)); // Black filler
+
+        assertTrue(game.makeMove(1, 5, 0, 4)); // White captures Black king
+
+        boolean movedAfterGameOver = game.makeMove(6, 0, 5, 0);
+
+        assertFalse(movedAfterGameOver);
+        assertTrue(game.isGameOver());
+        assertEquals("WHITE", game.getWinnerColor());
+    }
+
+
 
 }
