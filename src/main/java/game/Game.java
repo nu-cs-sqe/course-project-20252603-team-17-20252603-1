@@ -139,11 +139,20 @@ public class Game {
                         return true;
                     }
 
+                    if ("QUEEN".equals(piece.getType())
+                            && queenAttacksSquare(startRow, startCol, row, col)) {
+                        return true;
+                    }
                 }
             }
         }
 
         return false;
+    }
+
+    private boolean queenAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
+        return rookAttacksSquare(startRow, startCol, targetRow, targetCol)
+                || bishopAttacksSquare(startRow, startCol, targetRow, targetCol);
     }
 
     private boolean knightAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
