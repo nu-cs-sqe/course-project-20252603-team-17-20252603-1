@@ -500,8 +500,12 @@ public class GameTests {
         assertFalse(game.isSquareUnderAttack(-1, 0, "BLACK"));
     }
 
+    @Test
+    void squareUnderAttackBeforeGameStartsReturnsFalse() {
+        Game game = new Game();
 
-
+        assertFalse(game.isSquareUnderAttack(4, 4, "BLACK"));
+    }
 
 
 

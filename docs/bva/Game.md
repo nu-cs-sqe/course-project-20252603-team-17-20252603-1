@@ -94,5 +94,5 @@
 | GAME-ATTACK-007 | A Black king is adjacent to square `(4, 4)`. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `true`. | :white_check_mark: |
 | GAME-ATTACK-008 | A Black rook would attack square `(4, 4)`, but another piece blocks the path. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `false`. | :white_check_mark: |
 | GAME-ATTACK-009 | The requested square is outside the board. `isSquareUnderAttack(-1, 0, "BLACK")` is called. | Returns `false`. | :white_check_mark: |
-| GAME-ATTACK-010 | A game has not started yet. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `false`. | :x: |
+| GAME-ATTACK-010 | A game has not started yet. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `false`. | :white_check_mark: |
 
