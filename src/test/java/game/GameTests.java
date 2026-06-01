@@ -339,6 +339,19 @@ public class GameTests {
         assertTrue(game.isSquareUnderAttack(4, 4, "BLACK"));
     }
 
+    @Test
+    void squareNotAttackedReturnsFalse() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 0, new Piece("ROOK", "BLACK"));
+
+        assertFalse(game.isSquareUnderAttack(4, 4, "BLACK"));
+    }
+
+
 
 
 
