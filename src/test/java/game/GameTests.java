@@ -714,6 +714,21 @@ public class GameTests {
         assertFalse(game.isCheckmate("WHITE"));
     }
 
+    @Test
+    void blackInCheckIsNotStalemate() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
+        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 1, 4, new Piece("ROOK", "WHITE"));
+
+        assertFalse(game.isStalemate("BLACK"));
+    }
+
+
 
 
 
