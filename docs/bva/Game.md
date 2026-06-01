@@ -72,7 +72,7 @@
 | GAME-SELFCHECK-002 | The White king attempts to move onto a square attacked by a Black rook. | Move is rejected because the White king cannot move into check. Board and turn stay unchanged. | :white_check_mark: |
 | GAME-SELFCHECK-003 | The White king is in check from a Black rook. White moves the king to a safe square. | Move succeeds because the move gets White out of check. Turn changes to Black. | :white_check_mark: |
 | GAME-SELFCHECK-004 | The White king is in check from a Black rook. White attempts a move that does not resolve the check. | Move is rejected because White remains in check. Board and turn stay unchanged. | :white_check_mark: |
-| GAME-SELFCHECK-005 | The Black king would be exposed to check after Black moves a shielding piece. | Move is rejected because it would leave the Black king in check. Board and turn stay unchanged. | :x: |
+| GAME-SELFCHECK-005 | The Black king would be exposed to check after Black moves a shielding piece. | Move is rejected because it would leave the Black king in check. Board and turn stay unchanged. | :white_check_mark: |
 
 ## Method under test: isKingInCheck(String color)
 
