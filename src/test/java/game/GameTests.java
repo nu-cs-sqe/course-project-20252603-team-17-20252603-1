@@ -706,6 +706,15 @@ public class GameTests {
         assertEquals("WHITE", bishop.getColor());
     }
 
+    @Test
+    void whiteNotInCheckIsNotCheckmate() {
+        Game game = new Game();
+        game.startNewGame();
+
+        assertFalse(game.isCheckmate("WHITE"));
+    }
+
+
 
 
 
