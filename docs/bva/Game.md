@@ -79,6 +79,8 @@
 | GAME-CHECK-007 | A Black pawn attacks the White king diagonally. `isKingInCheck("WHITE")` is called. | Returns `true`. | :white_check_mark: |
 | GAME-CHECK-008 | A Black sliding piece would attack the White king, but another piece blocks the path. `isKingInCheck("WHITE")` is called. | Returns `false`. | :white_check_mark: |
 | GAME-CHECK-009 | A game has not started yet. `isKingInCheck("WHITE")` is called. | Returns `false`. | :white_check_mark: |
+| GAME-CHECK-010 | A White rook has a clear row or column path attacking the Black king. `isKingInCheck("BLACK")` is called. | Returns `true`. | :white_check_mark: |
+
 
 
 ## Method under test: isSquareUnderAttack(int row, int col, String byColor)
@@ -95,4 +97,6 @@
 | GAME-ATTACK-008 | A Black rook would attack square `(4, 4)`, but another piece blocks the path. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `false`. | :white_check_mark: |
 | GAME-ATTACK-009 | The requested square is outside the board. `isSquareUnderAttack(-1, 0, "BLACK")` is called. | Returns `false`. | :white_check_mark: |
 | GAME-ATTACK-010 | A game has not started yet. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `false`. | :white_check_mark: |
+| GAME-ATTACK-011 | A White pawn attacks square `(4, 4)` diagonally. `isSquareUnderAttack(4, 4, "WHITE")` is called. | Returns  `true`. | :white_check_mark: |
+
 
