@@ -351,6 +351,20 @@ public class GameTests {
         assertFalse(game.isSquareUnderAttack(4, 4, "BLACK"));
     }
 
+    @Test
+    void blockedRookDoesNotAttackSquare() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+        placePiece(board, 4, 2, new Piece("PAWN", "WHITE"));
+
+        assertFalse(game.isSquareUnderAttack(4, 4, "BLACK"));
+    }
+
+
 
 
 
