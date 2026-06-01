@@ -73,7 +73,7 @@
 | GAME-CHECK-001 | A new game has started and the White king is not under attack. `isKingInCheck("WHITE")` is called. | Returns `false`. | :white_check_mark: |
 | GAME-CHECK-002 | A new game has started and the Black king is not under attack. `isKingInCheck("BLACK")` is called. | Returns `false`. | :white_check_mark: |
 | GAME-CHECK-003 | A Black rook has a clear row or column path attacking the White king. `isKingInCheck("WHITE")` is called. | Returns `true`. | :white_check_mark: |
-| GAME-CHECK-004 | A Black bishop has a clear diagonal path attacking the White king. `isKingInCheck("WHITE")` is called. | Returns `true`. | :x: |
+| GAME-CHECK-004 | A Black bishop has a clear diagonal path attacking the White king. `isKingInCheck("WHITE")` is called. | Returns `true`. | :white_check_mark: |
 | GAME-CHECK-005 | A Black knight attacks the White king in an L-shape. `isKingInCheck("WHITE")` is called. | Returns `true`. | :x: |
 | GAME-CHECK-006 | A Black queen attacks the White king along a clear row, column, or diagonal. `isKingInCheck("WHITE")` is called. | Returns `true`. | :x: |
 | GAME-CHECK-007 | A Black pawn attacks the White king diagonally. `isKingInCheck("WHITE")` is called. | Returns `true`. | :x: |
