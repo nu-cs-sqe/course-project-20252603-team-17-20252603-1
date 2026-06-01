@@ -405,7 +405,17 @@ public class GameTests {
     }
 
 
+    @Test
+    void blackKnightAttacksSquareReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
 
+        placePiece(board, 2, 3, new Piece("KNIGHT", "BLACK"));
+
+        assertTrue(game.isSquareUnderAttack(4, 4, "BLACK"));
+    }
 
 
 
