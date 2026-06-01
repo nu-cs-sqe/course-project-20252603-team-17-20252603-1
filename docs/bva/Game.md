@@ -31,8 +31,8 @@
 
 ## Method under test: `switchTurn()`
 
-| Test Case ID | State of the System | Expected Output | Implemented? |
-|-------------|---------------------|-----------------|--------|
+| Test Case ID | State of the System                           | Expected Output | Implemented? |
+|-------------|-----------------------------------------------|-----------------|--------|
 | GAME-TURN-001 | It is White's turn. `switchTurn()` is called. | Current player changes to Black. | :white_check_mark: |
 | GAME-TURN-002 | It is Black's turn. `switchTurn()` is called. | Current player changes to White. | :white_check_mark: |
 
@@ -40,11 +40,11 @@
 
 ## Method under test: `isGameOver()`
 
-| Test Case ID  | State of the System | Expected Output                                         | Implemented?       |
-|---------------|---------------------|---------------------------------------------------------|--------------------|
-| GAME-OVER-001 | A new game has started and no moves have been made. | Returns `false`.                                        | :white_check_mark: |
-| GAME-OVER-002 | Black king has been captured by White. | Returns `true` and winner is White.                     | :white_check_mark: |
-| GAME-OVER-003 | White king has been captured by Black. | Returns `true` and winner is Black.                     | :white_check_mark: |
+| Test Case ID  | State of the System                                             | Expected Output                                         | Implemented?       |
+|---------------|-----------------------------------------------------------------|---------------------------------------------------------|--------------------|
+| GAME-OVER-001 | A new game has started and no moves have been made.             | Returns `false`.                                        | :white_check_mark: |
+| GAME-OVER-002 | A move has checkmated Black.                                    | Returns `true` and winner is White.                     | :white_check_mark: |
+| GAME-OVER-003 | A move has checkmated White.                                    | Returns `true` and winner is Black.                     | :white_check_mark: |
 | GAME-OVER-005 | A previous game ended in stalemate. `startNewGame()` is called. | Draw state resets to `false` and winner remains `null`. | :white_check_mark: |
 ---
 

@@ -84,6 +84,10 @@ public class Game {
 
         Piece destinationPiece = board.getPieceAt(endRow, endCol);
 
+        if (destinationPiece != null && "KING".equals(destinationPiece.getType())) {
+            return false;
+        }
+
         Board originalBoard = board;
         Board simulatedBoard = board.copy();
 
@@ -105,12 +109,6 @@ public class Game {
 
         if (!moveSuccessful) {
             return false;
-        }
-
-        if (destinationPiece != null && "KING".equals(destinationPiece.getType())) {
-            gameOver = true;
-            winnerColor = currentPlayer.getColor();
-            return true;
         }
 
         String opponentColor = "WHITE".equals(currentPlayer.getColor()) ? "BLACK" : "WHITE";

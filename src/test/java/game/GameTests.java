@@ -209,45 +209,6 @@ public class GameTests {
         assertNotNull(game.getBoard().getPieceAt(7, 1));
     }
 
-    @Test
-    void capturingBlackKingMakesGameOverAndWhiteWins() {
-        Game game = new Game();
-        game.startNewGame();
-        Board board = game.getBoard();
-        clearBoard(board);
-
-        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
-        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
-        placePiece(board, 1, 5, new Piece("QUEEN", "WHITE"));
-
-        boolean moved = game.makeMove(1, 5, 0, 4);
-
-        assertTrue(moved);
-        assertTrue(game.isGameOver());
-        assertEquals("WHITE", game.getWinnerColor());
-    }
-
-
-    @Test
-    void capturingWhiteKingMakesGameOverAndBlackWins() {
-        Game game = new Game();
-        game.startNewGame();
-        Board board = game.getBoard();
-        clearBoard(board);
-
-        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
-        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
-        placePiece(board, 6, 5, new Piece("QUEEN", "BLACK"));
-
-        game.switchTurn();
-
-        boolean moved = game.makeMove(6, 5, 7, 4);
-
-        assertTrue(moved);
-        assertTrue(game.isGameOver());
-        assertEquals("BLACK", game.getWinnerColor());
-    }
-
 
     @Test
     void moveAfterGameOverIsRejected() {
@@ -256,18 +217,21 @@ public class GameTests {
         Board board = game.getBoard();
         clearBoard(board);
 
-        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
-        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
-        placePiece(board, 1, 5, new Piece("QUEEN", "WHITE"));
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 2, 2, new Piece("KING", "WHITE"));
+        placePiece(board, 2, 1, new Piece("QUEEN", "WHITE"));
 
-        assertTrue(game.makeMove(1, 5, 0, 4));
+        assertTrue(game.makeMove(2, 1, 1, 1));
+        assertTrue(game.isGameOver());
+        assertEquals("WHITE", game.getWinnerColor());
 
-        boolean movedAfterGameOver = game.makeMove(7, 4, 6, 4);
+        boolean movedAfterGameOver = game.makeMove(0, 0, 0, 1);
 
         assertFalse(movedAfterGameOver);
         assertTrue(game.isGameOver());
         assertEquals("WHITE", game.getWinnerColor());
     }
+
 
 
     @Test
