@@ -848,8 +848,25 @@ public class GameTests {
         assertEquals("WHITE", game.getWinnerColor());
     }
 
+    @Test
+    void moveThatStalematesBlackEndsGameAsDraw() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
 
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 2, 1, new Piece("KING", "WHITE"));
+        placePiece(board, 2, 3, new Piece("QUEEN", "WHITE"));
 
+        boolean moved = game.makeMove(2, 3, 1, 2);
+
+        assertTrue(moved);
+        assertTrue(game.isGameOver());
+        assertTrue(game.isDraw());
+        assertNull(game.getWinnerColor());
+        assertTrue(game.isStalemate("BLACK"));
+    }
 
 
 

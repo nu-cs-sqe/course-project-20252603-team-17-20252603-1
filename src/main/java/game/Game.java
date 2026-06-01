@@ -13,6 +13,7 @@ public class Game {
 
     private Board board;
 
+    private boolean draw;
     private boolean gameOver;
     private String winnerColor;
 
@@ -26,6 +27,7 @@ public class Game {
         currentPlayer = whitePlayer;
 
         gameOver = false;
+        draw = false;
         winnerColor = null;
     }
 
@@ -39,6 +41,10 @@ public class Game {
 
     public String getWinnerColor() {
         return winnerColor;
+    }
+
+    public boolean isDraw() {
+        return draw;
     }
 
     public void switchTurn() {
@@ -114,6 +120,14 @@ public class Game {
             winnerColor = currentPlayer.getColor();
             return true;
         }
+
+        if (isStalemate(opponentColor)) {
+            gameOver = true;
+            winnerColor = null;
+            draw = true;
+            return true;
+        }
+
 
         switchTurn();
 
