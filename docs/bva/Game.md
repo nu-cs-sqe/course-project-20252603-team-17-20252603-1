@@ -85,7 +85,7 @@
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
 |-------------|---------------------|-----------------|--------------|
-| GAME-ATTACK-001 | A new game has started. Square `(4, 4)` is not attacked by any Black piece. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `false`. | :x: |
+| GAME-ATTACK-001 | A new game has started. Square `(4, 4)` is not attacked by any Black piece. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `false`. | :white_check_mark: |
 | GAME-ATTACK-002 | A Black rook has a clear row path to square `(4, 4)`. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `true`. | :white_check_mark: |
 | GAME-ATTACK-003 | A Black bishop has a clear diagonal path to square `(4, 4)`. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `true`. | :x: |
 | GAME-ATTACK-004 | A Black knight attacks square `(4, 4)` in an L-shape. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `true`. | :x: |
