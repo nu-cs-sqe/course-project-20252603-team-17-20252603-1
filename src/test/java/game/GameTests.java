@@ -282,6 +282,14 @@ public class GameTests {
         assertFalse(game.isKingInCheck("WHITE"));
     }
 
+    @Test
+    void newGameBlackKingIsNotInCheck() {
+        Game game = new Game();
+        game.startNewGame();
+
+        assertFalse(game.isKingInCheck("BLACK"));
+    }
+
 
 
 
