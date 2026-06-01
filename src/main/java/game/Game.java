@@ -143,12 +143,34 @@ public class Game {
                             && queenAttacksSquare(startRow, startCol, row, col)) {
                         return true;
                     }
+                    if ("PAWN".equals(piece.getType())
+                            && pawnAttacksSquare(startRow, startCol, row, col)) {
+                        return true;
+                    }
+
                 }
             }
         }
 
         return false;
     }
+
+    private boolean pawnAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
+        Piece pawn = board.getPieceAt(startRow, startCol);
+
+        int direction;
+        if ("WHITE".equals(pawn.getColor())) {
+            direction = -1;
+        } else if ("BLACK".equals(pawn.getColor())) {
+            direction = 1;
+        } else {
+            return false;
+        }
+
+        return targetRow - startRow == direction
+                && Math.abs(targetCol - startCol) == 1;
+    }
+
 
     private boolean queenAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
         return rookAttacksSquare(startRow, startCol, targetRow, targetCol)
