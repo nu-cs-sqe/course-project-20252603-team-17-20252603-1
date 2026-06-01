@@ -116,7 +116,7 @@
 | Test Case ID | State of the System | Expected Output | Implemented? |
 |-------------|---------------------|-----------------|--------------|
 | GAME-CHECKMATE-001 | White is in check and has no legal moves. `isCheckmate("WHITE")` is called. | Returns `true`. | :x: |
-| GAME-CHECKMATE-002 | White is in check but has a legal move to escape. `isCheckmate("WHITE")` is called. | Returns `false`. | :x: |
+| GAME-CHECKMATE-002 | White is in check but has a legal move to escape. `isCheckmate("WHITE")` is called. | Returns `false`. | :white_check_mark: |
 | GAME-CHECKMATE-003 | White is not in check. `isCheckmate("WHITE")` is called. | Returns `false`. | :white_check_mark: |
 | GAME-CHECKMATE-004 | A move checkmates Black through `makeMove(...)`. | Game becomes over and winner is White. | :x: |
 | GAME-CHECKMATE-005 | A player attempts a move after checkmate. | Move is rejected and the game result stays unchanged. | :x: |
