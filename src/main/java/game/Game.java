@@ -148,11 +148,24 @@ public class Game {
                         return true;
                     }
 
+                    if ("KING".equals(piece.getType())
+                            && kingAttacksSquare(startRow, startCol, row, col)) {
+                        return true;
+                    }
+
+
                 }
             }
         }
 
         return false;
+    }
+
+    private boolean kingAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
+        int rowDelta = Math.abs(targetRow - startRow);
+        int colDelta = Math.abs(targetCol - startCol);
+
+        return rowDelta <= 1 && colDelta <= 1 && (rowDelta != 0 || colDelta != 0);
     }
 
     private boolean pawnAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
