@@ -682,6 +682,29 @@ public class GameTests {
         assertEquals("WHITE", rook.getColor());
     }
 
+    @Test
+    void playerCanBlockCheck() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 7, new Piece("KING", "BLACK"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+        placePiece(board, 2, 1, new Piece("BISHOP", "WHITE"));
+
+        boolean moved = game.makeMove(2, 1, 4, 3);
+
+        assertTrue(moved);
+        assertEquals("BLACK", game.getCurrentPlayer().getColor());
+        assertNull(board.getPieceAt(2, 1));
+
+        Piece bishop = board.getPieceAt(4, 3);
+        assertNotNull(bishop);
+        assertEquals("BISHOP", bishop.getType());
+        assertEquals("WHITE", bishop.getColor());
+    }
 
 
 
