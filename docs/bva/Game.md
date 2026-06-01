@@ -70,7 +70,7 @@
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
 |-------------|---------------------|-----------------|--------------|
-| GAME-CHECK-001 | A new game has started and the White king is not under attack. `isKingInCheck("WHITE")` is called. | Returns `false`. | :x: |
+| GAME-CHECK-001 | A new game has started and the White king is not under attack. `isKingInCheck("WHITE")` is called. | Returns `false`. | :white_check_mark: |
 | GAME-CHECK-002 | A new game has started and the Black king is not under attack. `isKingInCheck("BLACK")` is called. | Returns `false`. | :x: |
 | GAME-CHECK-003 | A Black rook has a clear row or column path attacking the White king. `isKingInCheck("WHITE")` is called. | Returns `true`. | :x: |
 | GAME-CHECK-004 | A Black bishop has a clear diagonal path attacking the White king. `isKingInCheck("WHITE")` is called. | Returns `true`. | :x: |
