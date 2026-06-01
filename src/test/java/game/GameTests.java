@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 import board.Board;
+import board.Piece;
+
 
 
 public class GameTests {
@@ -289,6 +291,42 @@ public class GameTests {
 
         assertFalse(game.isKingInCheck("BLACK"));
     }
+
+
+    private void clearBoard(Board board) {
+        try {
+            java.lang.reflect.Field stateField = Board.class.getDeclaredField("state");
+            stateField.setAccessible(true);
+            stateField.set(board, new Piece[8][8]);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void placePiece(Board board, int row, int col, Piece piece) {
+        try {
+            java.lang.reflect.Field stateField = Board.class.getDeclaredField("state");
+            stateField.setAccessible(true);
+            Piece[][] state = (Piece[][]) stateField.get(board);
+            state[row][col] = piece;
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void blackRookCheckingWhiteKingReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+
+        assertTrue(game.isKingInCheck("WHITE"));
+    }
+
 
 
 
