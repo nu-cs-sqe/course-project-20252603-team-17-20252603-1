@@ -455,7 +455,17 @@ public class GameTests {
         assertTrue(game.isKingInCheck("WHITE"));
     }
 
+    @Test
+    void blackPawnAttacksSquareReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
 
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertTrue(game.isSquareUnderAttack(4, 4, "BLACK"));
+    }
 
 
 
