@@ -133,12 +133,26 @@ public class Game {
                             && bishopAttacksSquare(startRow, startCol, row, col)) {
                         return true;
                     }
+
+                    if ("KNIGHT".equals(piece.getType())
+                            && knightAttacksSquare(startRow, startCol, row, col)) {
+                        return true;
+                    }
+
                 }
             }
         }
 
         return false;
     }
+
+    private boolean knightAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
+        int rowDelta = Math.abs(targetRow - startRow);
+        int colDelta = Math.abs(targetCol - startCol);
+
+        return (rowDelta == 2 && colDelta == 1) || (rowDelta == 1 && colDelta == 2);
+    }
+
 
     private boolean bishopAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
         if (Math.abs(targetRow - startRow) != Math.abs(targetCol - startCol)) {
