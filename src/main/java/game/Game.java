@@ -259,8 +259,9 @@ public class Game {
         return false;
     }
 
-
-
+    public boolean isStalemate(String color) {
+        return false;
+    }
 
 
 
