@@ -826,6 +826,29 @@ public class GameTests {
         assertTrue(game.isCheckmate("BLACK"));
     }
 
+    @Test
+    void moveAfterCheckmateIsRejected() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 2, 2, new Piece("KING", "WHITE"));
+        placePiece(board, 2, 1, new Piece("QUEEN", "WHITE"));
+
+        assertTrue(game.makeMove(2, 1, 1, 1));
+        assertTrue(game.isGameOver());
+        assertEquals("WHITE", game.getWinnerColor());
+
+        boolean movedAfterCheckmate = game.makeMove(0, 0, 0, 1);
+
+        assertFalse(movedAfterCheckmate);
+        assertTrue(game.isGameOver());
+        assertEquals("WHITE", game.getWinnerColor());
+    }
+
+
 
 
 
