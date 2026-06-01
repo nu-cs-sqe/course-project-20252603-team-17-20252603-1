@@ -606,8 +606,30 @@ public class GameTests {
     }
 
 
+    @Test
+    void playerCannotIgnoreCheckWithUnrelatedMove() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
 
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+        placePiece(board, 6, 7, new Piece("PAWN", "WHITE"));
 
+        boolean moved = game.makeMove(6, 7, 5, 7);
+
+        assertFalse(moved);
+        assertEquals("WHITE", game.getCurrentPlayer().getColor());
+
+        Piece pawn = board.getPieceAt(6, 7);
+        assertNotNull(pawn);
+        assertEquals("PAWN", pawn.getType());
+        assertEquals("WHITE", pawn.getColor());
+
+        assertNull(board.getPieceAt(5, 7));
+    }
 
 
 
