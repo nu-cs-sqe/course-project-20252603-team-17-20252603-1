@@ -63,12 +63,12 @@
 | GAME-MOVE-008 | A game has not started yet. `makeMove(6, 0, 5, 0)` is called. | Returns `false` because no board exists yet. | :white_check_mark:               |
 | GAME-MOVE-009 | It is White's turn. White attempts to move a pawn from `(6, 0)` to an occupied square `(7, 0)`. | Returns `false`, does not move the pawn, and keeps the current player as White. | :white_check_mark:               |
 | GAME-MOVE-010 | It is White's turn. White attempts an invalid knight move from `(7, 1)` to `(6, 1)`. | Returns `false`, does not move the knight, and keeps the current player as White. | :white_check_mark:               |
-| GAME-MOVE-011 | The game is already over because a king has been captured. A player attempts another move. | Returns `false`, does not change the board, and does not change the winner. | :x: |
+| GAME-MOVE-011 | The game is already over because a king has been captured. A player attempts another move. | Returns `false`, does not change the board, and does not change the winner. | :white_check_mark: |
 
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
 |-------------|---------------------|-----------------|--------------|
-| GAME-SELFCHECK-001 | The White king is shielded by a White rook from a Black rook. White attempts to move the shielding rook away. | Move is rejected because it would leave the White king in check. Board and turn stay unchanged. | :x: |
+| GAME-SELFCHECK-001 | The White king is shielded by a White rook from a Black rook. White attempts to move the shielding rook away. | Move is rejected because it would leave the White king in check. Board and turn stay unchanged. | :white_check_mark: |
 | GAME-SELFCHECK-002 | The White king attempts to move onto a square attacked by a Black rook. | Move is rejected because the White king cannot move into check. Board and turn stay unchanged. | :x: |
 | GAME-SELFCHECK-003 | The White king is in check from a Black rook. White moves the king to a safe square. | Move succeeds because the move gets White out of check. Turn changes to Black. | :x: |
 | GAME-SELFCHECK-004 | The White king is in check from a Black rook. White attempts a move that does not resolve the check. | Move is rejected because White remains in check. Board and turn stay unchanged. | :x: |
