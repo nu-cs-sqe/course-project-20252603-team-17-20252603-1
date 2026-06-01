@@ -742,6 +742,21 @@ public class GameTests {
         assertFalse(game.isCheckmate("WHITE"));
     }
 
+    @Test
+    void whiteInCheckWithNoLegalMovesIsCheckmate() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 0, new Piece("KING", "WHITE"));
+        placePiece(board, 1, 1, new Piece("QUEEN", "BLACK"));
+        placePiece(board, 2, 2, new Piece("KING", "BLACK"));
+
+        assertTrue(game.isCheckmate("WHITE"));
+    }
+
+
 
 
 

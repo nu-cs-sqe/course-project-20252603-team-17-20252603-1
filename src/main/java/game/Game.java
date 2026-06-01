@@ -256,12 +256,90 @@ public class Game {
     }
 
     public boolean isCheckmate(String color) {
-        return false;
+        return isKingInCheck(color) && !kingHasLegalMove(color);
     }
+
 
     public boolean isStalemate(String color) {
         return false;
     }
+
+    private boolean kingHasLegalMove(String color) {
+        int[] kingPosition = findKingPosition(color);
+
+        if (kingPosition == null) {
+            return false;
+        }
+
+        int kingRow = kingPosition[0];
+        int kingCol = kingPosition[1];
+
+        for (int rowDelta = -1; rowDelta <= 1; rowDelta++) {
+            for (int colDelta = -1; colDelta <= 1; colDelta++) {
+                if (rowDelta == 0 && colDelta == 0) {
+                    continue;
+                }
+
+                int targetRow = kingRow + rowDelta;
+                int targetCol = kingCol + colDelta;
+
+                if (kingCanMoveTo(color, kingRow, kingCol, targetRow, targetCol)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private int[] findKingPosition(String color) {
+        if (board == null) {
+            return null;
+        }
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece piece = board.getPieceAt(row, col);
+
+                if (piece != null
+                        && "KING".equals(piece.getType())
+                        && color.equals(piece.getColor())) {
+                    return new int[] { row, col };
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private boolean kingCanMoveTo(String color, int startRow, int startCol, int endRow, int endCol) {
+        if (!board.isWithinBounds(endRow, endCol)) {
+            return false;
+        }
+
+        Piece destination = board.getPieceAt(endRow, endCol);
+
+        if (destination != null && color.equals(destination.getColor())) {
+            return false;
+        }
+
+        Board originalBoard = board;
+        Board simulatedBoard = board.copy();
+
+        boolean moved = simulatedBoard.movePiece(startRow, startCol, endRow, endCol);
+        if (!moved) {
+            return false;
+        }
+
+        board = simulatedBoard;
+        boolean stillInCheck = isKingInCheck(color);
+        board = originalBoard;
+
+        return !stillInCheck;
+    }
+
+
+
 
 
 
