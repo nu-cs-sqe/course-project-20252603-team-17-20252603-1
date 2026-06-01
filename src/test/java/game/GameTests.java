@@ -757,12 +757,18 @@ public class GameTests {
     }
 
     @Test
-    void blackWithLegalMoveIsNotStalemate() {
+    void blackWithLegalKingMoveIsNotStalemate() {
         Game game = new Game();
         game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 7, 7, new Piece("KING", "WHITE"));
 
         assertFalse(game.isStalemate("BLACK"));
     }
+
 
     @Test
     void blackNotInCheckWithNoLegalKingMovesIsStalemate() {
