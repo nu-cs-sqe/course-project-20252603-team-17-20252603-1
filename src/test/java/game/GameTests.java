@@ -442,6 +442,19 @@ public class GameTests {
         assertTrue(game.isSquareUnderAttack(4, 4, "BLACK"));
     }
 
+    @Test
+    void blackQueenCheckingWhiteKingReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 1, 1, new Piece("QUEEN", "BLACK"));
+
+        assertTrue(game.isKingInCheck("WHITE"));
+    }
+
 
 
 
