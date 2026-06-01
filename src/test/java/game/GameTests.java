@@ -492,6 +492,15 @@ public class GameTests {
         assertTrue(game.isSquareUnderAttack(4, 4, "BLACK"));
     }
 
+    @Test
+    void outOfBoundsSquareUnderAttackReturnsFalse() {
+        Game game = new Game();
+        game.startNewGame();
+
+        assertFalse(game.isSquareUnderAttack(-1, 0, "BLACK"));
+    }
+
+
 
 
 
