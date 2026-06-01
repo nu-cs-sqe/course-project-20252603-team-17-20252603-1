@@ -256,12 +256,12 @@ public class Game {
     }
 
     public boolean isCheckmate(String color) {
-        return isKingInCheck(color) && !kingHasLegalMove(color);
+        return isKingInCheck(color) && !hasAnyLegalMove(color);
     }
 
 
     public boolean isStalemate(String color) {
-        return !isKingInCheck(color) && !kingHasLegalMove(color);
+        return !isKingInCheck(color) && !hasAnyLegalMove(color);
     }
 
     private boolean kingHasLegalMove(String color) {
@@ -337,6 +337,51 @@ public class Game {
 
         return !stillInCheck;
     }
+
+    private boolean hasAnyLegalMove(String color) {
+        if (board == null) {
+            return false;
+        }
+
+        for (int startRow = 0; startRow < 8; startRow++) {
+            for (int startCol = 0; startCol < 8; startCol++) {
+                Piece piece = board.getPieceAt(startRow, startCol);
+
+                if (piece == null || !color.equals(piece.getColor())) {
+                    continue;
+                }
+
+                for (int endRow = 0; endRow < 8; endRow++) {
+                    for (int endCol = 0; endCol < 8; endCol++) {
+                        if (pieceCanMoveWithoutLeavingCheck(color, startRow, startCol, endRow, endCol)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean pieceCanMoveWithoutLeavingCheck(String color, int startRow, int startCol,
+                                                    int endRow, int endCol) {
+        Board originalBoard = board;
+        Board simulatedBoard = board.copy();
+
+        boolean moved = simulatedBoard.movePiece(startRow, startCol, endRow, endCol);
+        if (!moved) {
+            return false;
+        }
+
+        board = simulatedBoard;
+        boolean leavesKingInCheck = isKingInCheck(color);
+        board = originalBoard;
+
+        return !leavesKingInCheck;
+    }
+
+
 
 
 

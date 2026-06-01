@@ -784,6 +784,15 @@ public class GameTests {
         assertTrue(game.isStalemate("BLACK"));
     }
 
+    @Test
+    void blackWithLegalPawnMoveIsNotStalemate() {
+        Game game = new Game();
+        game.startNewGame();
+
+        assertFalse(game.isStalemate("BLACK"));
+    }
+
+
 
 
 
