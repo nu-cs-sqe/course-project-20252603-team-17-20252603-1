@@ -255,6 +255,11 @@ public class Game {
         return true;
     }
 
+    public boolean isCheckmate(String color) {
+        return false;
+    }
+
+
 
 
 
