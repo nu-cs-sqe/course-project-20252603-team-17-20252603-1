@@ -3,6 +3,7 @@ import board.Piece;
 
 import player.Player;
 import board.Board;
+import board.Piece;
 
 public class Game {
 
@@ -90,6 +91,152 @@ public class Game {
 
         return true;
     }
+
+
+    public boolean isKingInCheck(String color) {
+        if (board == null) {
+            return false;
+        }
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece piece = board.getPieceAt(row, col);
+
+                if (piece != null
+                        && "KING".equals(piece.getType())
+                        && color.equals(piece.getColor())) {
+                    String opponentColor = "WHITE".equals(color) ? "BLACK" : "WHITE";
+                    return isSquareUnderAttack(row, col, opponentColor);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isSquareUnderAttack(int row, int col, String byColor) {
+        if (board == null || !board.isWithinBounds(row, col)) {
+            return false;
+        }
+
+        for (int startRow = 0; startRow < 8; startRow++) {
+            for (int startCol = 0; startCol < 8; startCol++) {
+                Piece piece = board.getPieceAt(startRow, startCol);
+
+                if (piece != null && byColor.equals(piece.getColor())) {
+                    if ("ROOK".equals(piece.getType())
+                            && rookAttacksSquare(startRow, startCol, row, col)) {
+                        return true;
+                    }
+
+                    if ("BISHOP".equals(piece.getType())
+                            && bishopAttacksSquare(startRow, startCol, row, col)) {
+                        return true;
+                    }
+
+                    if ("KNIGHT".equals(piece.getType())
+                            && knightAttacksSquare(startRow, startCol, row, col)) {
+                        return true;
+                    }
+
+                    if ("QUEEN".equals(piece.getType())
+                            && queenAttacksSquare(startRow, startCol, row, col)) {
+                        return true;
+                    }
+                    if ("PAWN".equals(piece.getType())
+                            && pawnAttacksSquare(startRow, startCol, row, col)) {
+                        return true;
+                    }
+
+                    if ("KING".equals(piece.getType())
+                            && kingAttacksSquare(startRow, startCol, row, col)) {
+                        return true;
+                    }
+
+
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean kingAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
+        int rowDelta = Math.abs(targetRow - startRow);
+        int colDelta = Math.abs(targetCol - startCol);
+
+        return rowDelta <= 1 && colDelta <= 1 && (rowDelta != 0 || colDelta != 0);
+    }
+
+    private boolean pawnAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
+        Piece pawn = board.getPieceAt(startRow, startCol);
+
+        int direction;
+        if ("WHITE".equals(pawn.getColor())) {
+            direction = -1;
+        } else if ("BLACK".equals(pawn.getColor())) {
+            direction = 1;
+        } else {
+            return false;
+        }
+
+        return targetRow - startRow == direction
+                && Math.abs(targetCol - startCol) == 1;
+    }
+
+
+    private boolean queenAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
+        return rookAttacksSquare(startRow, startCol, targetRow, targetCol)
+                || bishopAttacksSquare(startRow, startCol, targetRow, targetCol);
+    }
+
+    private boolean knightAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
+        int rowDelta = Math.abs(targetRow - startRow);
+        int colDelta = Math.abs(targetCol - startCol);
+
+        return (rowDelta == 2 && colDelta == 1) || (rowDelta == 1 && colDelta == 2);
+    }
+
+
+    private boolean bishopAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
+        if (Math.abs(targetRow - startRow) != Math.abs(targetCol - startCol)) {
+            return false;
+        }
+
+        return isPathClear(startRow, startCol, targetRow, targetCol);
+    }
+
+
+    private boolean rookAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
+        if (startRow != targetRow && startCol != targetCol) {
+            return false;
+        }
+
+        return isPathClear(startRow, startCol, targetRow, targetCol);
+    }
+
+    private boolean isPathClear(int startRow, int startCol, int endRow, int endCol) {
+        int rowStep = Integer.compare(endRow, startRow);
+        int colStep = Integer.compare(endCol, startCol);
+
+        int row = startRow + rowStep;
+        int col = startCol + colStep;
+
+        while (row != endRow || col != endCol) {
+            if (board.getPieceAt(row, col) != null) {
+                return false;
+            }
+
+            row += rowStep;
+            col += colStep;
+        }
+
+        return true;
+    }
+
+
+
+
 
 
     public boolean isGameOver() {
