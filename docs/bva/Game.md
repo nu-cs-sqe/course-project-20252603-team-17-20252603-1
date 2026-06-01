@@ -64,3 +64,35 @@
 | GAME-MOVE-009 | It is White's turn. White attempts to move a pawn from `(6, 0)` to an occupied square `(7, 0)`. | Returns `false`, does not move the pawn, and keeps the current player as White. | :white_check_mark:               |
 | GAME-MOVE-010 | It is White's turn. White attempts an invalid knight move from `(7, 1)` to `(6, 1)`. | Returns `false`, does not move the knight, and keeps the current player as White. | :white_check_mark:               |
 | GAME-MOVE-011 | The game is already over because a king has been captured. A player attempts another move. | Returns `false`, does not change the board, and does not change the winner. | :x: |
+
+
+## Method under test: isKingInCheck(String color)
+
+| Test Case ID | State of the System | Expected Output | Implemented? |
+|-------------|---------------------|-----------------|--------------|
+| GAME-CHECK-001 | A new game has started and the White king is not under attack. `isKingInCheck("WHITE")` is called. | Returns `false`. | :x: |
+| GAME-CHECK-002 | A new game has started and the Black king is not under attack. `isKingInCheck("BLACK")` is called. | Returns `false`. | :x: |
+| GAME-CHECK-003 | A Black rook has a clear row or column path attacking the White king. `isKingInCheck("WHITE")` is called. | Returns `true`. | :x: |
+| GAME-CHECK-004 | A Black bishop has a clear diagonal path attacking the White king. `isKingInCheck("WHITE")` is called. | Returns `true`. | :x: |
+| GAME-CHECK-005 | A Black knight attacks the White king in an L-shape. `isKingInCheck("WHITE")` is called. | Returns `true`. | :x: |
+| GAME-CHECK-006 | A Black queen attacks the White king along a clear row, column, or diagonal. `isKingInCheck("WHITE")` is called. | Returns `true`. | :x: |
+| GAME-CHECK-007 | A Black pawn attacks the White king diagonally. `isKingInCheck("WHITE")` is called. | Returns `true`. | :x: |
+| GAME-CHECK-008 | A Black sliding piece would attack the White king, but another piece blocks the path. `isKingInCheck("WHITE")` is called. | Returns `false`. | :x: |
+| GAME-CHECK-009 | A game has not started yet. `isKingInCheck("WHITE")` is called. | Returns `false`. | :x: |
+
+
+## Method under test: isSquareUnderAttack(int row, int col, String byColor)
+
+| Test Case ID | State of the System | Expected Output | Implemented? |
+|-------------|---------------------|-----------------|--------------|
+| GAME-ATTACK-001 | A new game has started. Square `(4, 4)` is not attacked by any Black piece. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `false`. | :x: |
+| GAME-ATTACK-002 | A Black rook has a clear row path to square `(4, 4)`. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `true`. | :x: |
+| GAME-ATTACK-003 | A Black bishop has a clear diagonal path to square `(4, 4)`. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `true`. | :x: |
+| GAME-ATTACK-004 | A Black knight attacks square `(4, 4)` in an L-shape. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `true`. | :x: |
+| GAME-ATTACK-005 | A Black queen has a clear path to square `(4, 4)`. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `true`. | :x: |
+| GAME-ATTACK-006 | A Black pawn attacks square `(4, 4)` diagonally. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `true`. | :x: |
+| GAME-ATTACK-007 | A Black king is adjacent to square `(4, 4)`. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `true`. | :x: |
+| GAME-ATTACK-008 | A Black rook would attack square `(4, 4)`, but another piece blocks the path. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `false`. | :x: |
+| GAME-ATTACK-009 | The requested square is outside the board. `isSquareUnderAttack(-1, 0, "BLACK")` is called. | Returns `false`. | :x: |
+| GAME-ATTACK-010 | A game has not started yet. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `false`. | :x: |
+
