@@ -261,7 +261,7 @@ public class Game {
 
 
     public boolean isStalemate(String color) {
-        return false;
+        return !isKingInCheck(color) && !kingHasLegalMove(color);
     }
 
     private boolean kingHasLegalMove(String color) {
@@ -337,9 +337,6 @@ public class Game {
 
         return !stillInCheck;
     }
-
-
-
 
 
 
