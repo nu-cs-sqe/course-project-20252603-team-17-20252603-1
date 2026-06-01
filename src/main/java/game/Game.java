@@ -71,15 +71,35 @@ public class Game {
         if (piece == null) {
             return false;
         }
+
         if (!piece.getColor().equals(currentPlayer.getColor())) {
             return false;
         }
 
         Piece destinationPiece = board.getPieceAt(endRow, endCol);
 
+        Board originalBoard = board;
+        Board simulatedBoard = board.copy();
+
+        boolean simulatedMoveSuccessful = simulatedBoard.movePiece(startRow, startCol, endRow, endCol);
+
+        if (!simulatedMoveSuccessful) {
+            return false;
+        }
+
+        board = simulatedBoard;
+        boolean leavesOwnKingInCheck = isKingInCheck(currentPlayer.getColor());
+        board = originalBoard;
+
+        if (leavesOwnKingInCheck) {
+            return false;
+        }
+
         boolean moveSuccessful = board.movePiece(startRow, startCol, endRow, endCol);
 
-        if(!moveSuccessful) { return false; }
+        if (!moveSuccessful) {
+            return false;
+        }
 
         if (destinationPiece != null && "KING".equals(destinationPiece.getType())) {
             gameOver = true;
@@ -91,6 +111,7 @@ public class Game {
 
         return true;
     }
+
 
 
     public boolean isKingInCheck(String color) {
