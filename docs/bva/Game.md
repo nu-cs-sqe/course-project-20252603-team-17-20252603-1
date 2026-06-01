@@ -78,7 +78,7 @@
 | GAME-CHECK-006 | A Black queen attacks the White king along a clear row, column, or diagonal. `isKingInCheck("WHITE")` is called. | Returns `true`. | :white_check_mark: |
 | GAME-CHECK-007 | A Black pawn attacks the White king diagonally. `isKingInCheck("WHITE")` is called. | Returns `true`. | :white_check_mark: |
 | GAME-CHECK-008 | A Black sliding piece would attack the White king, but another piece blocks the path. `isKingInCheck("WHITE")` is called. | Returns `false`. | :white_check_mark: |
-| GAME-CHECK-009 | A game has not started yet. `isKingInCheck("WHITE")` is called. | Returns `false`. | :x: |
+| GAME-CHECK-009 | A game has not started yet. `isKingInCheck("WHITE")` is called. | Returns `false`. | :white_check_mark: |
 
 
 ## Method under test: isSquareUnderAttack(int row, int col, String byColor)
