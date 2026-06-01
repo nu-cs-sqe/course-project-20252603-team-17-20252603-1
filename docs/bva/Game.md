@@ -124,11 +124,13 @@
 
 ## Method under test: isStalemate(String color)
 
-| Test Case ID | State of the System | Expected Output | Implemented? |
-|-------------|---------------------|-----------------|--------------|
-| GAME-STALEMATE-001 | Black is not in check but has no legal moves. `isStalemate("BLACK")` is called. | Returns `true`. | :x: |
-| GAME-STALEMATE-002 | Black is in check. `isStalemate("BLACK")` is called. | Returns `false`. | :white_check_mark: |
-| GAME-STALEMATE-003 | Black has at least one legal move. `isStalemate("BLACK")` is called. | Returns `false`. | :white_check_mark: |
+| Test Case ID | State of the System | Expected Output              | Implemented? |
+|-------------|---------------------|------------------------------|--------------|
+| GAME-STALEMATE-001 | Black is not in check but has no legal moves. `isStalemate("BLACK")` is called. | Returns `true`.              | :x: |
+| GAME-STALEMATE-002 | Black is in check. `isStalemate("BLACK")` is called. | Returns `false`.             | :white_check_mark: |
+| GAME-STALEMATE-003 | Black has at least one legal move. `isStalemate("BLACK")` is called. | Returns `false`.             | :white_check_mark: |
 | GAME-STALEMATE-004 | A move creates stalemate through `makeMove(...)`. | Game becomes over as a draw. | :x: |
+| GAME-STALEMATE-005 | Black has no legal king move but has a legal pawn move. `isStalemate("BLACK")` is called. | Returns `false`.             | :white_check_mark: |
+
 
 
