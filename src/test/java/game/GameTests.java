@@ -728,7 +728,19 @@ public class GameTests {
         assertFalse(game.isStalemate("BLACK"));
     }
 
+    @Test
+    void whiteInCheckButCanEscapeIsNotCheckmate() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
 
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+
+        assertFalse(game.isCheckmate("WHITE"));
+    }
 
 
 
