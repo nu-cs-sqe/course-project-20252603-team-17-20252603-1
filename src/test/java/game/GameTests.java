@@ -792,6 +792,40 @@ public class GameTests {
         assertFalse(game.isStalemate("BLACK"));
     }
 
+    @Test
+    void whiteInCheckButCanBlockWithRookIsNotCheckmate() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 7, new Piece("KING", "BLACK"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+        placePiece(board, 2, 2, new Piece("ROOK", "WHITE"));
+
+        assertFalse(game.isCheckmate("WHITE"));
+    }
+
+    @Test
+    void moveThatCheckmatesBlackEndsGameAndWhiteWins() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 2, 2, new Piece("KING", "WHITE"));
+        placePiece(board, 2, 1, new Piece("QUEEN", "WHITE"));
+
+        boolean moved = game.makeMove(2, 1, 1, 1);
+
+        assertTrue(moved);
+        assertTrue(game.isGameOver());
+        assertEquals("WHITE", game.getWinnerColor());
+        assertTrue(game.isCheckmate("BLACK"));
+    }
+
 
 
 
