@@ -658,6 +658,31 @@ public class GameTests {
         assertNull(board.getPieceAt(1, 2));
     }
 
+    @Test
+    void playerCanCaptureCheckingPiece() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 7, new Piece("KING", "BLACK"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+        placePiece(board, 2, 0, new Piece("ROOK", "WHITE"));
+
+        boolean moved = game.makeMove(2, 0, 4, 0);
+
+        assertTrue(moved);
+        assertEquals("BLACK", game.getCurrentPlayer().getColor());
+        assertNull(board.getPieceAt(2, 0));
+
+        Piece rook = board.getPieceAt(4, 0);
+        assertNotNull(rook);
+        assertEquals("ROOK", rook.getType());
+        assertEquals("WHITE", rook.getColor());
+    }
+
+
 
 
 
