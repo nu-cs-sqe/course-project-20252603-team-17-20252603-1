@@ -507,6 +507,12 @@ public class GameTests {
         assertFalse(game.isSquareUnderAttack(4, 4, "BLACK"));
     }
 
+    @Test
+    void kingInCheckBeforeGameStartsReturnsFalse() {
+        Game game = new Game();
+
+        assertFalse(game.isKingInCheck("WHITE"));
+    }
 
 
 }
