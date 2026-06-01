@@ -631,6 +631,34 @@ public class GameTests {
         assertNull(board.getPieceAt(5, 7));
     }
 
+    @Test
+    void blackCannotMoveShieldingPieceAndExposeKing() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
+        placePiece(board, 0, 2, new Piece("ROOK", "BLACK"));
+        placePiece(board, 0, 0, new Piece("ROOK", "WHITE"));
+        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
+
+        game.switchTurn();
+
+        boolean moved = game.makeMove(0, 2, 1, 2);
+
+        assertFalse(moved);
+        assertEquals("BLACK", game.getCurrentPlayer().getColor());
+
+        Piece blackRook = board.getPieceAt(0, 2);
+        assertNotNull(blackRook);
+        assertEquals("ROOK", blackRook.getType());
+        assertEquals("BLACK", blackRook.getColor());
+
+        assertNull(board.getPieceAt(1, 2));
+    }
+
+
 
 
 }
