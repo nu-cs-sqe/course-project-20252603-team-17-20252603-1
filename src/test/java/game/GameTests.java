@@ -558,6 +558,31 @@ public class GameTests {
         assertNull(board.getPieceAt(5, 2));
     }
 
+    @Test
+    void kingCannotMoveIntoCheck() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 5, 0, new Piece("ROOK", "BLACK"));
+
+        boolean moved = game.makeMove(4, 4, 5, 4);
+
+        assertFalse(moved);
+        assertEquals("WHITE", game.getCurrentPlayer().getColor());
+
+        Piece king = board.getPieceAt(4, 4);
+        assertNotNull(king);
+        assertEquals("KING", king.getType());
+        assertEquals("WHITE", king.getColor());
+
+        assertNull(board.getPieceAt(5, 4));
+    }
+
+
 
 
 
