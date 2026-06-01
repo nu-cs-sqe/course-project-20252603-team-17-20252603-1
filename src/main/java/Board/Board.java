@@ -209,6 +209,21 @@ public class Board {
         return row;
     }
 
+    public Board copy() {
+        Board copy = new Board();
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                copy.state[row][col] = this.state[row][col];
+            }
+        }
+
+        return copy;
+    }
+
+
+
+
 
 
 }

@@ -539,6 +539,32 @@ public class GameTests {
         assertTrue(game.isSquareUnderAttack(4, 4, "WHITE"));
     }
 
+    @Test
+    void movingShieldingRookAwayFromKingIsRejected() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 4, 2, new Piece("ROOK", "WHITE"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
+
+        boolean moved = game.makeMove(4, 2, 5, 2);
+
+        assertFalse(moved);
+        assertEquals("WHITE", game.getCurrentPlayer().getColor());
+
+        Piece whiteRook = board.getPieceAt(4, 2);
+        assertNotNull(whiteRook);
+        assertEquals("ROOK", whiteRook.getType());
+        assertEquals("WHITE", whiteRook.getColor());
+
+        assertNull(board.getPieceAt(5, 2));
+    }
+
+
 
 
 
