@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 import board.Board;
+import board.Piece;
+
 
 
 public class GameTests {
@@ -273,6 +275,270 @@ public class GameTests {
         assertTrue(game.isGameOver());
         assertEquals("WHITE", game.getWinnerColor());
     }
+
+    @Test
+    void newGameWhiteKingIsNotInCheck() {
+        Game game = new Game();
+        game.startNewGame();
+
+        assertFalse(game.isKingInCheck("WHITE"));
+    }
+
+    @Test
+    void newGameBlackKingIsNotInCheck() {
+        Game game = new Game();
+        game.startNewGame();
+
+        assertFalse(game.isKingInCheck("BLACK"));
+    }
+
+
+    private void clearBoard(Board board) {
+        try {
+            java.lang.reflect.Field stateField = Board.class.getDeclaredField("state");
+            stateField.setAccessible(true);
+            stateField.set(board, new Piece[8][8]);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void placePiece(Board board, int row, int col, Piece piece) {
+        try {
+            java.lang.reflect.Field stateField = Board.class.getDeclaredField("state");
+            stateField.setAccessible(true);
+            Piece[][] state = (Piece[][]) stateField.get(board);
+            state[row][col] = piece;
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void blackRookCheckingWhiteKingReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+
+        assertTrue(game.isKingInCheck("WHITE"));
+    }
+
+    @Test
+    void blackRookAttacksSquareReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+
+        assertTrue(game.isSquareUnderAttack(4, 4, "BLACK"));
+    }
+
+    @Test
+    void squareNotAttackedReturnsFalse() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 0, new Piece("ROOK", "BLACK"));
+
+        assertFalse(game.isSquareUnderAttack(4, 4, "BLACK"));
+    }
+
+    @Test
+    void blockedRookDoesNotAttackSquare() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+        placePiece(board, 4, 2, new Piece("PAWN", "WHITE"));
+
+        assertFalse(game.isSquareUnderAttack(4, 4, "BLACK"));
+    }
+
+
+    @Test
+    void blockedRookDoesNotCheckWhiteKing() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+        placePiece(board, 4, 2, new Piece("PAWN", "WHITE"));
+
+        assertFalse(game.isKingInCheck("WHITE"));
+    }
+
+    @Test
+    void blackBishopAttacksSquareReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 1, 1, new Piece("BISHOP", "BLACK"));
+
+        assertTrue(game.isSquareUnderAttack(4, 4, "BLACK"));
+    }
+
+    @Test
+    void blackBishopCheckingWhiteKingReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 1, 1, new Piece("BISHOP", "BLACK"));
+
+        assertTrue(game.isKingInCheck("WHITE"));
+    }
+
+
+    @Test
+    void blackKnightAttacksSquareReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 2, 3, new Piece("KNIGHT", "BLACK"));
+
+        assertTrue(game.isSquareUnderAttack(4, 4, "BLACK"));
+    }
+
+    @Test
+    void blackKnightCheckingWhiteKingReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 2, 3, new Piece("KNIGHT", "BLACK"));
+
+        assertTrue(game.isKingInCheck("WHITE"));
+    }
+
+    @Test
+    void blackQueenAttacksSquareReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 1, 1, new Piece("QUEEN", "BLACK"));
+
+        assertTrue(game.isSquareUnderAttack(4, 4, "BLACK"));
+    }
+
+    @Test
+    void blackQueenCheckingWhiteKingReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 1, 1, new Piece("QUEEN", "BLACK"));
+
+        assertTrue(game.isKingInCheck("WHITE"));
+    }
+
+    @Test
+    void blackPawnAttacksSquareReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertTrue(game.isSquareUnderAttack(4, 4, "BLACK"));
+    }
+
+    @Test
+    void blackPawnCheckingWhiteKingReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertTrue(game.isKingInCheck("WHITE"));
+    }
+
+    @Test
+    void blackKingAttacksAdjacentSquareReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 3, 3, new Piece("KING", "BLACK"));
+
+        assertTrue(game.isSquareUnderAttack(4, 4, "BLACK"));
+    }
+
+    @Test
+    void outOfBoundsSquareUnderAttackReturnsFalse() {
+        Game game = new Game();
+        game.startNewGame();
+
+        assertFalse(game.isSquareUnderAttack(-1, 0, "BLACK"));
+    }
+
+    @Test
+    void squareUnderAttackBeforeGameStartsReturnsFalse() {
+        Game game = new Game();
+
+        assertFalse(game.isSquareUnderAttack(4, 4, "BLACK"));
+    }
+
+    @Test
+    void kingInCheckBeforeGameStartsReturnsFalse() {
+        Game game = new Game();
+
+        assertFalse(game.isKingInCheck("WHITE"));
+    }
+
+    @Test
+    void whiteRookCheckingBlackKingReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "BLACK"));
+        placePiece(board, 4, 0, new Piece("ROOK", "WHITE"));
+
+        assertTrue(game.isKingInCheck("BLACK"));
+    }
+
+    @Test
+    void whitePawnAttacksSquareReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 5, 3, new Piece("PAWN", "WHITE"));
+
+        assertTrue(game.isSquareUnderAttack(4, 4, "WHITE"));
+    }
+
 
 
 
