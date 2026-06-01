@@ -111,3 +111,24 @@
 | GAME-ATTACK-011 | A White pawn attacks square `(4, 4)` diagonally. `isSquareUnderAttack(4, 4, "WHITE")` is called. | Returns  `true`. | :white_check_mark: |
 
 
+## Method under test: isCheckmate(String color)
+
+| Test Case ID | State of the System | Expected Output | Implemented? |
+|-------------|---------------------|-----------------|--------------|
+| GAME-CHECKMATE-001 | White is in check and has no legal moves. `isCheckmate("WHITE")` is called. | Returns `true`. | :x: |
+| GAME-CHECKMATE-002 | White is in check but has a legal move to escape. `isCheckmate("WHITE")` is called. | Returns `false`. | :x: |
+| GAME-CHECKMATE-003 | White is not in check. `isCheckmate("WHITE")` is called. | Returns `false`. | :x: |
+| GAME-CHECKMATE-004 | A move checkmates Black through `makeMove(...)`. | Game becomes over and winner is White. | :x: |
+| GAME-CHECKMATE-005 | A player attempts a move after checkmate. | Move is rejected and the game result stays unchanged. | :x: |
+
+
+## Method under test: isStalemate(String color)
+
+| Test Case ID | State of the System | Expected Output | Implemented? |
+|-------------|---------------------|-----------------|--------------|
+| GAME-STALEMATE-001 | Black is not in check but has no legal moves. `isStalemate("BLACK")` is called. | Returns `true`. | :x: |
+| GAME-STALEMATE-002 | Black is in check. `isStalemate("BLACK")` is called. | Returns `false`. | :x: |
+| GAME-STALEMATE-003 | Black has at least one legal move. `isStalemate("BLACK")` is called. | Returns `false`. | :x: |
+| GAME-STALEMATE-004 | A move creates stalemate through `makeMove(...)`. | Game becomes over as a draw. | :x: |
+
+
