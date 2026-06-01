@@ -213,68 +213,62 @@ public class GameTests {
     void capturingBlackKingMakesGameOverAndWhiteWins() {
         Game game = new Game();
         game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
 
-        assertTrue(game.makeMove(6, 4, 4, 4)); // White opens queen path
-        assertTrue(game.makeMove(1, 0, 2, 0)); // Black filler move
+        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
+        placePiece(board, 1, 5, new Piece("QUEEN", "WHITE"));
 
-        assertTrue(game.makeMove(7, 3, 3, 7)); // White queen out
-        assertTrue(game.makeMove(1, 1, 2, 1)); // Black filler move
-
-        assertTrue(game.makeMove(3, 7, 1, 5)); // White queen moves near king
-        assertTrue(game.makeMove(1, 2, 2, 2)); // Black filler move
-
-        boolean moved = game.makeMove(1, 5, 0, 4); // White queen captures Black king
+        boolean moved = game.makeMove(1, 5, 0, 4);
 
         assertTrue(moved);
         assertTrue(game.isGameOver());
         assertEquals("WHITE", game.getWinnerColor());
     }
 
+
     @Test
     void capturingWhiteKingMakesGameOverAndBlackWins() {
         Game game = new Game();
         game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
 
-        assertTrue(game.makeMove(6, 0, 5, 0)); // White filler
-        assertTrue(game.makeMove(1, 4, 3, 4)); // Black opens queen path
+        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
+        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 6, 5, new Piece("QUEEN", "BLACK"));
 
-        assertTrue(game.makeMove(6, 1, 5, 1)); // White filler
-        assertTrue(game.makeMove(0, 3, 4, 7)); // Black queen out
+        game.switchTurn();
 
-        assertTrue(game.makeMove(6, 2, 5, 2)); // White filler
-        assertTrue(game.makeMove(4, 7, 6, 5)); // Black queen near king
-
-        assertTrue(game.makeMove(6, 3, 5, 3)); // White filler
-
-        boolean moved = game.makeMove(6, 5, 7, 4); // Black queen captures White king
+        boolean moved = game.makeMove(6, 5, 7, 4);
 
         assertTrue(moved);
         assertTrue(game.isGameOver());
         assertEquals("BLACK", game.getWinnerColor());
     }
 
+
     @Test
     void moveAfterGameOverIsRejected() {
         Game game = new Game();
         game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
 
-        assertTrue(game.makeMove(6, 4, 4, 4)); // White opens queen path
-        assertTrue(game.makeMove(1, 0, 2, 0)); // Black filler
+        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
+        placePiece(board, 1, 5, new Piece("QUEEN", "WHITE"));
 
-        assertTrue(game.makeMove(7, 3, 3, 7)); // White queen out
-        assertTrue(game.makeMove(1, 1, 2, 1)); // Black filler
+        assertTrue(game.makeMove(1, 5, 0, 4));
 
-        assertTrue(game.makeMove(3, 7, 1, 5)); // White queen near king
-        assertTrue(game.makeMove(1, 3, 2, 3)); // Black filler
-
-        assertTrue(game.makeMove(1, 5, 0, 4)); // White captures Black king
-
-        boolean movedAfterGameOver = game.makeMove(6, 0, 5, 0);
+        boolean movedAfterGameOver = game.makeMove(7, 4, 6, 4);
 
         assertFalse(movedAfterGameOver);
         assertTrue(game.isGameOver());
         assertEquals("WHITE", game.getWinnerColor());
     }
+
 
     @Test
     void newGameWhiteKingIsNotInCheck() {
@@ -537,6 +531,179 @@ public class GameTests {
         placePiece(board, 5, 3, new Piece("PAWN", "WHITE"));
 
         assertTrue(game.isSquareUnderAttack(4, 4, "WHITE"));
+    }
+
+    @Test
+    void movingShieldingRookAwayFromKingIsRejected() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 4, 2, new Piece("ROOK", "WHITE"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
+
+        boolean moved = game.makeMove(4, 2, 5, 2);
+
+        assertFalse(moved);
+        assertEquals("WHITE", game.getCurrentPlayer().getColor());
+
+        Piece whiteRook = board.getPieceAt(4, 2);
+        assertNotNull(whiteRook);
+        assertEquals("ROOK", whiteRook.getType());
+        assertEquals("WHITE", whiteRook.getColor());
+
+        assertNull(board.getPieceAt(5, 2));
+    }
+
+    @Test
+    void kingCannotMoveIntoCheck() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 5, 0, new Piece("ROOK", "BLACK"));
+
+        boolean moved = game.makeMove(4, 4, 5, 4);
+
+        assertFalse(moved);
+        assertEquals("WHITE", game.getCurrentPlayer().getColor());
+
+        Piece king = board.getPieceAt(4, 4);
+        assertNotNull(king);
+        assertEquals("KING", king.getType());
+        assertEquals("WHITE", king.getColor());
+
+        assertNull(board.getPieceAt(5, 4));
+    }
+
+    @Test
+    void kingCanMoveOutOfCheck() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+
+        boolean moved = game.makeMove(4, 4, 5, 4);
+
+        assertTrue(moved);
+        assertEquals("BLACK", game.getCurrentPlayer().getColor());
+        assertNull(board.getPieceAt(4, 4));
+
+        Piece king = board.getPieceAt(5, 4);
+        assertNotNull(king);
+        assertEquals("KING", king.getType());
+        assertEquals("WHITE", king.getColor());
+    }
+
+
+    @Test
+    void playerCannotIgnoreCheckWithUnrelatedMove() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+        placePiece(board, 6, 7, new Piece("PAWN", "WHITE"));
+
+        boolean moved = game.makeMove(6, 7, 5, 7);
+
+        assertFalse(moved);
+        assertEquals("WHITE", game.getCurrentPlayer().getColor());
+
+        Piece pawn = board.getPieceAt(6, 7);
+        assertNotNull(pawn);
+        assertEquals("PAWN", pawn.getType());
+        assertEquals("WHITE", pawn.getColor());
+
+        assertNull(board.getPieceAt(5, 7));
+    }
+
+    @Test
+    void blackCannotMoveShieldingPieceAndExposeKing() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
+        placePiece(board, 0, 2, new Piece("ROOK", "BLACK"));
+        placePiece(board, 0, 0, new Piece("ROOK", "WHITE"));
+        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
+
+        game.switchTurn();
+
+        boolean moved = game.makeMove(0, 2, 1, 2);
+
+        assertFalse(moved);
+        assertEquals("BLACK", game.getCurrentPlayer().getColor());
+
+        Piece blackRook = board.getPieceAt(0, 2);
+        assertNotNull(blackRook);
+        assertEquals("ROOK", blackRook.getType());
+        assertEquals("BLACK", blackRook.getColor());
+
+        assertNull(board.getPieceAt(1, 2));
+    }
+
+    @Test
+    void playerCanCaptureCheckingPiece() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 7, new Piece("KING", "BLACK"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+        placePiece(board, 2, 0, new Piece("ROOK", "WHITE"));
+
+        boolean moved = game.makeMove(2, 0, 4, 0);
+
+        assertTrue(moved);
+        assertEquals("BLACK", game.getCurrentPlayer().getColor());
+        assertNull(board.getPieceAt(2, 0));
+
+        Piece rook = board.getPieceAt(4, 0);
+        assertNotNull(rook);
+        assertEquals("ROOK", rook.getType());
+        assertEquals("WHITE", rook.getColor());
+    }
+
+    @Test
+    void playerCanBlockCheck() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 7, new Piece("KING", "BLACK"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+        placePiece(board, 2, 1, new Piece("BISHOP", "WHITE"));
+
+        boolean moved = game.makeMove(2, 1, 4, 3);
+
+        assertTrue(moved);
+        assertEquals("BLACK", game.getCurrentPlayer().getColor());
+        assertNull(board.getPieceAt(2, 1));
+
+        Piece bishop = board.getPieceAt(4, 3);
+        assertNotNull(bishop);
+        assertEquals("BISHOP", bishop.getType());
+        assertEquals("WHITE", bishop.getColor());
     }
 
 
