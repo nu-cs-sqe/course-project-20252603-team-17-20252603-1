@@ -107,9 +107,18 @@ public class Game {
             return true;
         }
 
+        String opponentColor = "WHITE".equals(currentPlayer.getColor()) ? "BLACK" : "WHITE";
+
+        if (isCheckmate(opponentColor)) {
+            gameOver = true;
+            winnerColor = currentPlayer.getColor();
+            return true;
+        }
+
         switchTurn();
 
         return true;
+
     }
 
 
