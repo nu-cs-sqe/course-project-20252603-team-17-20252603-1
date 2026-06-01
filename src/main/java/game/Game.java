@@ -91,6 +91,11 @@ public class Game {
         return true;
     }
 
+    public boolean isKingInCheck(String color) {
+        return false;
+    }
+
+
 
     public boolean isGameOver() {
         return gameOver;
