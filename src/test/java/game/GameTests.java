@@ -327,6 +327,19 @@ public class GameTests {
         assertTrue(game.isKingInCheck("WHITE"));
     }
 
+    @Test
+    void blackRookAttacksSquareReturnsTrue() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+
+        assertTrue(game.isSquareUnderAttack(4, 4, "BLACK"));
+    }
+
+
 
 
 
