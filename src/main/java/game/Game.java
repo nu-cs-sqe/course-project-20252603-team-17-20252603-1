@@ -123,17 +123,31 @@ public class Game {
             for (int startCol = 0; startCol < 8; startCol++) {
                 Piece piece = board.getPieceAt(startRow, startCol);
 
-                if (piece != null
-                        && byColor.equals(piece.getColor())
-                        && "ROOK".equals(piece.getType())
-                        && rookAttacksSquare(startRow, startCol, row, col)) {
-                    return true;
+                if (piece != null && byColor.equals(piece.getColor())) {
+                    if ("ROOK".equals(piece.getType())
+                            && rookAttacksSquare(startRow, startCol, row, col)) {
+                        return true;
+                    }
+
+                    if ("BISHOP".equals(piece.getType())
+                            && bishopAttacksSquare(startRow, startCol, row, col)) {
+                        return true;
+                    }
                 }
             }
         }
 
         return false;
     }
+
+    private boolean bishopAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
+        if (Math.abs(targetRow - startRow) != Math.abs(targetCol - startCol)) {
+            return false;
+        }
+
+        return isPathClear(startRow, startCol, targetRow, targetCol);
+    }
+
 
     private boolean rookAttacksSquare(int startRow, int startCol, int targetRow, int targetCol) {
         if (startRow != targetRow && startCol != targetCol) {
