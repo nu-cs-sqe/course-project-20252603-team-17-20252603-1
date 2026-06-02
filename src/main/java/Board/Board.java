@@ -37,6 +37,15 @@ public class Board {
 
 
     public boolean movePiece(int startRow, int startCol, int endRow, int endCol) {
+        return movePiece(startRow, startCol, endRow, endCol, null);
+    }
+
+    /**
+     * Moves a piece. For pawn moves to the promotion rank, {@code promotionPiece} selects the
+     * promoted type ({@code QUEEN}, {@code ROOK}, {@code BISHOP}, {@code KNIGHT}); {@code null}
+     * or blank means queen.
+     */
+    public boolean movePiece(int startRow, int startCol, int endRow, int endCol, String promotionPiece) {
         if (!isWithinBounds(startRow, startCol) || !isWithinBounds(endRow, endCol)) {
             return false;
         }
@@ -46,6 +55,15 @@ public class Board {
         }
         Piece destination = state[endRow][endCol];
         if (destination != null && destination.getColor().equals(piece.getColor())) {
+            return false;
+        }
+
+        String promoTrim = promotionPiece == null ? "" : promotionPiece.trim();
+        boolean promoSpecified = !promoTrim.isEmpty();
+        if (promoSpecified && !"PAWN".equals(piece.getType())) {
+            return false;
+        }
+        if ("PAWN".equals(piece.getType()) && promoSpecified && !isPawnPromotionRank(piece.getColor(), endRow)) {
             return false;
         }
 
@@ -78,9 +96,42 @@ public class Board {
             return false;
         }
 
-        state[endRow][endCol] = piece;
+        if ("PAWN".equals(piece.getType()) && isPawnPromotionRank(piece.getColor(), endRow)) {
+            String chosenType = resolvePromotionType(promoTrim);
+            if (chosenType == null) {
+                return false;
+            }
+            state[endRow][endCol] = new Piece(chosenType, piece.getColor());
+        } else {
+            state[endRow][endCol] = piece;
+        }
         state[startRow][startCol] = null;
         return true;
+    }
+
+    private boolean isPawnPromotionRank(String color, int endRow) {
+        if ("WHITE".equals(color)) {
+            return endRow == 0;
+        }
+        if ("BLACK".equals(color)) {
+            return endRow == 7;
+        }
+        return false;
+    }
+
+    /**
+     * @param promoTrim trimmed promotion token; empty means queen
+     * @return promotion type, or null if invalid when a choice was required
+     */
+    private String resolvePromotionType(String promoTrim) {
+        if (promoTrim.isEmpty()) {
+            return "QUEEN";
+        }
+        String upper = promoTrim.toUpperCase();
+        if ("QUEEN".equals(upper) || "ROOK".equals(upper) || "BISHOP".equals(upper) || "KNIGHT".equals(upper)) {
+            return upper;
+        }
+        return null;
     }
 
     private boolean isLegalKingMove(int startRow, int startCol, int endRow, int endCol) {

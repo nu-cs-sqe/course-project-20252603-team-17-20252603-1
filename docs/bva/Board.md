@@ -37,7 +37,7 @@
 
 ---
 
-## Method under test: `movePiece(int startRow, int startCol, int endRow, int endCol)`
+## Method under test: `movePiece(int startRow, int startCol, int endRow, int endCol)` and `movePiece(..., String promotionPiece)`
 
 | Test Case ID | State of the System                                                                                               | Expected Output                                                                                                   | Implemented? |
 |-------------|-------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|----------|
@@ -67,6 +67,13 @@
 | BOARD-MOVE-024 | White rook is at `(4, 4)` and Black pawn is at `(4, 7)` with a clear path. `movePiece(4, 4, 4, 7)` is called. | White rook captures the Black pawn. Starting square becomes empty and ending square contains the White rook.      | :white_check_mark: |
 | BOARD-MOVE-025 | White bishop is at `(4, 4)` and another piece is blocking the diagonal path at `(3, 3)`. `movePiece(4, 4, 2, 2)` is called. | Move is rejected because the bishop's path is blocked. Both pieces remain in place.                               | :white_check_mark: |
 | BOARD-MOVE-026 | White king is at `(4, 4)`. `movePiece(4, 4, 6, 4)` is called. | Move is rejected because a king cannot move two squares. The king remains in place.                               | :white_check_mark: |
+| BOARD-MOVE-027 | White pawn at `(1, 0)`, empty `(0, 0)`. `movePiece(1, 0, 0, 0)` is called with no promotion argument. | Pawn promotes; square `(0, 0)` contains a White queen. | :white_check_mark: |
+| BOARD-MOVE-028 | Black pawn at `(6, 7)`, empty `(7, 7)`. `movePiece(6, 7, 7, 7)` is called with no promotion argument. | Pawn promotes; square `(7, 7)` contains a Black queen. | :white_check_mark: |
+| BOARD-MOVE-029 | White pawn at `(1, 2)`, empty `(0, 2)`. `movePiece(1, 2, 0, 2, "ROOK")` is called. | Pawn promotes to a White rook on `(0, 2)`. | :white_check_mark: |
+| BOARD-MOVE-030 | White pawn at `(3, 0)`, empty `(2, 0)`. `movePiece(3, 0, 2, 0, "ROOK")` is called. | Move is rejected; promotion piece is only valid on the final rank. Pawn stays on `(3, 0)`. | :white_check_mark: |
+| BOARD-MOVE-031 | White pawn at `(1, 1)`, empty `(0, 1)`. `movePiece(1, 1, 0, 1, "PAWN")` is called. | Move is rejected; invalid promotion type. | :white_check_mark: |
+| BOARD-MOVE-032 | White rook at `(4, 4)`, empty `(4, 7)`. `movePiece(4, 4, 4, 7, "QUEEN")` is called. | Move is rejected; non-pawns cannot take a promotion argument. | :white_check_mark: |
+| BOARD-MOVE-033 | White pawn at `(1, 3)`, Black rook at `(0, 4)`. `movePiece(1, 3, 0, 4)` is called. | Capture and promotion; `(0, 4)` has a White queen. | :white_check_mark: |
 
 
 

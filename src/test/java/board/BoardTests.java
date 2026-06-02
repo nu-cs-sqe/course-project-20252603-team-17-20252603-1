@@ -423,6 +423,16 @@ public class BoardTests {
     }
 
 
+    private void clearBoard(Board board) {
+        try {
+            java.lang.reflect.Field stateField = Board.class.getDeclaredField("state");
+            stateField.setAccessible(true);
+            stateField.set(board, new Piece[8][8]);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void placePiece(Board board, int row, int col, Piece piece) {
         try {
             java.lang.reflect.Field stateField = Board.class.getDeclaredField("state");
@@ -693,6 +703,126 @@ public class BoardTests {
         assertEquals("WHITE", king.getColor());
 
         assertNull(board.getPieceAt(6, 4));
+    }
+
+    @Test
+    void whitePawnPromotesToQueenByDefaultOnLastRank() {
+        Board board = new Board();
+        clearBoard(board);
+        placePiece(board, 1, 0, new Piece("PAWN", "WHITE"));
+        placePiece(board, 7, 7, new Piece("KING", "BLACK"));
+
+        assertTrue(board.movePiece(1, 0, 0, 0));
+        assertNull(board.getPieceAt(1, 0));
+
+        Piece promoted = board.getPieceAt(0, 0);
+        assertNotNull(promoted);
+        assertEquals("QUEEN", promoted.getType());
+        assertEquals("WHITE", promoted.getColor());
+    }
+
+    @Test
+    void blackPawnPromotesToQueenByDefaultOnLastRank() {
+        Board board = new Board();
+        clearBoard(board);
+        placePiece(board, 6, 7, new Piece("PAWN", "BLACK"));
+        placePiece(board, 0, 0, new Piece("KING", "WHITE"));
+
+        assertTrue(board.movePiece(6, 7, 7, 7));
+        assertNull(board.getPieceAt(6, 7));
+
+        Piece promoted = board.getPieceAt(7, 7);
+        assertNotNull(promoted);
+        assertEquals("QUEEN", promoted.getType());
+        assertEquals("BLACK", promoted.getColor());
+    }
+
+    @Test
+    void whitePawnPromotesToRookWhenSpecified() {
+        Board board = new Board();
+        clearBoard(board);
+        placePiece(board, 1, 2, new Piece("PAWN", "WHITE"));
+        placePiece(board, 7, 7, new Piece("KING", "BLACK"));
+
+        assertTrue(board.movePiece(1, 2, 0, 2, "ROOK"));
+
+        Piece promoted = board.getPieceAt(0, 2);
+        assertNotNull(promoted);
+        assertEquals("ROOK", promoted.getType());
+        assertEquals("WHITE", promoted.getColor());
+    }
+
+    @Test
+    void whitePawnPromotesToKnightWhenSpecifiedLowercase() {
+        Board board = new Board();
+        clearBoard(board);
+        placePiece(board, 1, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 7, 7, new Piece("KING", "BLACK"));
+
+        assertTrue(board.movePiece(1, 4, 0, 4, "knight"));
+
+        Piece promoted = board.getPieceAt(0, 4);
+        assertNotNull(promoted);
+        assertEquals("KNIGHT", promoted.getType());
+        assertEquals("WHITE", promoted.getColor());
+    }
+
+    @Test
+    void promotionRejectedWhenNotOnFinalRank() {
+        Board board = new Board();
+        clearBoard(board);
+        placePiece(board, 3, 0, new Piece("PAWN", "WHITE"));
+        placePiece(board, 7, 7, new Piece("KING", "BLACK"));
+
+        assertFalse(board.movePiece(3, 0, 2, 0, "ROOK"));
+
+        Piece pawn = board.getPieceAt(3, 0);
+        assertNotNull(pawn);
+        assertEquals("PAWN", pawn.getType());
+        assertNull(board.getPieceAt(2, 0));
+    }
+
+    @Test
+    void promotionRejectedForInvalidPieceType() {
+        Board board = new Board();
+        clearBoard(board);
+        placePiece(board, 1, 1, new Piece("PAWN", "WHITE"));
+        placePiece(board, 7, 7, new Piece("KING", "BLACK"));
+
+        assertFalse(board.movePiece(1, 1, 0, 1, "PAWN"));
+        assertFalse(board.movePiece(1, 1, 0, 1, "KING"));
+
+        Piece pawn = board.getPieceAt(1, 1);
+        assertNotNull(pawn);
+        assertEquals("PAWN", pawn.getType());
+    }
+
+    @Test
+    void whitePawnCapturePromotesToQueen() {
+        Board board = new Board();
+        clearBoard(board);
+        placePiece(board, 1, 3, new Piece("PAWN", "WHITE"));
+        placePiece(board, 0, 4, new Piece("ROOK", "BLACK"));
+        placePiece(board, 7, 7, new Piece("KING", "BLACK"));
+
+        assertTrue(board.movePiece(1, 3, 0, 4));
+
+        Piece promoted = board.getPieceAt(0, 4);
+        assertNotNull(promoted);
+        assertEquals("QUEEN", promoted.getType());
+        assertEquals("WHITE", promoted.getColor());
+    }
+
+    @Test
+    void rookMoveWithPromotionParameterRejected() {
+        Board board = new Board();
+        clearBoard(board);
+        placePiece(board, 4, 4, new Piece("ROOK", "WHITE"));
+
+        assertFalse(board.movePiece(4, 4, 4, 7, "QUEEN"));
+
+        assertNotNull(board.getPieceAt(4, 4));
+        assertNull(board.getPieceAt(4, 7));
     }
 
 
