@@ -4,6 +4,11 @@ public class Board {
 
     private Piece[][] state;
 
+    private boolean whiteCastleKingSide;
+    private boolean whiteCastleQueenSide;
+    private boolean blackCastleKingSide;
+    private boolean blackCastleQueenSide;
+
     public Board() {
         this.state = new Piece[8][8];
     }
@@ -18,6 +23,11 @@ public class Board {
 
         this.state[6] = generatePawnRow("WHITE");
         this.state[7] = generateBoundaryRows("WHITE");
+
+        whiteCastleKingSide = true;
+        whiteCastleQueenSide = true;
+        blackCastleKingSide = true;
+        blackCastleQueenSide = true;
 
         return;
     }
@@ -88,7 +98,11 @@ public class Board {
                 return false;
             }
         } else if ("KING".equals(piece.getType())) {
-            if (!isLegalKingMove(startRow, startCol, endRow, endCol)) {
+            if (isCastlingAttempt(startRow, startCol, endRow, endCol, piece.getColor())) {
+                if (!isLegalCastling(startRow, startCol, endRow, endCol, piece.getColor())) {
+                    return false;
+                }
+            } else if (!isLegalKingMove(startRow, startCol, endRow, endCol)) {
                 return false;
             }
 
@@ -102,11 +116,131 @@ public class Board {
                 return false;
             }
             state[endRow][endCol] = new Piece(chosenType, piece.getColor());
+        } else if ("KING".equals(piece.getType())
+                && isCastlingAttempt(startRow, startCol, endRow, endCol, piece.getColor())) {
+            executeCastling(startRow, startCol, endRow, endCol, piece.getColor());
         } else {
             state[endRow][endCol] = piece;
         }
         state[startRow][startCol] = null;
+        updateCastlingRightsAfterMove(piece, startRow, startCol, endRow, endCol, destination);
         return true;
+    }
+
+    private void updateCastlingRightsAfterMove(Piece moved, int startRow, int startCol, int endRow, int endCol,
+                                               Piece captured) {
+        if ("KING".equals(moved.getType())) {
+            if ("WHITE".equals(moved.getColor())) {
+                whiteCastleKingSide = false;
+                whiteCastleQueenSide = false;
+            } else {
+                blackCastleKingSide = false;
+                blackCastleQueenSide = false;
+            }
+        }
+        if ("ROOK".equals(moved.getType())) {
+            if ("WHITE".equals(moved.getColor()) && startRow == 7) {
+                if (startCol == 0) {
+                    whiteCastleQueenSide = false;
+                }
+                if (startCol == 7) {
+                    whiteCastleKingSide = false;
+                }
+            }
+            if ("BLACK".equals(moved.getColor()) && startRow == 0) {
+                if (startCol == 0) {
+                    blackCastleQueenSide = false;
+                }
+                if (startCol == 7) {
+                    blackCastleKingSide = false;
+                }
+            }
+        }
+        if (captured != null && "ROOK".equals(captured.getType())) {
+            if ("WHITE".equals(captured.getColor()) && endRow == 7) {
+                if (endCol == 0) {
+                    whiteCastleQueenSide = false;
+                }
+                if (endCol == 7) {
+                    whiteCastleKingSide = false;
+                }
+            }
+            if ("BLACK".equals(captured.getColor()) && endRow == 0) {
+                if (endCol == 0) {
+                    blackCastleQueenSide = false;
+                }
+                if (endCol == 7) {
+                    blackCastleKingSide = false;
+                }
+            }
+        }
+    }
+
+    private boolean isCastlingAttempt(int startRow, int startCol, int endRow, int endCol, String color) {
+        if (startRow != endRow || Math.abs(endCol - startCol) != 2 || startCol != 4) {
+            return false;
+        }
+        if ("WHITE".equals(color) && startRow != 7) {
+            return false;
+        }
+        if ("BLACK".equals(color) && startRow != 0) {
+            return false;
+        }
+        return endCol == 2 || endCol == 6;
+    }
+
+    private boolean isLegalCastling(int startRow, int startCol, int endRow, int endCol, String color) {
+        if ("WHITE".equals(color)) {
+            if (endCol == 6) {
+                return whiteCastleKingSide
+                        && isRookAt(startRow, 7, "WHITE", "ROOK")
+                        && state[startRow][5] == null
+                        && state[startRow][6] == null;
+            }
+            if (endCol == 2) {
+                return whiteCastleQueenSide
+                        && isRookAt(startRow, 0, "WHITE", "ROOK")
+                        && state[startRow][1] == null
+                        && state[startRow][2] == null
+                        && state[startRow][3] == null;
+            }
+        } else if ("BLACK".equals(color)) {
+            if (endCol == 6) {
+                return blackCastleKingSide
+                        && isRookAt(startRow, 7, "BLACK", "ROOK")
+                        && state[startRow][5] == null
+                        && state[startRow][6] == null;
+            }
+            if (endCol == 2) {
+                return blackCastleQueenSide
+                        && isRookAt(startRow, 0, "BLACK", "ROOK")
+                        && state[startRow][1] == null
+                        && state[startRow][2] == null
+                        && state[startRow][3] == null;
+            }
+        }
+        return false;
+    }
+
+    private boolean isRookAt(int row, int col, String color, String type) {
+        Piece p = state[row][col];
+        return p != null && color.equals(p.getColor()) && type.equals(p.getType());
+    }
+
+    private void executeCastling(int startRow, int startCol, int endRow, int endCol, String color) {
+        Piece king = state[startRow][startCol];
+        state[startRow][startCol] = null;
+        if (endCol == 6) {
+            Piece rook = state[startRow][7];
+            state[startRow][7] = null;
+            state[startRow][endCol] = king;
+            state[startRow][5] = rook;
+        } else {
+            Piece rook = state[startRow][0];
+            state[startRow][0] = null;
+            state[startRow][endCol] = king;
+            state[startRow][3] = rook;
+        }
     }
 
     private boolean isPawnPromotionRank(String color, int endRow) {
@@ -268,6 +402,11 @@ public class Board {
                 copy.state[row][col] = this.state[row][col];
             }
         }
+
+        copy.whiteCastleKingSide = this.whiteCastleKingSide;
+        copy.whiteCastleQueenSide = this.whiteCastleQueenSide;
+        copy.blackCastleKingSide = this.blackCastleKingSide;
+        copy.blackCastleQueenSide = this.blackCastleQueenSide;
 
         return copy;
     }
