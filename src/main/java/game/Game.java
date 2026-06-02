@@ -1,5 +1,4 @@
 package game;
-import board.Piece;
 
 import player.Player;
 import board.Board;
@@ -88,6 +87,24 @@ public class Game {
             return false;
         }
 
+        if (isCastlingMove(startRow, startCol, endRow, endCol, piece)) {
+            if (isKingInCheck(currentPlayer.getColor())) {
+                return false;
+            }
+            int midCol = startCol + Integer.signum(endCol - startCol);
+            Board throughProbe = board.copy();
+            if (!throughProbe.movePiece(startRow, startCol, startRow, midCol)) {
+                return false;
+            }
+            Board saved = board;
+            board = throughProbe;
+            if (isKingInCheck(currentPlayer.getColor())) {
+                board = saved;
+                return false;
+            }
+            board = saved;
+        }
+
         Board originalBoard = board;
         Board simulatedBoard = board.copy();
 
@@ -131,6 +148,22 @@ public class Game {
 
         return true;
 
+    }
+
+    private boolean isCastlingMove(int startRow, int startCol, int endRow, int endCol, Piece piece) {
+        if (!"KING".equals(piece.getType())) {
+            return false;
+        }
+        if (startRow != endRow || Math.abs(endCol - startCol) != 2 || startCol != 4) {
+            return false;
+        }
+        if ("WHITE".equals(piece.getColor())) {
+            return startRow == 7 && (endCol == 2 || endCol == 6);
+        }
+        if ("BLACK".equals(piece.getColor())) {
+            return startRow == 0 && (endCol == 2 || endCol == 6);
+        }
+        return false;
     }
 
 
