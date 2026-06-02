@@ -209,45 +209,6 @@ public class GameTests {
         assertNotNull(game.getBoard().getPieceAt(7, 1));
     }
 
-    @Test
-    void capturingBlackKingMakesGameOverAndWhiteWins() {
-        Game game = new Game();
-        game.startNewGame();
-        Board board = game.getBoard();
-        clearBoard(board);
-
-        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
-        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
-        placePiece(board, 1, 5, new Piece("QUEEN", "WHITE"));
-
-        boolean moved = game.makeMove(1, 5, 0, 4);
-
-        assertTrue(moved);
-        assertTrue(game.isGameOver());
-        assertEquals("WHITE", game.getWinnerColor());
-    }
-
-
-    @Test
-    void capturingWhiteKingMakesGameOverAndBlackWins() {
-        Game game = new Game();
-        game.startNewGame();
-        Board board = game.getBoard();
-        clearBoard(board);
-
-        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
-        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
-        placePiece(board, 6, 5, new Piece("QUEEN", "BLACK"));
-
-        game.switchTurn();
-
-        boolean moved = game.makeMove(6, 5, 7, 4);
-
-        assertTrue(moved);
-        assertTrue(game.isGameOver());
-        assertEquals("BLACK", game.getWinnerColor());
-    }
-
 
     @Test
     void moveAfterGameOverIsRejected() {
@@ -256,18 +217,21 @@ public class GameTests {
         Board board = game.getBoard();
         clearBoard(board);
 
-        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
-        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
-        placePiece(board, 1, 5, new Piece("QUEEN", "WHITE"));
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 2, 2, new Piece("KING", "WHITE"));
+        placePiece(board, 2, 1, new Piece("QUEEN", "WHITE"));
 
-        assertTrue(game.makeMove(1, 5, 0, 4));
+        assertTrue(game.makeMove(2, 1, 1, 1));
+        assertTrue(game.isGameOver());
+        assertEquals("WHITE", game.getWinnerColor());
 
-        boolean movedAfterGameOver = game.makeMove(7, 4, 6, 4);
+        boolean movedAfterGameOver = game.makeMove(0, 0, 0, 1);
 
         assertFalse(movedAfterGameOver);
         assertTrue(game.isGameOver());
         assertEquals("WHITE", game.getWinnerColor());
     }
+
 
 
     @Test
@@ -705,6 +669,211 @@ public class GameTests {
         assertEquals("BISHOP", bishop.getType());
         assertEquals("WHITE", bishop.getColor());
     }
+
+    @Test
+    void whiteNotInCheckIsNotCheckmate() {
+        Game game = new Game();
+        game.startNewGame();
+
+        assertFalse(game.isCheckmate("WHITE"));
+    }
+
+    @Test
+    void blackInCheckIsNotStalemate() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
+        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 1, 4, new Piece("ROOK", "WHITE"));
+
+        assertFalse(game.isStalemate("BLACK"));
+    }
+
+    @Test
+    void whiteInCheckButCanEscapeIsNotCheckmate() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+
+        assertFalse(game.isCheckmate("WHITE"));
+    }
+
+    @Test
+    void whiteInCheckWithNoLegalMovesIsCheckmate() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 0, new Piece("KING", "WHITE"));
+        placePiece(board, 1, 1, new Piece("QUEEN", "BLACK"));
+        placePiece(board, 2, 2, new Piece("KING", "BLACK"));
+
+        assertTrue(game.isCheckmate("WHITE"));
+    }
+
+    @Test
+    void blackWithLegalKingMoveIsNotStalemate() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 7, 7, new Piece("KING", "WHITE"));
+
+        assertFalse(game.isStalemate("BLACK"));
+    }
+
+
+    @Test
+    void blackNotInCheckWithNoLegalKingMovesIsStalemate() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 2, 1, new Piece("KING", "WHITE"));
+        placePiece(board, 1, 2, new Piece("QUEEN", "WHITE"));
+
+        assertTrue(game.isStalemate("BLACK"));
+    }
+
+    @Test
+    void blackWithLegalPawnMoveIsNotStalemate() {
+        Game game = new Game();
+        game.startNewGame();
+
+        assertFalse(game.isStalemate("BLACK"));
+    }
+
+    @Test
+    void whiteInCheckButCanBlockWithRookIsNotCheckmate() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 7, new Piece("KING", "BLACK"));
+        placePiece(board, 4, 0, new Piece("ROOK", "BLACK"));
+        placePiece(board, 2, 2, new Piece("ROOK", "WHITE"));
+
+        assertFalse(game.isCheckmate("WHITE"));
+    }
+
+    @Test
+    void moveThatCheckmatesBlackEndsGameAndWhiteWins() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 2, 2, new Piece("KING", "WHITE"));
+        placePiece(board, 2, 1, new Piece("QUEEN", "WHITE"));
+
+        boolean moved = game.makeMove(2, 1, 1, 1);
+
+        assertTrue(moved);
+        assertTrue(game.isGameOver());
+        assertEquals("WHITE", game.getWinnerColor());
+        assertTrue(game.isCheckmate("BLACK"));
+    }
+
+    @Test
+    void moveAfterCheckmateIsRejected() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 2, 2, new Piece("KING", "WHITE"));
+        placePiece(board, 2, 1, new Piece("QUEEN", "WHITE"));
+
+        assertTrue(game.makeMove(2, 1, 1, 1));
+        assertTrue(game.isGameOver());
+        assertEquals("WHITE", game.getWinnerColor());
+
+        boolean movedAfterCheckmate = game.makeMove(0, 0, 0, 1);
+
+        assertFalse(movedAfterCheckmate);
+        assertTrue(game.isGameOver());
+        assertEquals("WHITE", game.getWinnerColor());
+    }
+
+    @Test
+    void moveThatStalematesBlackEndsGameAsDraw() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 2, 1, new Piece("KING", "WHITE"));
+        placePiece(board, 2, 3, new Piece("QUEEN", "WHITE"));
+
+        boolean moved = game.makeMove(2, 3, 1, 2);
+
+        assertTrue(moved);
+        assertTrue(game.isGameOver());
+        assertTrue(game.isDraw());
+        assertNull(game.getWinnerColor());
+        assertTrue(game.isStalemate("BLACK"));
+    }
+
+    @Test
+    void startNewGameResetsDrawState() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+        placePiece(board, 2, 1, new Piece("KING", "WHITE"));
+        placePiece(board, 2, 3, new Piece("QUEEN", "WHITE"));
+
+        assertTrue(game.makeMove(2, 3, 1, 2));
+        assertTrue(game.isDraw());
+
+        game.startNewGame();
+
+        assertFalse(game.isDraw());
+        assertNull(game.getWinnerColor());
+        assertFalse(game.isGameOver());
+    }
+
+    @Test
+    void moveThatCheckmatesWhiteEndsGameAndBlackWins() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 7, 7, new Piece("KING", "WHITE"));
+        placePiece(board, 5, 5, new Piece("KING", "BLACK"));
+        placePiece(board, 5, 6, new Piece("QUEEN", "BLACK"));
+
+        game.switchTurn();
+
+        boolean moved = game.makeMove(5, 6, 6, 6);
+
+        assertTrue(moved);
+        assertTrue(game.isGameOver());
+        assertEquals("BLACK", game.getWinnerColor());
+        assertTrue(game.isCheckmate("WHITE"));
+    }
+
 
 
 
