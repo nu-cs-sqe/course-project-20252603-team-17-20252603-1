@@ -31,8 +31,8 @@
 
 ## Method under test: `switchTurn()`
 
-| Test Case ID | State of the System | Expected Output | Implemented? |
-|-------------|---------------------|-----------------|--------|
+| Test Case ID | State of the System                           | Expected Output | Implemented? |
+|-------------|-----------------------------------------------|-----------------|--------|
 | GAME-TURN-001 | It is White's turn. `switchTurn()` is called. | Current player changes to Black. | :white_check_mark: |
 | GAME-TURN-002 | It is Black's turn. `switchTurn()` is called. | Current player changes to White. | :white_check_mark: |
 
@@ -40,11 +40,12 @@
 
 ## Method under test: `isGameOver()`
 
-| Test Case ID | State of the System | Expected Output | Implemented?       |
-|-------------|---------------------|-----------------|--------------------|
-| GAME-OVER-001 | A new game has started and no moves have been made. | Returns `false`. | :white_check_mark: |
-| GAME-OVER-002 | Black king has been captured by White. | Returns `true` and winner is White. | :white_check_mark: |
-| GAME-OVER-003 | White king has been captured by Black. | Returns `true` and winner is Black. | :white_check_mark: |
+| Test Case ID  | State of the System                                             | Expected Output                                         | Implemented?       |
+|---------------|-----------------------------------------------------------------|---------------------------------------------------------|--------------------|
+| GAME-OVER-001 | A new game has started and no moves have been made.             | Returns `false`.                                        | :white_check_mark: |
+| GAME-OVER-002 | A move has checkmated Black.                                    | Returns `true` and winner is White.                     | :white_check_mark: |
+| GAME-OVER-003 | A move has checkmated White.                                    | Returns `true` and winner is Black.                     | :white_check_mark: |
+| GAME-OVER-005 | A previous game ended in stalemate. `startNewGame()` is called. | Draw state resets to `false` and winner remains `null`. | :white_check_mark: |
 ---
 
 ---
@@ -109,5 +110,28 @@
 | GAME-ATTACK-009 | The requested square is outside the board. `isSquareUnderAttack(-1, 0, "BLACK")` is called. | Returns `false`. | :white_check_mark: |
 | GAME-ATTACK-010 | A game has not started yet. `isSquareUnderAttack(4, 4, "BLACK")` is called. | Returns `false`. | :white_check_mark: |
 | GAME-ATTACK-011 | A White pawn attacks square `(4, 4)` diagonally. `isSquareUnderAttack(4, 4, "WHITE")` is called. | Returns  `true`. | :white_check_mark: |
+
+
+## Method under test: isCheckmate(String color)
+
+| Test Case ID | State of the System | Expected Output | Implemented? |
+|-------------|---------------------|-----------------|--------------|
+| GAME-CHECKMATE-001 | White is in check and has no legal moves. `isCheckmate("WHITE")` is called. | Returns `true`. | :white_check_mark: |
+| GAME-CHECKMATE-002 | White is in check but has a legal move to escape. `isCheckmate("WHITE")` is called. | Returns `false`. | :white_check_mark: |
+| GAME-CHECKMATE-003 | White is not in check. `isCheckmate("WHITE")` is called. | Returns `false`. | :white_check_mark: |
+| GAME-CHECKMATE-004 | A move checkmates Black through `makeMove(...)`. | Game becomes over and winner is White. | :white_check_mark: |
+| GAME-CHECKMATE-005 | A player attempts a move after checkmate. | Move is rejected and the game result stays unchanged. | :white_check_mark: |
+
+
+## Method under test: isStalemate(String color)
+
+| Test Case ID | State of the System | Expected Output              | Implemented? |
+|-------------|---------------------|------------------------------|--------------|
+| GAME-STALEMATE-001 | Black is not in check but has no legal moves. `isStalemate("BLACK")` is called. | Returns `true`.              | :white_check_mark: |
+| GAME-STALEMATE-002 | Black is in check. `isStalemate("BLACK")` is called. | Returns `false`.             | :white_check_mark: |
+| GAME-STALEMATE-003 | Black has at least one legal move. `isStalemate("BLACK")` is called. | Returns `false`.             | :white_check_mark: |
+| GAME-STALEMATE-004 | A move creates stalemate through `makeMove(...)`. | Game becomes over as a draw. | :white_check_mark: |
+| GAME-STALEMATE-005 | Black has no legal king move but has a legal pawn move. `isStalemate("BLACK")` is called. | Returns `false`.             | :white_check_mark: |
+
 
 
