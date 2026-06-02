@@ -12,6 +12,6 @@ Kings are not captured in the final rule set. Instead, the game detects check an
 
 The game also supports draw conditions. Stalemate ends the game as a draw. Additional draw rules, including insufficient material, the fifty-move rule, and threefold repetition, are part of the full rule set.
 
-Special chess rules are part of the full rule set, including castling, en passant, and pawn promotion. Pawn promotion allows a pawn reaching the final rank to promote to a queen, rook, bishop, or knight.
+Special chess rules are part of the full rule set, including castling, en passant, and pawn promotion. Pawn promotion allows a pawn reaching the final rank to promote to a queen, rook, bishop, or knight. If no promotion piece is specified (for example in the command-line interface), the pawn promotes to a queen by default.
 
 After the game is over, no further moves are allowed.
