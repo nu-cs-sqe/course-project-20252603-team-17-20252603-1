@@ -87,7 +87,7 @@
 | GAME-ENPASSANT-005 | A Black pawn is not on row `4` and attempts an en passant-style diagonal move into an empty square. | The move returns `false`; the board does not change; the turn does not change. | :white_check_mark: |
 | GAME-ENPASSANT-006 | The previous successful move was not a two-square pawn move. A pawn attempts an en passant-style diagonal move into an empty square. | The move returns `false`; the board does not change; the turn does not change. | :white_check_mark: |
 | GAME-ENPASSANT-007 | The previous successful move was a two-square pawn move, but the moved pawn is not adjacent to the capturing pawn. | The move returns `false`; the board does not change; the turn does not change. | :white_check_mark: |
-| GAME-ENPASSANT-008 | A pawn attempts en passant in the wrong direction. | The move returns `false`; the board does not change; the turn does not change. | :x: |
+| GAME-ENPASSANT-008 | A pawn attempts en passant in the wrong direction. | The move returns `false`; the board does not change; the turn does not change. | :white_check_mark: |
 
 ## Method under test: isKingInCheck(String color)
 
