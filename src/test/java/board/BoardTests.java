@@ -833,7 +833,10 @@ public class BoardTests {
         placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
         placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
 
-        assertTrue(board.movePieceEnPassant(3, 4, 2, 3, 3, 3));
+        assertTrue(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 3),
+                new Position(3, 3)));
 
         assertNull(board.getPieceAt(3, 4));
         assertNull(board.getPieceAt(3, 3));
@@ -852,7 +855,10 @@ public class BoardTests {
         placePiece(board, 4, 4, new Piece("PAWN", "BLACK"));
         placePiece(board, 4, 3, new Piece("PAWN", "WHITE"));
 
-        assertTrue(board.movePieceEnPassant(4, 4, 5, 3, 4, 3));
+        assertTrue(board.movePieceEnPassant(
+                new Position(4, 4),
+                new Position(5, 3),
+                new Position(4, 3)));
 
         assertNull(board.getPieceAt(4, 4));
         assertNull(board.getPieceAt(4, 3));
@@ -870,7 +876,10 @@ public class BoardTests {
 
         placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
 
-        assertFalse(board.movePieceEnPassant(3, 4, 2, 3, 3, 3));
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 3),
+                new Position(3, 3)));
 
         assertNull(board.getPieceAt(3, 4));
 
@@ -890,7 +899,10 @@ public class BoardTests {
         placePiece(board, 3, 4, new Piece("ROOK", "WHITE"));
         placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
 
-        assertFalse(board.movePieceEnPassant(3, 4, 2, 3, 3, 3));
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 3),
+                new Position(3, 3)));
 
         Piece whiteRook = board.getPieceAt(3, 4);
         assertNotNull(whiteRook);
@@ -913,7 +925,10 @@ public class BoardTests {
         placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
         placePiece(board, 3, 3, new Piece("PAWN", "WHITE"));
 
-        assertFalse(board.movePieceEnPassant(3, 4, 2, 3, 3, 3));
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 3),
+                new Position(3, 3)));
 
         Piece movingPawn = board.getPieceAt(3, 4);
         assertNotNull(movingPawn);
@@ -936,7 +951,10 @@ public class BoardTests {
         placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
         placePiece(board, 3, 3, new Piece("ROOK", "BLACK"));
 
-        assertFalse(board.movePieceEnPassant(3, 4, 2, 3, 3, 3));
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 3),
+                new Position(3, 3)));
 
         Piece whitePawn = board.getPieceAt(3, 4);
         assertNotNull(whitePawn);
@@ -960,7 +978,10 @@ public class BoardTests {
         placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
         placePiece(board, 2, 3, new Piece("KNIGHT", "BLACK"));
 
-        assertFalse(board.movePieceEnPassant(3, 4, 2, 3, 3, 3));
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 3),
+                new Position(3, 3)));
 
         Piece whitePawn = board.getPieceAt(3, 4);
         assertNotNull(whitePawn);
@@ -986,7 +1007,10 @@ public class BoardTests {
         placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
         placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
 
-        assertFalse(board.movePieceEnPassant(3, 4, 4, 3, 3, 3));
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(4, 3),
+                new Position(3, 3)));
 
         Piece whitePawn = board.getPieceAt(3, 4);
         assertNotNull(whitePawn);
@@ -1009,7 +1033,10 @@ public class BoardTests {
         placePiece(board, 4, 4, new Piece("PAWN", "BLACK"));
         placePiece(board, 4, 3, new Piece("PAWN", "WHITE"));
 
-        assertFalse(board.movePieceEnPassant(4, 4, 3, 3, 4, 3));
+        assertFalse(board.movePieceEnPassant(
+                new Position(4, 4),
+                new Position(3, 3),
+                new Position(4, 3)));
 
         Piece blackPawn = board.getPieceAt(4, 4);
         assertNotNull(blackPawn);
@@ -1032,7 +1059,10 @@ public class BoardTests {
         placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
         placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
 
-        assertFalse(board.movePieceEnPassant(3, 4, 1, 3, 3, 3));
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(1, 3),
+                new Position(3, 3)));
 
         Piece whitePawn = board.getPieceAt(3, 4);
         assertNotNull(whitePawn);
@@ -1055,7 +1085,10 @@ public class BoardTests {
         placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
         placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
 
-        assertFalse(board.movePieceEnPassant(3, 4, 2, 4, 3, 3));
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 4),
+                new Position(3, 3)));
 
         Piece whitePawn = board.getPieceAt(3, 4);
         assertNotNull(whitePawn);
@@ -1078,7 +1111,10 @@ public class BoardTests {
         placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
         placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
 
-        assertFalse(board.movePieceEnPassant(-1, 4, 2, 3, 3, 3));
+        assertFalse(board.movePieceEnPassant(
+                new Position(-1, 4),
+                new Position(2, 3),
+                new Position(3, 3)));
 
         Piece whitePawn = board.getPieceAt(3, 4);
         assertNotNull(whitePawn);
@@ -1101,7 +1137,10 @@ public class BoardTests {
         placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
         placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
 
-        assertFalse(board.movePieceEnPassant(3, 4, 8, 3, 3, 3));
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(8, 3),
+                new Position(3, 3)));
 
         Piece whitePawn = board.getPieceAt(3, 4);
         assertNotNull(whitePawn);
@@ -1122,7 +1161,10 @@ public class BoardTests {
         placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
         placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
 
-        assertFalse(board.movePieceEnPassant(3, 4, 2, 3, 9, 3));
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 3),
+                new Position(9, 3)));
 
         Piece whitePawn = board.getPieceAt(3, 4);
         assertNotNull(whitePawn);
