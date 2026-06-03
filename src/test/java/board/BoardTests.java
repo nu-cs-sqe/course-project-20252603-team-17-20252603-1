@@ -928,8 +928,28 @@ public class BoardTests {
         assertNull(board.getPieceAt(2, 3));
     }
 
+    @Test
+    void enPassantRejectedWhenCapturedPieceIsNotPawn() {
+        Board board = new Board();
+        clearBoard(board);
 
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 3, new Piece("ROOK", "BLACK"));
 
+        assertFalse(board.movePieceEnPassant(3, 4, 2, 3, 3, 3));
+
+        Piece whitePawn = board.getPieceAt(3, 4);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        Piece blackRook = board.getPieceAt(3, 3);
+        assertNotNull(blackRook);
+        assertEquals("ROOK", blackRook.getType());
+        assertEquals("BLACK", blackRook.getColor());
+
+        assertNull(board.getPieceAt(2, 3));
+    }
 
 
 }
