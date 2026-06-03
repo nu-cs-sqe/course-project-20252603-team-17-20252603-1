@@ -87,7 +87,17 @@
 | BOARD-MOVE-044 | White pawn at `(3, 4)` and Black pawn at `(3, 3)`. `movePieceEnPassant(3, 4, 2, 3, 3, 3)` is called. | White pawn moves to `(2, 3)` and the Black pawn at `(3, 3)` is removed.                                                                                 | :white_check_mark: |
 | BOARD-MOVE-045 | Black pawn at `(4, 4)` and White pawn at `(4, 3)`. `movePieceEnPassant(4, 4, 5, 3, 4, 3)` is called. | Black pawn moves to `(5, 3)` and the White pawn at `(4, 3)` is removed.                                                                                 | :white_check_mark: |
 | BOARD-MOVE-046 | No piece exists at `(3, 4)` and Black pawn is at `(3, 3)`. `movePieceEnPassant(3, 4, 2, 3, 3, 3)` is called. | Move is rejected; Black pawn remains at `(3, 3)` and target square `(2, 3)` remains empty. | :white_check_mark: |
-
+| BOARD-MOVE-047 | White rook at `(3, 4)` and Black pawn at `(3, 3)`. `movePieceEnPassant(3, 4, 2, 3, 3, 3)` is called. | Move is rejected because only pawns can move en passant; both pieces remain in place. | :x: |
+| BOARD-MOVE-048 | White pawn at `(3, 4)` and White pawn at `(3, 3)`. `movePieceEnPassant(3, 4, 2, 3, 3, 3)` is called. | Move is rejected because en passant cannot capture a same-color pawn; both pawns remain in place. | :x: |
+| BOARD-MOVE-049 | White pawn at `(3, 4)` and Black rook at `(3, 3)`. `movePieceEnPassant(3, 4, 2, 3, 3, 3)` is called. | Move is rejected because en passant can only capture a pawn; both pieces remain in place. | :x: |
+| BOARD-MOVE-050 | White pawn at `(3, 4)`, Black pawn at `(3, 3)`, and another piece already occupies target square `(2, 3)`. `movePieceEnPassant(3, 4, 2, 3, 3, 3)` is called. | Move is rejected because the en passant landing square must be empty; all pieces remain in place. | :x: |
+| BOARD-MOVE-051 | White pawn at `(3, 4)` and Black pawn at `(3, 3)`. `movePieceEnPassant(3, 4, 4, 3, 3, 3)` is called. | Move is rejected because White cannot move en passant in the wrong direction; both pawns remain in place. | :x: |
+| BOARD-MOVE-052 | Black pawn at `(4, 4)` and White pawn at `(4, 3)`. `movePieceEnPassant(4, 4, 3, 3, 4, 3)` is called. | Move is rejected because Black cannot move en passant in the wrong direction; both pawns remain in place. | :x: |
+| BOARD-MOVE-053 | White pawn at `(3, 4)` and Black pawn at `(3, 3)`. `movePieceEnPassant(3, 4, 1, 3, 3, 3)` is called. | Move is rejected because en passant must move exactly one row diagonally; both pawns remain in place. | :x: |
+| BOARD-MOVE-054 | White pawn at `(3, 4)` and Black pawn at `(3, 3)`. `movePieceEnPassant(3, 4, 2, 4, 3, 3)` is called. | Move is rejected because en passant must move diagonally by one column; both pawns remain in place. | :x: |
+| BOARD-MOVE-055 | White pawn at `(3, 4)` and Black pawn at `(3, 3)`. `movePieceEnPassant(-1, 4, 2, 3, 3, 3)` is called. | Move is rejected because the start square is outside the board; both pawns remain in place. | :x: |
+| BOARD-MOVE-056 | White pawn at `(3, 4)` and Black pawn at `(3, 3)`. `movePieceEnPassant(3, 4, 8, 3, 3, 3)` is called. | Move is rejected because the target square is outside the board; both pawns remain in place. | :x: |
+| BOARD-MOVE-057 | White pawn at `(3, 4)` and Black pawn at `(3, 3)`. `movePieceEnPassant(3, 4, 2, 3, 9, 3)` is called. | Move is rejected because the captured pawn square is outside the board; both pawns remain in place. | :x: |
 
 
 
