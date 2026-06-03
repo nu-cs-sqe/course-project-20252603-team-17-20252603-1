@@ -58,4 +58,30 @@ public class EnPassantTests {
         assertEquals("WHITE", whitePawn.getColor());
         assertEquals("BLACK", game.getCurrentPlayer().getColor());
     }
+
+    @Test
+    void blackEnPassantCapturesWhitePawnImmediatelyAfterTwoSquareMove() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
+        placePiece(board, 6, 3, new Piece("PAWN", "WHITE"));
+        placePiece(board, 4, 4, new Piece("PAWN", "BLACK"));
+
+        assertTrue(game.makeMove(6, 3, 4, 3));
+        assertTrue(game.makeMove(4, 4, 5, 3));
+
+        assertNull(board.getPieceAt(4, 4));
+        assertNull(board.getPieceAt(4, 3));
+
+        Piece blackPawn = board.getPieceAt(5, 3);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+        assertEquals("WHITE", game.getCurrentPlayer().getColor());
+    }
+
 }
