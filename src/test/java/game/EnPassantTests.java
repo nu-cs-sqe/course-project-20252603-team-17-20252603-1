@@ -148,5 +148,35 @@ public class EnPassantTests {
         assertEquals("WHITE", game.getCurrentPlayer().getColor());
     }
 
+    @Test
+    void blackEnPassantRejectedFromWrongRank() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
+        placePiece(board, 6, 2, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 4, new Piece("PAWN", "BLACK"));
+
+        assertTrue(game.makeMove(6, 2, 4, 2));
+        assertFalse(game.makeMove(3, 4, 4, 3));
+
+        Piece blackPawn = board.getPieceAt(3, 4);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+
+        Piece whitePawn = board.getPieceAt(4, 2);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        assertNull(board.getPieceAt(4, 3));
+        assertEquals("BLACK", game.getCurrentPlayer().getColor());
+    }
+
+
 
 }
