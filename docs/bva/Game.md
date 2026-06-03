@@ -89,6 +89,7 @@
 | GAME-ENPASSANT-007 | The previous successful move was a two-square pawn move, but the moved pawn is not adjacent to the capturing pawn.                                                                           | The move returns `false`; the board does not change; the turn does not change. | :white_check_mark: |
 | GAME-ENPASSANT-008 | A pawn attempts en passant in the wrong direction.                                                                                                                                           | The move returns `false`; the board does not change; the turn does not change. | :white_check_mark: |
 | GAME-ENPASSANT-009 | A Black rook attacks the White king along a rank, but the line is blocked by the en passant position. White attempts en passant and removing the pawns would expose the White king to check. | The move returns `false`; both pawns remain in place; the turn does not change. | :white_check_mark: |
+| GAME-ENPASSANT-010 | A Black pawn moves two squares and creates an en passant opportunity. White attempts an invalid move, then immediately attempts en passant.                                                  | The invalid move returns `false` and does not expire the en passant opportunity; the en passant move returns `true`; the captured pawn is removed. | :white_check_mark: |
 
 
 
