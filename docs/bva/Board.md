@@ -85,7 +85,7 @@
 | BOARD-MOVE-042 | Black king at `(0, 4)`, Black rook at `(0, 0)`, squares `(0, 1)`–`(0, 3)` empty, castling rights preserved. `movePiece(0, 4, 0, 2)` is called. | Black queenside castling: king on `(0, 2)`, rook on `(0, 3)`; `(0, 0)` and `(0, 4)` empty.                                                                | :white_check_mark: |
 | BOARD-MOVE-043 | Black king at `(0, 4)`, Black rook at `(0, 7)`, squares `(0, 5)` and `(0, 6)` empty, castling rights preserved. `movePiece(0, 4, 0, 6)` is called. | Black kingside castling: king on `(0, 6)`, rook on `(0, 5)`.                                                                                              | :white_check_mark: |
 | BOARD-MOVE-044 | White pawn at `(3, 4)` and Black pawn at `(3, 3)`. `movePieceEnPassant(3, 4, 2, 3, 3, 3)` is called. | White pawn moves to `(2, 3)` and the Black pawn at `(3, 3)` is removed.                                                                                   | :white_check_mark: |
-
+| BOARD-MOVE-045 | Black pawn at `(4, 4)` and White pawn at `(4, 3)`. `movePieceEnPassant(4, 4, 5, 3, 4, 3)` is called. | Black pawn moves to `(5, 3)` and the White pawn at `(4, 3)` is removed.                                                                                   | :white_check_mark: |
 
 
 
