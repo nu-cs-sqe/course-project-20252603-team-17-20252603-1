@@ -239,6 +239,38 @@ public class EnPassantTests {
         assertEquals("WHITE", game.getCurrentPlayer().getColor());
     }
 
+    @Test
+    void enPassantRejectedWhenPawnMovesWrongDirection() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+
+        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 1, 3, new Piece("PAWN", "BLACK"));
+
+        game.switchTurn();
+
+        assertTrue(game.makeMove(1, 3, 3, 3));
+        assertFalse(game.makeMove(3, 4, 4, 3));
+
+        Piece whitePawn = board.getPieceAt(3, 4);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        Piece blackPawn = board.getPieceAt(3, 3);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+
+        assertNull(board.getPieceAt(4, 3));
+        assertEquals("WHITE", game.getCurrentPlayer().getColor());
+    }
+
+
 
 
 
