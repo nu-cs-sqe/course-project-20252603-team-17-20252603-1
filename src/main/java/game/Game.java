@@ -192,6 +192,15 @@ public class Game {
 
         int direction = "WHITE".equals(piece.getColor()) ? -1 : 1;
 
+        if ("WHITE".equals(piece.getColor()) && startRow != 3) {
+            return false;
+        }
+
+        if ("BLACK".equals(piece.getColor()) && startRow != 4) {
+            return false;
+        }
+
+
         return endRow - startRow == direction
                 && Math.abs(endCol - startCol) == 1
                 && lastMovedPiece != null
