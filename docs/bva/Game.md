@@ -80,7 +80,7 @@
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
 |-------------|---------------------|-----------------|--------------|
-| GAME-ENPASSANT-001 | A Black pawn moves two squares from `(1, 3)` to `(3, 3)` and lands adjacent to a White pawn on `(3, 4)`. White immediately attempts en passant from `(3, 4)` to empty square `(2, 3)`. | The move returns `true`; the White pawn moves to `(2, 3)`; the Black pawn on `(3, 3)` is removed; the turn changes to Black. | :x: |
+| GAME-ENPASSANT-001 | A Black pawn moves two squares from `(1, 3)` to `(3, 3)` and lands adjacent to a White pawn on `(3, 4)`. White immediately attempts en passant from `(3, 4)` to empty square `(2, 3)`. | The move returns `true`; the White pawn moves to `(2, 3)`; the Black pawn on `(3, 3)` is removed; the turn changes to Black. | :white_check_mark: |
 | GAME-ENPASSANT-002 | A White pawn moves two squares from `(6, 3)` to `(4, 3)` and lands adjacent to a Black pawn on `(4, 4)`. Black immediately attempts en passant from `(4, 4)` to empty square `(5, 3)`. | The move returns `true`; the Black pawn moves to `(5, 3)`; the White pawn on `(4, 3)` is removed; the turn changes to White. | :x: |
 | GAME-ENPASSANT-003 | A pawn moves two squares and lands adjacent to an enemy pawn, but the enemy player makes a different legal move first. The enemy pawn then attempts en passant later. | The en passant attempt returns `false`; both pawns remain in place; the turn does not change. | :x: |
 | GAME-ENPASSANT-004 | A White pawn is not on row `3` and attempts an en passant-style diagonal move into an empty square. | The move returns `false`; the board does not change; the turn does not change. | :x: |
