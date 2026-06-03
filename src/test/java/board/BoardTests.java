@@ -951,5 +951,32 @@ public class BoardTests {
         assertNull(board.getPieceAt(2, 3));
     }
 
+    @Test
+    void enPassantRejectedWhenTargetSquareIsOccupied() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+        placePiece(board, 2, 3, new Piece("KNIGHT", "BLACK"));
+
+        assertFalse(board.movePieceEnPassant(3, 4, 2, 3, 3, 3));
+
+        Piece whitePawn = board.getPieceAt(3, 4);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        Piece blackPawn = board.getPieceAt(3, 3);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+
+        Piece blackKnight = board.getPieceAt(2, 3);
+        assertNotNull(blackKnight);
+        assertEquals("KNIGHT", blackKnight.getType());
+        assertEquals("BLACK", blackKnight.getColor());
+    }
+
 
 }
