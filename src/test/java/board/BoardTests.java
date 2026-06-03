@@ -1001,6 +1001,30 @@ public class BoardTests {
         assertNull(board.getPieceAt(4, 3));
     }
 
+    @Test
+    void enPassantRejectedWhenBlackMovesWrongDirection() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("PAWN", "BLACK"));
+        placePiece(board, 4, 3, new Piece("PAWN", "WHITE"));
+
+        assertFalse(board.movePieceEnPassant(4, 4, 3, 3, 4, 3));
+
+        Piece blackPawn = board.getPieceAt(4, 4);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+
+        Piece whitePawn = board.getPieceAt(4, 3);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        assertNull(board.getPieceAt(3, 3));
+    }
+
+
 
 
 }
