@@ -905,6 +905,30 @@ public class BoardTests {
         assertNull(board.getPieceAt(2, 3));
     }
 
+    @Test
+    void enPassantRejectedWhenCapturedPieceIsSameColor() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "WHITE"));
+
+        assertFalse(board.movePieceEnPassant(3, 4, 2, 3, 3, 3));
+
+        Piece movingPawn = board.getPieceAt(3, 4);
+        assertNotNull(movingPawn);
+        assertEquals("PAWN", movingPawn.getType());
+        assertEquals("WHITE", movingPawn.getColor());
+
+        Piece capturedSquarePawn = board.getPieceAt(3, 3);
+        assertNotNull(capturedSquarePawn);
+        assertEquals("PAWN", capturedSquarePawn.getType());
+        assertEquals("WHITE", capturedSquarePawn.getColor());
+
+        assertNull(board.getPieceAt(2, 3));
+    }
+
+
 
 
 
