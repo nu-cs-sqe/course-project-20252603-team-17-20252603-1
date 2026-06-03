@@ -825,5 +825,24 @@ public class BoardTests {
         assertNull(board.getPieceAt(4, 7));
     }
 
+    @Test
+    void whitePawnCanMoveEnPassantAndRemoveCapturedPawn() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertTrue(board.movePieceEnPassant(3, 4, 2, 3, 3, 3));
+
+        assertNull(board.getPieceAt(3, 4));
+        assertNull(board.getPieceAt(3, 3));
+
+        Piece whitePawn = board.getPieceAt(2, 3);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+    }
+
 
 }
