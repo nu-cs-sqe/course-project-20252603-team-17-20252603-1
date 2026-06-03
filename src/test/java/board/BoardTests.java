@@ -1093,6 +1093,28 @@ public class BoardTests {
         assertNull(board.getPieceAt(2, 3));
     }
 
+    @Test
+    void enPassantRejectedWhenTargetSquareIsOutOfBounds() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertFalse(board.movePieceEnPassant(3, 4, 8, 3, 3, 3));
+
+        Piece whitePawn = board.getPieceAt(3, 4);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        Piece blackPawn = board.getPieceAt(3, 3);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+    }
+
+
 
 
 
