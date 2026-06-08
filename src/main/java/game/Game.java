@@ -29,6 +29,8 @@ public class Game {
 
 	private final List<Move> moveHistory = new ArrayList<>();
 
+	private int halfmoveClock;
+
 
 	public void startNewGame() {
 		whitePlayer = new Player("White Player", "WHITE");
@@ -49,6 +51,7 @@ public class Game {
 		draw = false;
 		winnerColor = null;
 		drawReason = null;
+		halfmoveClock = 0;
 	}
 
 	public Board getBoard() {
@@ -69,6 +72,10 @@ public class Game {
 
 	public String getDrawReason() {
 		return drawReason;
+	}
+
+	public int getHalfmoveClock() {
+		return halfmoveClock;
 	}
 
 	public void switchTurn() {
