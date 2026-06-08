@@ -21,6 +21,7 @@ public class Game {
 	private boolean draw;
 	private boolean gameOver;
 	private String winnerColor;
+	private String drawReason;
 
 	private Piece lastMovedPiece;
 	private Position lastMoveStart;
@@ -47,6 +48,7 @@ public class Game {
 		gameOver = false;
 		draw = false;
 		winnerColor = null;
+		drawReason = null;
 	}
 
 	public Board getBoard() {
@@ -63,6 +65,10 @@ public class Game {
 
 	public boolean isDraw() {
 		return draw;
+	}
+
+	public String getDrawReason() {
+		return drawReason;
 	}
 
 	public void switchTurn() {
@@ -176,6 +182,7 @@ public class Game {
 		if (isCheckmate(opponentColor)) {
 			gameOver = true;
 			winnerColor = currentPlayer.getColor();
+			drawReason = null;
 			return true;
 		}
 
@@ -183,6 +190,7 @@ public class Game {
 			gameOver = true;
 			winnerColor = null;
 			draw = true;
+			drawReason = "STALEMATE";
 			return true;
 		}
 
