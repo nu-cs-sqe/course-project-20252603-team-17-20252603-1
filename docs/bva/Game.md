@@ -78,6 +78,21 @@
 | GAME-SELFCHECK-007 | The White king is in check from a Black rook. White blocks the rook's path with a White bishop. | Move succeeds because the check is blocked. Turn changes to Black. | :white_check_mark: |
 
 
+| Test Case ID | State of the System                                                                                                                                                                          | Expected Output | Implemented? |
+|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|--------------|
+| GAME-ENPASSANT-001 | A Black pawn moves two squares from `(1, 3)` to `(3, 3)` and lands adjacent to a White pawn on `(3, 4)`. White immediately attempts en passant from `(3, 4)` to empty square `(2, 3)`.       | The move returns `true`; the White pawn moves to `(2, 3)`; the Black pawn on `(3, 3)` is removed; the turn changes to Black. | :white_check_mark: |
+| GAME-ENPASSANT-002 | A White pawn moves two squares from `(6, 3)` to `(4, 3)` and lands adjacent to a Black pawn on `(4, 4)`. Black immediately attempts en passant from `(4, 4)` to empty square `(5, 3)`.       | The move returns `true`; the Black pawn moves to `(5, 3)`; the White pawn on `(4, 3)` is removed; the turn changes to White. | :white_check_mark: |
+| GAME-ENPASSANT-003 | A pawn moves two squares and lands adjacent to an enemy pawn, but the enemy player makes a different legal move first. The enemy pawn then attempts en passant later.                        | The en passant attempt returns `false`; both pawns remain in place; the turn does not change. | :white_check_mark: |
+| GAME-ENPASSANT-004 | A White pawn is not on row `3` and attempts an en passant-style diagonal move into an empty square.                                                                                          | The move returns `false`; the board does not change; the turn does not change. | :white_check_mark: |
+| GAME-ENPASSANT-005 | A Black pawn is not on row `4` and attempts an en passant-style diagonal move into an empty square.                                                                                          | The move returns `false`; the board does not change; the turn does not change. | :white_check_mark: |
+| GAME-ENPASSANT-006 | The previous successful move was not a two-square pawn move. A pawn attempts an en passant-style diagonal move into an empty square.                                                         | The move returns `false`; the board does not change; the turn does not change. | :white_check_mark: |
+| GAME-ENPASSANT-007 | The previous successful move was a two-square pawn move, but the moved pawn is not adjacent to the capturing pawn.                                                                           | The move returns `false`; the board does not change; the turn does not change. | :white_check_mark: |
+| GAME-ENPASSANT-008 | A pawn attempts en passant in the wrong direction.                                                                                                                                           | The move returns `false`; the board does not change; the turn does not change. | :white_check_mark: |
+| GAME-ENPASSANT-009 | A Black rook attacks the White king along a rank, but the line is blocked by the en passant position. White attempts en passant and removing the pawns would expose the White king to check. | The move returns `false`; both pawns remain in place; the turn does not change. | :white_check_mark: |
+| GAME-ENPASSANT-010 | A Black pawn moves two squares and creates an en passant opportunity. White attempts an invalid move, then immediately attempts en passant.                                                  | The invalid move returns `false` and does not expire the en passant opportunity; the en passant move returns `true`; the captured pawn is removed. | :white_check_mark: |
+
+
+
 ## Method under test: isKingInCheck(String color)
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
