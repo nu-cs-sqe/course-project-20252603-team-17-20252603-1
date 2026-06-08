@@ -31,6 +31,8 @@ public class Game {
 
 	private int halfmoveClock;
 
+	private final List<String> positionRepetitionHistory = new ArrayList<>();
+
 
 	public void startNewGame() {
 		whitePlayer = new Player("White Player", "WHITE");
@@ -41,6 +43,8 @@ public class Game {
 		lastMoveEnd = null;
 
 		moveHistory.clear();
+
+		positionRepetitionHistory.clear();
 
 		this.board = new Board();
 		this.board.initializeBoard();
@@ -76,6 +80,14 @@ public class Game {
 
 	public int getHalfmoveClock() {
 		return halfmoveClock;
+	}
+
+	public String getPositionSignature(String sideToMoveNext) {
+		return buildPositionSignature(sideToMoveNext);
+	}
+
+	public int getRepetitionHistorySize() {
+		return positionRepetitionHistory.size();
 	}
 
 	public void switchTurn() {
@@ -218,11 +230,33 @@ public class Game {
 			return true;
 		}
 
+		appendRepetitionAndCheckThreefold(opponentColor);
+		if (gameOver) {
+			return true;
+		}
 
 		switchTurn();
 
 		return true;
 
+	}
+
+	private String buildPositionSignature(String sideToMoveNext) {
+		if (board == null) {
+			return "";
+		}
+		return board.piecePlacementKey() + "|" + board.castlingRightsKey() + "|" + sideToMoveNext;
+	}
+
+	private void appendRepetitionAndCheckThreefold(String sideToMoveNext) {
+		String repSig = buildPositionSignature(sideToMoveNext);
+		positionRepetitionHistory.add(repSig);
+		if (Collections.frequency(positionRepetitionHistory, repSig) >= 3) {
+			gameOver = true;
+			winnerColor = null;
+			draw = true;
+			drawReason = "THREEFOLD_REPETITION";
+		}
 	}
 
 	private void updateHalfmoveClock(Piece moved, Piece destinationBeforeMove,

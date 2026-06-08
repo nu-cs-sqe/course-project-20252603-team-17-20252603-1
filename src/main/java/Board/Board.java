@@ -44,7 +44,34 @@ public class Board {
         return (row >= 0 && row < 8) && (col >= 0 && col < 8);
     }
 
+    /**
+     * Stable serialization of all squares for repetition detection (piece type and color).
+     */
+    public String piecePlacementKey() {
+        StringBuilder sb = new StringBuilder(256);
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece p = state[row][col];
+                if (p == null) {
+                    sb.append("--");
+                } else {
+                    sb.append(p.getType()).append(',').append(p.getColor());
+                }
+                sb.append(';');
+            }
+        }
+        return sb.toString();
+    }
 
+    /**
+     * Castling availability encoded in order: white KS, white QS, black KS, black QS.
+     */
+    public String castlingRightsKey() {
+        return (whiteCastleKingSide ? "1" : "0")
+                + (whiteCastleQueenSide ? "1" : "0")
+                + (blackCastleKingSide ? "1" : "0")
+                + (blackCastleQueenSide ? "1" : "0");
+    }
 
     public boolean movePiece(int startRow, int startCol, int endRow, int endCol) {
         return movePiece(startRow, startCol, endRow, endCol, null);
