@@ -53,4 +53,27 @@ class MoveHistoryTests {
 		assertThrows(UnsupportedOperationException.class, () ->
 				game.getMoveHistory().clear());
 	}
+
+	@Test
+	void startNewGameClearsMoveHistory() {
+		Game game = new Game();
+		game.startNewGame();
+		assertTrue(game.makeMove(6, 0, 5, 0));
+		assertEquals(1, game.getMoveHistory().size());
+		game.startNewGame();
+		assertTrue(game.getMoveHistory().isEmpty());
+	}
+
+	@Test
+	void invalidMakeMoveDoesNotAppendToHistory() {
+		Game game = new Game();
+		game.startNewGame();
+		assertFalse(game.makeMove(6, 0, 6, 0));
+		assertTrue(game.getMoveHistory().isEmpty());
+
+		assertTrue(game.makeMove(6, 0, 5, 0));
+		assertEquals(1, game.getMoveHistory().size());
+		assertFalse(game.makeMove(6, 0, 5, 0));
+		assertEquals(1, game.getMoveHistory().size());
+	}
 }
