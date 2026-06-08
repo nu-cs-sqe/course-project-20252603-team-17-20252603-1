@@ -55,4 +55,24 @@ class FiftyMoveRuleTests {
 			throw new RuntimeException(e);
 		}
 	}
+
+	private static void setHalfmoveClock(Game game, int value) throws Exception {
+		java.lang.reflect.Field f = Game.class.getDeclaredField("halfmoveClock");
+		f.setAccessible(true);
+		f.setInt(game, value);
+	}
+
+	@Test
+	void pawnMoveResetsHalfmoveClock() throws Exception {
+		Game game = new Game();
+		game.startNewGame();
+		Board b = game.getBoard();
+		clearBoard(b);
+		placePiece(b, 7, 7, new Piece("KING", "WHITE"));
+		placePiece(b, 6, 4, new Piece("PAWN", "WHITE"));
+		placePiece(b, 0, 0, new Piece("KING", "BLACK"));
+		setHalfmoveClock(game, 5);
+		assertTrue(game.makeMove(6, 4, 5, 4));
+		assertEquals(0, game.getHalfmoveClock());
+	}
 }
