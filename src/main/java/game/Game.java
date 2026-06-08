@@ -194,7 +194,7 @@ public class Game {
 			return true;
 		}
 
-		if (isInsufficientMaterialKingVersusKing()) {
+		if (isDeadPositionInsufficientMaterial()) {
 			gameOver = true;
 			winnerColor = null;
 			draw = true;
@@ -209,22 +209,58 @@ public class Game {
 
 	}
 
-	private boolean isInsufficientMaterialKingVersusKing() {
+	private boolean isDeadPositionInsufficientMaterial() {
+		int total = 0;
 		int kings = 0;
+		int minors = 0;
 		for (int r = 0; r < 8; r++) {
 			for (int c = 0; c < 8; c++) {
 				Piece p = board.getPieceAt(r, c);
 				if (p == null) {
 					continue;
 				}
-				if ("KING".equals(p.getType())) {
+				total++;
+				String t = p.getType();
+				if ("KING".equals(t)) {
 					kings++;
+				} else if ("KNIGHT".equals(t) || "BISHOP".equals(t)) {
+					minors++;
 				} else {
 					return false;
 				}
 			}
 		}
-		return kings == 2;
+		if (total == 2 && kings == 2) {
+			return true;
+		}
+		if (total == 3 && kings == 2 && minors == 1) {
+			return true;
+		}
+		if (total == 4 && kings == 2 && minors == 2) {
+			return isSameSquareColorBishopPair();
+		}
+		return false;
+	}
+
+	private boolean isSameSquareColorBishopPair() {
+		Integer squareColor = null;
+		int bishops = 0;
+		for (int r = 0; r < 8; r++) {
+			for (int c = 0; c < 8; c++) {
+				Piece p = board.getPieceAt(r, c);
+				if (p == null || !"BISHOP".equals(p.getType())) {
+					continue;
+				}
+				bishops++;
+				int parity = (r + c) % 2;
+				if (squareColor == null) {
+					squareColor = parity;
+				} else if (!squareColor.equals(parity)) {
+					return false;
+				}
+			}
+		}
+		return bishops == 2;
 	}
 
 	private boolean isEnPassantMove(int startRow, int startCol, int endRow, int endCol, Piece piece) {
