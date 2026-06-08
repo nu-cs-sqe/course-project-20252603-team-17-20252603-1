@@ -64,7 +64,7 @@
 | GAME-MOVE-008 | A game has not started yet. `makeMove(6, 0, 5, 0)` is called. | Returns `false` because no board exists yet. | :white_check_mark:               |
 | GAME-MOVE-009 | It is White's turn. White attempts to move a pawn from `(6, 0)` to an occupied square `(7, 0)`. | Returns `false`, does not move the pawn, and keeps the current player as White. | :white_check_mark:               |
 | GAME-MOVE-010 | It is White's turn. White attempts an invalid knight move from `(7, 1)` to `(6, 1)`. | Returns `false`, does not move the knight, and keeps the current player as White. | :white_check_mark:               |
-| GAME-MOVE-011 | The game is already over because a king has been captured. A player attempts another move. | Returns `false`, does not change the board, and does not change the winner. | :white_check_mark: |
+| GAME-MOVE-011 | The game is already over because Black was checkmated. A player attempts another move. | Returns `false`, does not change the board, and does not change the winner. | :white_check_mark: |
 
 
 | Test Case ID | State of the System | Expected Output                                                                               | Implemented? |
@@ -152,15 +152,13 @@
 
 ## Draw by insufficient material (`makeMove` / game result)
 
-Per course rules: when neither side has enough material to deliver checkmate, the game is a draw. `getDrawReason()` (when implemented) should expose a value such as `INSUFFICIENT_MATERIAL`.
-
 | Test Case ID | State of the System | Expected Output | Implemented? |
 |-------------|---------------------|-----------------|--------------|
-| GAME-DRAW-IM-001 | Board has only a White king and a Black king. White makes any legal king move. | Game ends as a draw; `isGameOver()` is `true`; `isDraw()` is `true`; winner is `null`; draw reason indicates insufficient material. | no |
-| GAME-DRAW-IM-002 | Board has White king and White knight versus Black king only; it is White's turn and White has a legal knight move. | After White's move (or when the position is recognized), game is a draw by insufficient material (lone minor cannot force mate against a bare king). | no |
-| GAME-DRAW-IM-003 | Board has White king and White bishop versus Black king only; it is White's turn. | Game is a draw by insufficient material. | no |
-| GAME-DRAW-IM-004 | Board has White king, Black king, and a White queen (or other heavy piece). | Game is **not** declared drawn solely for insufficient material; play continues unless another rule applies. | no |
-| GAME-DRAW-IM-005 | Black king and Black knight versus White king only; it is Black's turn. | Symmetric case: draw by insufficient material for Black's minor vs lone White king. | no |
+| GAME-DRAW-IM-001 | Board has only a White king and a Black king. White makes any legal king move. | Game ends as a draw; `isGameOver()` is `true`; `isDraw()` is `true`; winner is `null`; draw reason indicates insufficient material. | :white_check_mark: |
+| GAME-DRAW-IM-002 | Board has White king and White knight versus Black king only; it is White's turn and White has a legal knight move. | After White's move (or when the position is recognized), game is a draw by insufficient material (lone minor cannot force mate against a bare king). | :white_check_mark: |
+| GAME-DRAW-IM-003 | Board has White king and White bishop versus Black king only; it is White's turn. | Game is a draw by insufficient material. | :white_check_mark: |
+| GAME-DRAW-IM-004 | Board has White king, Black king, and a White queen (or other heavy piece). | Game is **not** declared drawn solely for insufficient material; play continues unless another rule applies. | :white_check_mark: |
+| GAME-DRAW-IM-005 | Black king and Black knight versus White king only; it is Black's turn. | Symmetric case: draw by insufficient material for Black's minor vs lone White king. | :white_check_mark: |
 
 ---
 
@@ -170,11 +168,11 @@ FIDE-style: **100 half-moves** without a pawn move and without a capture end the
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
 |-------------|---------------------|-----------------|--------------|
-| GAME-DRAW-50-001 | Half-move counter reaches `100` after a quiet move (no pawn move, no capture). | Game ends as draw; `isDraw()` true; draw reason indicates fifty-move rule. | no |
-| GAME-DRAW-50-002 | Half-move counter is `99`; the next move is a quiet knight move (no pawn, no capture). | After the move completes, counter is `100` and game is drawn by fifty-move rule. | no |
-| GAME-DRAW-50-003 | Half-move counter is `99`; the next move is a pawn push (one or two squares). | Counter resets; game does **not** end for fifty-move rule solely from that move. | no |
-| GAME-DRAW-50-004 | Half-move counter is `99`; the next move captures an opponent piece. | Counter resets; no fifty-move draw on that move. | no |
-| GAME-DRAW-50-005 | `startNewGame()` is called. | Half-move counter is reset to `0`. | no |
+| GAME-DRAW-50-001 | Half-move counter reaches `100` after a quiet move (no pawn move, no capture). | Game ends as draw; `isDraw()` true; draw reason indicates fifty-move rule. | :white_check_mark: |
+| GAME-DRAW-50-002 | Half-move counter is `99`; the next move is a quiet knight move (no pawn, no capture). | After the move completes, counter is `100` and game is drawn by fifty-move rule. | :white_check_mark: |
+| GAME-DRAW-50-003 | Half-move counter is `99`; the next move is a pawn push (one or two squares). | Counter resets; game does **not** end for fifty-move rule solely from that move. | :white_check_mark: |
+| GAME-DRAW-50-004 | Half-move counter is `99`; the next move captures an opponent piece. | Counter resets; no fifty-move draw on that move. | :white_check_mark: |
+| GAME-DRAW-50-005 | `startNewGame()` is called. | Half-move counter is reset to `0`. | :white_check_mark: |
 
 ---
 
@@ -184,9 +182,9 @@ The same **position** (implementation-defined signature: at minimum board layout
 
 | Test Case ID | State of the System | Expected Output | Implemented? |
 |-------------|---------------------|-----------------|--------------|
-| GAME-DRAW-3R-001 | A sequence of moves repeats the same position twice; the third occurrence of that position arises. | Game ends as draw; draw reason indicates threefold repetition. | no |
-| GAME-DRAW-3R-002 | Only two occurrences of the same position have occurred. | Game continues; `isGameOver()` false unless another rule applies. | no |
-| GAME-DRAW-3R-003 | `startNewGame()` after a repetition-heavy game. | Repetition history cleared; no immediate draw from old positions. | no |
+| GAME-DRAW-3R-001 | A sequence of moves repeats the same position twice; the third occurrence of that position arises. | Game ends as draw; draw reason indicates threefold repetition. | :white_check_mark: |
+| GAME-DRAW-3R-002 | Only two occurrences of the same position have occurred. | Game continues; `isGameOver()` false unless another rule applies. | :white_check_mark: |
+| GAME-DRAW-3R-003 | `startNewGame()` after a repetition-heavy game. | Repetition history cleared; no immediate draw from old positions. | :white_check_mark: |
 
 
 
