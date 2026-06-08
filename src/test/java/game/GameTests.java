@@ -788,6 +788,7 @@ public class GameTests {
         assertTrue(game.isGameOver());
         assertEquals("WHITE", game.getWinnerColor());
         assertTrue(game.isCheckmate("BLACK"));
+        assertNull(game.getDrawReason());
     }
 
     @Test
@@ -810,6 +811,7 @@ public class GameTests {
         assertFalse(movedAfterCheckmate);
         assertTrue(game.isGameOver());
         assertEquals("WHITE", game.getWinnerColor());
+        assertNull(game.getDrawReason());
     }
 
     @Test
@@ -830,6 +832,7 @@ public class GameTests {
         assertTrue(game.isDraw());
         assertNull(game.getWinnerColor());
         assertTrue(game.isStalemate("BLACK"));
+        assertEquals("STALEMATE", game.getDrawReason());
     }
 
     @Test
@@ -845,11 +848,13 @@ public class GameTests {
 
         assertTrue(game.makeMove(2, 3, 1, 2));
         assertTrue(game.isDraw());
+        assertEquals("STALEMATE", game.getDrawReason());
 
         game.startNewGame();
 
         assertFalse(game.isDraw());
         assertNull(game.getWinnerColor());
+        assertNull(game.getDrawReason());
         assertFalse(game.isGameOver());
     }
 
@@ -872,6 +877,7 @@ public class GameTests {
         assertTrue(game.isGameOver());
         assertEquals("BLACK", game.getWinnerColor());
         assertTrue(game.isCheckmate("WHITE"));
+        assertNull(game.getDrawReason());
     }
 
 
