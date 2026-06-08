@@ -183,6 +183,7 @@ public class Game {
 
 		recordLastMove(piece, startRow, startCol, endRow, endCol);
 		appendCompletedMove(piece, startRow, startCol, endRow, endCol, destinationPiece, enPassantMove);
+		updateHalfmoveClockQuietIncrementOnly(piece, destinationPiece, enPassantMove);
 
 		String opponentColor = "WHITE".equals(currentPlayer.getColor()) ? "BLACK" : "WHITE";
 
@@ -214,6 +215,14 @@ public class Game {
 
 		return true;
 
+	}
+
+	private void updateHalfmoveClockQuietIncrementOnly(Piece moved, Piece destinationBeforeMove,
+			boolean enPassantMove) {
+		boolean capture = enPassantMove || destinationBeforeMove != null;
+		if (!"PAWN".equals(moved.getType()) && !capture) {
+			halfmoveClock++;
+		}
 	}
 
 	private boolean isDeadPositionInsufficientMaterial() {
