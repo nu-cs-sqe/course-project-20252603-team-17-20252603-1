@@ -3,6 +3,8 @@ package game;
 import player.Player;
 import board.Board;
 import board.Piece;
+import board.Position;
+
 
 public class Game {
 
@@ -16,9 +18,19 @@ public class Game {
     private boolean gameOver;
     private String winnerColor;
 
+    private Piece lastMovedPiece;
+    private Position lastMoveStart;
+    private Position lastMoveEnd;
+
+
     public void startNewGame() {
         whitePlayer = new Player("White Player", "WHITE");
         blackPlayer = new Player("Black Player", "BLACK");
+
+        lastMovedPiece = null;
+        lastMoveStart = null;
+        lastMoveEnd = null;
+
 
         this.board = new Board();
         this.board.initializeBoard();
@@ -83,6 +95,8 @@ public class Game {
 
         Piece destinationPiece = board.getPieceAt(endRow, endCol);
 
+        boolean enPassantMove = isEnPassantMove(startRow, startCol, endRow, endCol, piece);
+
         if (destinationPiece != null && "KING".equals(destinationPiece.getType())) {
             return false;
         }
@@ -108,7 +122,16 @@ public class Game {
         Board originalBoard = board;
         Board simulatedBoard = board.copy();
 
-        boolean simulatedMoveSuccessful = simulatedBoard.movePiece(startRow, startCol, endRow, endCol);
+        boolean simulatedMoveSuccessful;
+        if (enPassantMove) {
+            simulatedMoveSuccessful = simulatedBoard.movePieceEnPassant(
+                    new Position(startRow, startCol),
+                    new Position(endRow, endCol),
+                    new Position(startRow, endCol));
+        } else {
+            simulatedMoveSuccessful = simulatedBoard.movePiece(startRow, startCol, endRow, endCol);
+        }
+
 
         if (!simulatedMoveSuccessful) {
             return false;
@@ -122,11 +145,23 @@ public class Game {
             return false;
         }
 
-        boolean moveSuccessful = board.movePiece(startRow, startCol, endRow, endCol);
+        boolean moveSuccessful;
+        if (enPassantMove) {
+            moveSuccessful = board.movePieceEnPassant(
+                    new Position(startRow, startCol),
+                    new Position(endRow, endCol),
+                    new Position(startRow, endCol));
+        } else {
+            moveSuccessful = board.movePiece(startRow, startCol, endRow, endCol);
+        }
+
+
 
         if (!moveSuccessful) {
             return false;
         }
+
+        recordLastMove(piece, startRow, startCol, endRow, endCol);
 
         String opponentColor = "WHITE".equals(currentPlayer.getColor()) ? "BLACK" : "WHITE";
 
@@ -149,6 +184,42 @@ public class Game {
         return true;
 
     }
+
+    private boolean isEnPassantMove(int startRow, int startCol, int endRow, int endCol, Piece piece) {
+        if (!"PAWN".equals(piece.getType()) || board.getPieceAt(endRow, endCol) != null) {
+            return false;
+        }
+
+        int direction = "WHITE".equals(piece.getColor()) ? -1 : 1;
+
+        if ("WHITE".equals(piece.getColor()) && startRow != 3) {
+            return false;
+        }
+
+        if ("BLACK".equals(piece.getColor()) && startRow != 4) {
+            return false;
+        }
+
+
+        return endRow - startRow == direction
+                && Math.abs(endCol - startCol) == 1
+                && lastMovedPiece != null
+                && "PAWN".equals(lastMovedPiece.getType())
+                && !piece.getColor().equals(lastMovedPiece.getColor())
+                && lastMoveStart != null
+                && lastMoveEnd != null
+                && Math.abs(lastMoveEnd.getRow() - lastMoveStart.getRow()) == 2
+                && lastMoveEnd.getRow() == startRow
+                && lastMoveEnd.getCol() == endCol;
+    }
+
+    private void recordLastMove(Piece piece, int startRow, int startCol, int endRow, int endCol) {
+        lastMovedPiece = piece;
+        lastMoveStart = new Position(startRow, startCol);
+        lastMoveEnd = new Position(endRow, endCol);
+    }
+
+
 
     private boolean isCastlingMove(int startRow, int startCol, int endRow, int endCol, Piece piece) {
         if (!"KING".equals(piece.getType())) {

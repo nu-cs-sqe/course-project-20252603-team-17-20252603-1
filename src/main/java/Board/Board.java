@@ -411,6 +411,58 @@ public class Board {
         return copy;
     }
 
+    public boolean movePieceEnPassant(Position start, Position end, Position capturedPawnPosition) {
+        if (!isValidEnPassantMove(start, end, capturedPawnPosition)) {
+            return false;
+        }
+
+        executeEnPassant(start, end, capturedPawnPosition);
+        return true;
+    }
+
+    private boolean isValidEnPassantMove(Position start, Position end, Position capturedPawnPosition) {
+        if (!isWithinBounds(start.getRow(), start.getCol())
+                || !isWithinBounds(end.getRow(), end.getCol())
+                || !isWithinBounds(capturedPawnPosition.getRow(), capturedPawnPosition.getCol())) {
+            return false;
+        }
+
+        Piece piece = state[start.getRow()][start.getCol()];
+        Piece capturedPawn = state[capturedPawnPosition.getRow()][capturedPawnPosition.getCol()];
+
+        if (piece == null || !"PAWN".equals(piece.getType())) {
+            return false;
+        }
+
+        if (capturedPawn == null
+                || !"PAWN".equals(capturedPawn.getType())
+                || piece.getColor().equals(capturedPawn.getColor())) {
+            return false;
+        }
+
+        if (state[end.getRow()][end.getCol()] != null) {
+            return false;
+        }
+
+        int direction = "WHITE".equals(piece.getColor()) ? -1 : 1;
+        if (end.getRow() - start.getRow() != direction) {
+            return false;
+        }
+
+        return Math.abs(end.getCol() - start.getCol()) == 1;
+    }
+
+    private void executeEnPassant(Position start, Position end, Position capturedPawnPosition) {
+        Piece piece = state[start.getRow()][start.getCol()];
+
+        state[end.getRow()][end.getCol()] = piece;
+        state[start.getRow()][start.getCol()] = null;
+        state[capturedPawnPosition.getRow()][capturedPawnPosition.getCol()] = null;
+    }
+
+
+
+
 
 
 
