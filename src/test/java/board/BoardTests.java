@@ -825,5 +825,360 @@ public class BoardTests {
         assertNull(board.getPieceAt(4, 7));
     }
 
+    @Test
+    void whitePawnCanMoveEnPassantAndRemoveCapturedPawn() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertTrue(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 3),
+                new Position(3, 3)));
+
+        assertNull(board.getPieceAt(3, 4));
+        assertNull(board.getPieceAt(3, 3));
+
+        Piece whitePawn = board.getPieceAt(2, 3);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+    }
+
+    @Test
+    void blackPawnCanMoveEnPassantAndRemoveCapturedPawn() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("PAWN", "BLACK"));
+        placePiece(board, 4, 3, new Piece("PAWN", "WHITE"));
+
+        assertTrue(board.movePieceEnPassant(
+                new Position(4, 4),
+                new Position(5, 3),
+                new Position(4, 3)));
+
+        assertNull(board.getPieceAt(4, 4));
+        assertNull(board.getPieceAt(4, 3));
+
+        Piece blackPawn = board.getPieceAt(5, 3);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+    }
+
+    @Test
+    void enPassantRejectedWhenStartSquareIsEmpty() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 3),
+                new Position(3, 3)));
+
+        assertNull(board.getPieceAt(3, 4));
+
+        Piece blackPawn = board.getPieceAt(3, 3);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+
+        assertNull(board.getPieceAt(2, 3));
+    }
+
+    @Test
+    void enPassantRejectedWhenMovingPieceIsNotPawn() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 4, new Piece("ROOK", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 3),
+                new Position(3, 3)));
+
+        Piece whiteRook = board.getPieceAt(3, 4);
+        assertNotNull(whiteRook);
+        assertEquals("ROOK", whiteRook.getType());
+        assertEquals("WHITE", whiteRook.getColor());
+
+        Piece blackPawn = board.getPieceAt(3, 3);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+
+        assertNull(board.getPieceAt(2, 3));
+    }
+
+    @Test
+    void enPassantRejectedWhenCapturedPieceIsSameColor() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "WHITE"));
+
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 3),
+                new Position(3, 3)));
+
+        Piece movingPawn = board.getPieceAt(3, 4);
+        assertNotNull(movingPawn);
+        assertEquals("PAWN", movingPawn.getType());
+        assertEquals("WHITE", movingPawn.getColor());
+
+        Piece capturedSquarePawn = board.getPieceAt(3, 3);
+        assertNotNull(capturedSquarePawn);
+        assertEquals("PAWN", capturedSquarePawn.getType());
+        assertEquals("WHITE", capturedSquarePawn.getColor());
+
+        assertNull(board.getPieceAt(2, 3));
+    }
+
+    @Test
+    void enPassantRejectedWhenCapturedPieceIsNotPawn() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 3, new Piece("ROOK", "BLACK"));
+
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 3),
+                new Position(3, 3)));
+
+        Piece whitePawn = board.getPieceAt(3, 4);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        Piece blackRook = board.getPieceAt(3, 3);
+        assertNotNull(blackRook);
+        assertEquals("ROOK", blackRook.getType());
+        assertEquals("BLACK", blackRook.getColor());
+
+        assertNull(board.getPieceAt(2, 3));
+    }
+
+    @Test
+    void enPassantRejectedWhenTargetSquareIsOccupied() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+        placePiece(board, 2, 3, new Piece("KNIGHT", "BLACK"));
+
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 3),
+                new Position(3, 3)));
+
+        Piece whitePawn = board.getPieceAt(3, 4);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        Piece blackPawn = board.getPieceAt(3, 3);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+
+        Piece blackKnight = board.getPieceAt(2, 3);
+        assertNotNull(blackKnight);
+        assertEquals("KNIGHT", blackKnight.getType());
+        assertEquals("BLACK", blackKnight.getColor());
+    }
+
+    @Test
+    void enPassantRejectedWhenWhiteMovesWrongDirection() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(4, 3),
+                new Position(3, 3)));
+
+        Piece whitePawn = board.getPieceAt(3, 4);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        Piece blackPawn = board.getPieceAt(3, 3);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+
+        assertNull(board.getPieceAt(4, 3));
+    }
+
+    @Test
+    void enPassantRejectedWhenBlackMovesWrongDirection() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 4, 4, new Piece("PAWN", "BLACK"));
+        placePiece(board, 4, 3, new Piece("PAWN", "WHITE"));
+
+        assertFalse(board.movePieceEnPassant(
+                new Position(4, 4),
+                new Position(3, 3),
+                new Position(4, 3)));
+
+        Piece blackPawn = board.getPieceAt(4, 4);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+
+        Piece whitePawn = board.getPieceAt(4, 3);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        assertNull(board.getPieceAt(3, 3));
+    }
+
+    @Test
+    void enPassantRejectedWhenMoveIsMoreThanOneRow() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(1, 3),
+                new Position(3, 3)));
+
+        Piece whitePawn = board.getPieceAt(3, 4);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        Piece blackPawn = board.getPieceAt(3, 3);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+
+        assertNull(board.getPieceAt(1, 3));
+    }
+
+    @Test
+    void enPassantRejectedWhenMoveIsNotDiagonal() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 4),
+                new Position(3, 3)));
+
+        Piece whitePawn = board.getPieceAt(3, 4);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        Piece blackPawn = board.getPieceAt(3, 3);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+
+        assertNull(board.getPieceAt(2, 4));
+    }
+
+    @Test
+    void enPassantRejectedWhenStartSquareIsOutOfBounds() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertFalse(board.movePieceEnPassant(
+                new Position(-1, 4),
+                new Position(2, 3),
+                new Position(3, 3)));
+
+        Piece whitePawn = board.getPieceAt(3, 4);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        Piece blackPawn = board.getPieceAt(3, 3);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+
+        assertNull(board.getPieceAt(2, 3));
+    }
+
+    @Test
+    void enPassantRejectedWhenTargetSquareIsOutOfBounds() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(8, 3),
+                new Position(3, 3)));
+
+        Piece whitePawn = board.getPieceAt(3, 4);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        Piece blackPawn = board.getPieceAt(3, 3);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+    }
+
+    @Test
+    void enPassantRejectedWhenCapturedPawnSquareIsOutOfBounds() {
+        Board board = new Board();
+        clearBoard(board);
+
+        placePiece(board, 3, 4, new Piece("PAWN", "WHITE"));
+        placePiece(board, 3, 3, new Piece("PAWN", "BLACK"));
+
+        assertFalse(board.movePieceEnPassant(
+                new Position(3, 4),
+                new Position(2, 3),
+                new Position(9, 3)));
+
+        Piece whitePawn = board.getPieceAt(3, 4);
+        assertNotNull(whitePawn);
+        assertEquals("PAWN", whitePawn.getType());
+        assertEquals("WHITE", whitePawn.getColor());
+
+        Piece blackPawn = board.getPieceAt(3, 3);
+        assertNotNull(blackPawn);
+        assertEquals("PAWN", blackPawn.getType());
+        assertEquals("BLACK", blackPawn.getColor());
+
+        assertNull(board.getPieceAt(2, 3));
+    }
+
+
 
 }
