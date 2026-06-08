@@ -210,6 +210,14 @@ public class Game {
 			return true;
 		}
 
+		if (halfmoveClock >= 100) {
+			gameOver = true;
+			winnerColor = null;
+			draw = true;
+			drawReason = "FIFTY_MOVE";
+			return true;
+		}
+
 
 		switchTurn();
 
