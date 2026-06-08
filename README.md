@@ -13,5 +13,11 @@ Chess Game
 - JUnit 5.10
 - Gradle 8.10
 
+## Run
+
+- CLI (default): `./gradlew run`
+- Swing shell: `./gradlew run --args='gui'`
+
 ## Acknowledgements
 REFERENCES, SOURCE OF HELP ETC
+
