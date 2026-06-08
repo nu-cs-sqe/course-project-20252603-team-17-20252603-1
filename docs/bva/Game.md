@@ -148,5 +148,19 @@
 | GAME-STALEMATE-004 | A move creates stalemate through `makeMove(...)`. | Game becomes over as a draw. | :white_check_mark: |
 | GAME-STALEMATE-005 | Black has no legal king move but has a legal pawn move. `isStalemate("BLACK")` is called. | Returns `false`.             | :white_check_mark: |
 
+---
+
+## Draw by insufficient material (`makeMove` / game result)
+
+Per course rules: when neither side has enough material to deliver checkmate, the game is a draw. `getDrawReason()` (when implemented) should expose a value such as `INSUFFICIENT_MATERIAL`.
+
+| Test Case ID | State of the System | Expected Output | Implemented? |
+|-------------|---------------------|-----------------|--------------|
+| GAME-DRAW-IM-001 | Board has only a White king and a Black king. White makes any legal king move. | Game ends as a draw; `isGameOver()` is `true`; `isDraw()` is `true`; winner is `null`; draw reason indicates insufficient material. | no |
+| GAME-DRAW-IM-002 | Board has White king and White knight versus Black king only; it is White's turn and White has a legal knight move. | After White's move (or when the position is recognized), game is a draw by insufficient material (lone minor cannot force mate against a bare king). | no |
+| GAME-DRAW-IM-003 | Board has White king and White bishop versus Black king only; it is White's turn. | Game is a draw by insufficient material. | no |
+| GAME-DRAW-IM-004 | Board has White king, Black king, and a White queen (or other heavy piece). | Game is **not** declared drawn solely for insufficient material; play continues unless another rule applies. | no |
+| GAME-DRAW-IM-005 | Black king and Black knight versus White king only; it is Black's turn. | Symmetric case: draw by insufficient material for Black's minor vs lone White king. | no |
+
 
 
