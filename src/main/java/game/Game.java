@@ -198,6 +198,7 @@ public class Game {
 			gameOver = true;
 			winnerColor = null;
 			draw = true;
+			drawReason = "INSUFFICIENT_MATERIAL";
 			return true;
 		}
 
