@@ -30,6 +30,22 @@ class InsufficientMaterialTests {
 		assertEquals("INSUFFICIENT_MATERIAL", game.getDrawReason());
 	}
 
+	@Test
+	void kingKnightVersusKingAfterKnightMoveEndsInsufficientDraw() {
+		Game game = new Game();
+		game.startNewGame();
+		Board board = game.getBoard();
+		clearBoard(board);
+		placePiece(board, 7, 7, new Piece("KING", "WHITE"));
+		placePiece(board, 6, 5, new Piece("KNIGHT", "WHITE"));
+		placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+
+		assertTrue(game.makeMove(6, 5, 5, 3));
+		assertTrue(game.isGameOver());
+		assertTrue(game.isDraw());
+		assertEquals("INSUFFICIENT_MATERIAL", game.getDrawReason());
+	}
+
 	private void clearBoard(Board board) {
 		try {
 			java.lang.reflect.Field stateField = Board.class.getDeclaredField("state");
