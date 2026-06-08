@@ -52,6 +52,21 @@ class FiftyMoveRuleTests {
 		assertEquals("FIFTY_MOVE", game.getDrawReason());
 	}
 
+	@Test
+	void ninetyNineQuietHalfmovesDoesNotDeclareDraw() throws Exception {
+		Game game = new Game();
+		game.startNewGame();
+		Board b = game.getBoard();
+		clearBoard(b);
+		placePiece(b, 7, 7, new Piece("KING", "WHITE"));
+		placePiece(b, 7, 6, new Piece("ROOK", "WHITE"));
+		placePiece(b, 0, 0, new Piece("KING", "BLACK"));
+		setHalfmoveClock(game, 98);
+		assertTrue(game.makeMove(7, 7, 6, 7));
+		assertFalse(game.isGameOver());
+		assertEquals(99, game.getHalfmoveClock());
+	}
+
 	private void clearBoard(Board board) {
 		try {
 			java.lang.reflect.Field stateField = Board.class.getDeclaredField("state");
