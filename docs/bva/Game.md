@@ -162,5 +162,31 @@ Per course rules: when neither side has enough material to deliver checkmate, th
 | GAME-DRAW-IM-004 | Board has White king, Black king, and a White queen (or other heavy piece). | Game is **not** declared drawn solely for insufficient material; play continues unless another rule applies. | no |
 | GAME-DRAW-IM-005 | Black king and Black knight versus White king only; it is Black's turn. | Symmetric case: draw by insufficient material for Black's minor vs lone White king. | no |
 
+---
+
+## Draw by fifty-move rule (`makeMove` / game result)
+
+FIDE-style: **100 half-moves** without a pawn move and without a capture end the game as a draw. A **half-move** counter resets to `0` after every pawn move and every capture.
+
+| Test Case ID | State of the System | Expected Output | Implemented? |
+|-------------|---------------------|-----------------|--------------|
+| GAME-DRAW-50-001 | Half-move counter reaches `100` after a quiet move (no pawn move, no capture). | Game ends as draw; `isDraw()` true; draw reason indicates fifty-move rule. | no |
+| GAME-DRAW-50-002 | Half-move counter is `99`; the next move is a quiet knight move (no pawn, no capture). | After the move completes, counter is `100` and game is drawn by fifty-move rule. | no |
+| GAME-DRAW-50-003 | Half-move counter is `99`; the next move is a pawn push (one or two squares). | Counter resets; game does **not** end for fifty-move rule solely from that move. | no |
+| GAME-DRAW-50-004 | Half-move counter is `99`; the next move captures an opponent piece. | Counter resets; no fifty-move draw on that move. | no |
+| GAME-DRAW-50-005 | `startNewGame()` is called. | Half-move counter is reset to `0`. | no |
+
+---
+
+## Draw by threefold repetition (`makeMove` / game result)
+
+The same **position** (implementation-defined signature: at minimum board layout and side to move; may include castling rights and en passant target if required for tests) occurs **three times**. The third occurrence ends the game as a draw.
+
+| Test Case ID | State of the System | Expected Output | Implemented? |
+|-------------|---------------------|-----------------|--------------|
+| GAME-DRAW-3R-001 | A sequence of moves repeats the same position twice; the third occurrence of that position arises. | Game ends as draw; draw reason indicates threefold repetition. | no |
+| GAME-DRAW-3R-002 | Only two occurrences of the same position have occurred. | Game continues; `isGameOver()` false unless another rule applies. | no |
+| GAME-DRAW-3R-003 | `startNewGame()` after a repetition-heavy game. | Repetition history cleared; no immediate draw from old positions. | no |
+
 
 

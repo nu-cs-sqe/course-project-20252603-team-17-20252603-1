@@ -12,6 +12,8 @@ Kings are not captured in the final rule set. Instead, the game detects check an
 
 The game also supports draw conditions. Stalemate ends the game as a draw. Additional draw rules, including insufficient material, the fifty-move rule, and threefold repetition, are part of the full rule set.
 
+The **fifty-move rule** is enforced with a **half-move clock**: it counts moves without a pawn move or capture; it resets on every pawn move and on every capture; when the count reaches **100**, the game is declared drawn. **Threefold repetition** ends the game as a draw when the same position (board plus side to move, and any rights the implementation includes in its position key) occurs **three** times.
+
 Special chess rules are part of the full rule set, including castling, en passant, and pawn promotion. Castling is a single move of the king two squares toward a rook on its starting corner, with that rook jumping to the square the king crossed; it is allowed only if neither piece has moved, all squares between them are empty, the king is not in check, and the king does not pass through or land on a square attacked by the opponent. Pawn promotion allows a pawn reaching the final rank to promote to a queen, rook, bishop, or knight. If no promotion piece is specified (for example in the command-line interface), the pawn promotes to a queen by default.
 
 After the game is over, no further moves are allowed.
