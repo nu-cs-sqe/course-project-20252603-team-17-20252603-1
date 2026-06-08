@@ -6,6 +6,7 @@ import board.Board;
 import board.Piece;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -44,6 +45,20 @@ class InsufficientMaterialTests {
 		assertTrue(game.isGameOver());
 		assertTrue(game.isDraw());
 		assertEquals("INSUFFICIENT_MATERIAL", game.getDrawReason());
+	}
+
+	@Test
+	void kingVersusKingWithQueenKeepsGameGoingAfterNonCaptureKingMove() {
+		Game game = new Game();
+		game.startNewGame();
+		Board board = game.getBoard();
+		clearBoard(board);
+		placePiece(board, 7, 7, new Piece("KING", "WHITE"));
+		placePiece(board, 0, 0, new Piece("KING", "BLACK"));
+		placePiece(board, 4, 4, new Piece("QUEEN", "WHITE"));
+
+		assertTrue(game.makeMove(7, 7, 6, 7));
+		assertFalse(game.isGameOver());
 	}
 
 	private void clearBoard(Board board) {
