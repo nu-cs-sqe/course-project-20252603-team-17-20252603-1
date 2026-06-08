@@ -194,11 +194,36 @@ public class Game {
 			return true;
 		}
 
+		if (isInsufficientMaterialKingVersusKing()) {
+			gameOver = true;
+			winnerColor = null;
+			draw = true;
+			return true;
+		}
+
 
 		switchTurn();
 
 		return true;
 
+	}
+
+	private boolean isInsufficientMaterialKingVersusKing() {
+		int kings = 0;
+		for (int r = 0; r < 8; r++) {
+			for (int c = 0; c < 8; c++) {
+				Piece p = board.getPieceAt(r, c);
+				if (p == null) {
+					continue;
+				}
+				if ("KING".equals(p.getType())) {
+					kings++;
+				} else {
+					return false;
+				}
+			}
+		}
+		return kings == 2;
 	}
 
 	private boolean isEnPassantMove(int startRow, int startCol, int endRow, int endCol, Piece piece) {
