@@ -61,6 +61,13 @@ public class BoardPanel extends JPanel {
 		});
 	}
 
+	/** Clears local selection and re-reads labels from the model (call after {@code startNewGame}). */
+	public void resetUiAfterNewGame() {
+		clearSelection();
+		syncStatusFromGame();
+		repaint();
+	}
+
 	private void onBoardMousePressed(int px, int py) {
 		BoardGeometry geo = BoardGeometry.fromSize(getWidth(), getHeight());
 		int[] sq = pixelToSquare(px, py, geo);
