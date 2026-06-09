@@ -22,7 +22,12 @@ public final class MoveHistoryFormatter {
 		String piece = abbrevPieceType(m.getPieceType());
 		String from = coord(m.getStartRow(), m.getStartCol());
 		String to = coord(m.getEndRow(), m.getEndCol());
-		return moveNumberOneBased + ". " + colorLetter + " " + piece + " " + from + "->" + to;
+		String sep = m.isCapture() ? "x" : "->";
+		String line = moveNumberOneBased + ". " + colorLetter + " " + piece + " " + from + sep + to;
+		if (m.isEnPassant()) {
+			line = line + " e.p.";
+		}
+		return line;
 	}
 
 	private static String abbrevPieceType(String type) {
