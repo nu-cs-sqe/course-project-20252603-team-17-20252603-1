@@ -96,7 +96,16 @@ public class BoardPanel extends JPanel {
 				repaint();
 				return;
 			}
-			boolean moved = controller.tryMove(selectedRow, selectedCol, row, col);
+			Piece moving = controller.getGame().getBoard().getPieceAt(selectedRow, selectedCol);
+			String promotionPiece = null;
+			if (isPawnPromotionAttempt(moving, row)) {
+				promotionPiece = PromotionChooser.choosePromotionType(this);
+				if (promotionPiece == null) {
+					repaint();
+					return;
+				}
+			}
+			boolean moved = controller.tryMove(selectedRow, selectedCol, row, col, promotionPiece);
 			if (moved) {
 				clearSelection();
 				syncStatusFromGame();
@@ -127,6 +136,19 @@ public class BoardPanel extends JPanel {
 	private void clearSelection() {
 		selectedRow = null;
 		selectedCol = null;
+	}
+
+	private static boolean isPawnPromotionAttempt(Piece moving, int toRow) {
+		if (moving == null || !"PAWN".equals(moving.getType())) {
+			return false;
+		}
+		if ("WHITE".equals(moving.getColor())) {
+			return toRow == 0;
+		}
+		if ("BLACK".equals(moving.getColor())) {
+			return toRow == 7;
+		}
+		return false;
 	}
 
 	private void syncStatusFromGame() {
