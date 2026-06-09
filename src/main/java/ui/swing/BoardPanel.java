@@ -2,7 +2,6 @@ package ui.swing;
 
 import board.Board;
 import board.Piece;
-import game.Game;
 import ui.controller.GameController;
 
 import javax.swing.JLabel;
@@ -108,40 +107,7 @@ public class BoardPanel extends JPanel {
 
 	private void syncStatusFromGame() {
 		errorLine.setText("");
-		Game g = controller.getGame();
-		if (controller.isGameOver()) {
-			if (g.isDraw()) {
-				statusLine.setText("Draw — " + summarizeDrawReason(g.getDrawReason()));
-			} else if (g.getWinnerColor() != null) {
-				statusLine.setText("Checkmate — " + g.getWinnerColor() + " wins");
-			} else {
-				statusLine.setText("Game over");
-			}
-			return;
-		}
-		String line = g.getCurrentPlayer().getColor() + " to move";
-		if (g.isKingInCheck(g.getCurrentPlayer().getColor())) {
-			line = line + " — check";
-		}
-		statusLine.setText(line);
-	}
-
-	private static String summarizeDrawReason(String code) {
-		if (code == null) {
-			return "draw";
-		}
-		switch (code) {
-			case "STALEMATE":
-				return "stalemate";
-			case "INSUFFICIENT_MATERIAL":
-				return "insufficient material";
-			case "FIFTY_MOVE":
-				return "fifty-move rule";
-			case "THREEFOLD_REPETITION":
-				return "threefold repetition";
-			default:
-				return code.toLowerCase().replace('_', ' ');
-		}
+		statusLine.setText(GameStatusTexts.primaryStatusLine(controller));
 	}
 
 	@Override
