@@ -25,6 +25,7 @@ public class BoardPanel extends JPanel {
 
 	private static final Color LIGHT_SQUARE = new Color(240, 217, 181);
 	private static final Color DARK_SQUARE = new Color(181, 136, 99);
+	private static final Color SELECTION_OVERLAY = new Color(255, 220, 0, 100);
 
 	private final GameController controller;
 	private final JLabel statusLine;
@@ -143,9 +144,21 @@ public class BoardPanel extends JPanel {
 			}
 		}
 
+		drawSelectionHighlight(g2, geo);
+
 		drawPieces(g2, geo.originX(), geo.originY(), geo.square());
 
 		g2.dispose();
+	}
+
+	private void drawSelectionHighlight(Graphics2D g2, BoardGeometry geo) {
+		if (selectedRow == null || selectedCol == null) {
+			return;
+		}
+		int x = geo.originX() + selectedCol * geo.square();
+		int y = geo.originY() + selectedRow * geo.square();
+		g2.setColor(SELECTION_OVERLAY);
+		g2.fillRect(x, y, geo.square(), geo.square());
 	}
 
 	/**
