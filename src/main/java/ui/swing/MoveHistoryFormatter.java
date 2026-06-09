@@ -27,6 +27,9 @@ public final class MoveHistoryFormatter {
 		if (m.isEnPassant()) {
 			line = line + " e.p.";
 		}
+		if (m.getPromotionPieceType() != null) {
+			line = line + "=" + abbrevPieceType(m.getPromotionPieceType());
+		}
 		return line;
 	}
 
