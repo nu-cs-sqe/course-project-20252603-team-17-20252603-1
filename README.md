@@ -37,6 +37,9 @@ Run these before merging GUI-related work:
 - `./gradlew test`
 - `./gradlew checkstyleMain`
 
+`MoveHistoryFormatterTest` exercises the move-line formatter used by the east history panel (no GUI
+head required).
+
 ### GUI smoke checklist (`./gradlew run --args='gui'`)
 
 1. Window opens; north status shows **WHITE to move**; title bar matches.
