@@ -27,6 +27,9 @@ public class BoardPanel extends JPanel {
 
 	private final GameController controller;
 
+	private Integer selectedRow;
+	private Integer selectedCol;
+
 	public BoardPanel(GameController controller) {
 		if (controller == null) {
 			throw new IllegalArgumentException("controller");
@@ -42,6 +45,11 @@ public class BoardPanel extends JPanel {
 				// square selection and moves wired in follow-up commits
 			}
 		});
+	}
+
+	private void clearSelection() {
+		selectedRow = null;
+		selectedCol = null;
 	}
 
 	@Override
@@ -65,6 +73,20 @@ public class BoardPanel extends JPanel {
 		drawPieces(g2, geo.originX(), geo.originY(), geo.square());
 
 		g2.dispose();
+	}
+
+	/**
+	 * @return {@code {row, col}} for the board square under the pixel, or {@code null} if outside.
+	 */
+	private int[] pixelToSquare(int px, int py, BoardGeometry geo) {
+		int edgeX = geo.originX() + 8 * geo.square();
+		int edgeY = geo.originY() + 8 * geo.square();
+		if (px < geo.originX() || px >= edgeX || py < geo.originY() || py >= edgeY) {
+			return null;
+		}
+		int col = (px - geo.originX()) / geo.square();
+		int row = (py - geo.originY()) / geo.square();
+		return new int[] {row, col};
 	}
 
 	private void drawPieces(Graphics2D g2, int ox, int oy, int square) {
