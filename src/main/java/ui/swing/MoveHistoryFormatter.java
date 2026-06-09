@@ -12,6 +12,12 @@ public final class MoveHistoryFormatter {
 
 	/** One-based move index and move record → single log line (minimal form). */
 	public static String formatLine(int moveNumberOneBased, Move m) {
+		if (m.isCastling()) {
+			String colorLetter = m.getColor().substring(0, 1);
+			boolean queenSide = m.getEndCol() < m.getStartCol();
+			String castle = queenSide ? "O-O-O" : "O-O";
+			return moveNumberOneBased + ". " + colorLetter + " " + castle;
+		}
 		String colorLetter = m.getColor().substring(0, 1);
 		String piece = abbrevPieceType(m.getPieceType());
 		String from = coord(m.getStartRow(), m.getStartCol());
