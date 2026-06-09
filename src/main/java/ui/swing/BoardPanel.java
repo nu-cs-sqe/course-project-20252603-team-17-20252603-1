@@ -2,6 +2,7 @@ package ui.swing;
 
 import board.Board;
 import board.Piece;
+import game.Game;
 import ui.controller.GameController;
 
 import javax.swing.JLabel;
@@ -66,12 +67,14 @@ public class BoardPanel extends JPanel {
 		if (selectedRow != null) {
 			if (selectedRow == row && selectedCol == col) {
 				clearSelection();
+				syncStatusFromGame();
 				repaint();
 				return;
 			}
 			boolean moved = controller.tryMove(selectedRow, selectedCol, row, col);
 			if (moved) {
 				clearSelection();
+				syncStatusFromGame();
 			} else {
 				statusLine.setText("Invalid move. Try again.");
 			}
@@ -89,12 +92,46 @@ public class BoardPanel extends JPanel {
 		}
 		selectedRow = row;
 		selectedCol = col;
+		syncStatusFromGame();
 		repaint();
 	}
 
 	private void clearSelection() {
 		selectedRow = null;
 		selectedCol = null;
+	}
+
+	private void syncStatusFromGame() {
+		Game g = controller.getGame();
+		if (controller.isGameOver()) {
+			if (g.isDraw()) {
+				statusLine.setText("Draw — " + summarizeDrawReason(g.getDrawReason()));
+			} else if (g.getWinnerColor() != null) {
+				statusLine.setText(g.getWinnerColor() + " wins");
+			} else {
+				statusLine.setText("Game over");
+			}
+			return;
+		}
+		statusLine.setText(g.getCurrentPlayer().getColor() + " to move");
+	}
+
+	private static String summarizeDrawReason(String code) {
+		if (code == null) {
+			return "draw";
+		}
+		switch (code) {
+			case "STALEMATE":
+				return "stalemate";
+			case "INSUFFICIENT_MATERIAL":
+				return "insufficient material";
+			case "FIFTY_MOVE":
+				return "fifty-move rule";
+			case "THREEFOLD_REPETITION":
+				return "threefold repetition";
+			default:
+				return code.toLowerCase().replace('_', ' ');
+		}
 	}
 
 	@Override
