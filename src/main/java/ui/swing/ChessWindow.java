@@ -35,6 +35,11 @@ public class ChessWindow extends JFrame {
 		errorLabel = new JLabel("", SwingConstants.CENTER);
 		add(errorLabel, BorderLayout.SOUTH);
 
-		add(new BoardPanel(controller, statusLabel, errorLabel), BorderLayout.CENTER);
+		add(new BoardPanel(controller, statusLabel, errorLabel, this::syncWindowTitle), BorderLayout.CENTER);
+		syncWindowTitle();
+	}
+
+	private void syncWindowTitle() {
+		setTitle(GameStatusTexts.windowTitle(controller));
 	}
 }

@@ -29,11 +29,13 @@ public class BoardPanel extends JPanel {
 	private final GameController controller;
 	private final JLabel statusLine;
 	private final JLabel errorLine;
+	private final Runnable afterStatusSync;
 
 	private Integer selectedRow;
 	private Integer selectedCol;
 
-	public BoardPanel(GameController controller, JLabel statusLine, JLabel errorLine) {
+	public BoardPanel(GameController controller, JLabel statusLine, JLabel errorLine,
+			Runnable afterStatusSync) {
 		if (controller == null) {
 			throw new IllegalArgumentException("controller");
 		}
@@ -46,6 +48,7 @@ public class BoardPanel extends JPanel {
 		this.controller = controller;
 		this.statusLine = statusLine;
 		this.errorLine = errorLine;
+		this.afterStatusSync = afterStatusSync;
 		setOpaque(true);
 		setBackground(new Color(220, 220, 220));
 		setPreferredSize(new Dimension(PREFERRED_PX, PREFERRED_PX));
@@ -108,6 +111,9 @@ public class BoardPanel extends JPanel {
 	private void syncStatusFromGame() {
 		errorLine.setText("");
 		statusLine.setText(GameStatusTexts.primaryStatusLine(controller));
+		if (afterStatusSync != null) {
+			afterStatusSync.run();
+		}
 	}
 
 	@Override

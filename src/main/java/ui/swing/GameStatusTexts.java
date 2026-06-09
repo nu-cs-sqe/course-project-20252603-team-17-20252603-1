@@ -32,6 +32,13 @@ public final class GameStatusTexts {
 		return line;
 	}
 
+	/**
+	 * Short window caption mirroring the primary status line.
+	 */
+	public static String windowTitle(GameController controller) {
+		return "Chess — " + primaryStatusLine(controller);
+	}
+
 	private static String summarizeDrawReason(String code) {
 		if (code == null) {
 			return "draw";
