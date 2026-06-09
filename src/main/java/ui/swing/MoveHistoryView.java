@@ -49,6 +49,11 @@ public class MoveHistoryView extends JPanel {
 			return;
 		}
 		List<Move> history = g.getMoveHistory();
+		if (history.isEmpty()) {
+			textArea.setText("(No moves yet.)");
+			textArea.setCaretPosition(0);
+			return;
+		}
 		StringBuilder sb = new StringBuilder();
 		int n = 1;
 		for (Move m : history) {
