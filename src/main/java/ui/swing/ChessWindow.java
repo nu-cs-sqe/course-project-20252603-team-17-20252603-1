@@ -16,6 +16,7 @@ public class ChessWindow extends JFrame {
 	private final GameController controller;
 
 	private final JLabel statusLabel;
+	private final JLabel errorLabel;
 
 	public ChessWindow(GameController controller) {
 		super("Chess");
@@ -31,6 +32,9 @@ public class ChessWindow extends JFrame {
 		statusLabel = new JLabel(turn + " to move", SwingConstants.CENTER);
 		add(statusLabel, BorderLayout.NORTH);
 
-		add(new BoardPanel(controller, statusLabel), BorderLayout.CENTER);
+		errorLabel = new JLabel("", SwingConstants.CENTER);
+		add(errorLabel, BorderLayout.SOUTH);
+
+		add(new BoardPanel(controller, statusLabel, errorLabel), BorderLayout.CENTER);
 	}
 }

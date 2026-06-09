@@ -29,19 +29,24 @@ public class BoardPanel extends JPanel {
 
 	private final GameController controller;
 	private final JLabel statusLine;
+	private final JLabel errorLine;
 
 	private Integer selectedRow;
 	private Integer selectedCol;
 
-	public BoardPanel(GameController controller, JLabel statusLine) {
+	public BoardPanel(GameController controller, JLabel statusLine, JLabel errorLine) {
 		if (controller == null) {
 			throw new IllegalArgumentException("controller");
 		}
 		if (statusLine == null) {
 			throw new IllegalArgumentException("statusLine");
 		}
+		if (errorLine == null) {
+			throw new IllegalArgumentException("errorLine");
+		}
 		this.controller = controller;
 		this.statusLine = statusLine;
+		this.errorLine = errorLine;
 		setOpaque(true);
 		setBackground(new Color(220, 220, 220));
 		setPreferredSize(new Dimension(PREFERRED_PX, PREFERRED_PX));
@@ -76,7 +81,7 @@ public class BoardPanel extends JPanel {
 				clearSelection();
 				syncStatusFromGame();
 			} else {
-				statusLine.setText("Invalid move. Try again.");
+				errorLine.setText("Invalid move. Try again.");
 			}
 			repaint();
 			return;
@@ -102,6 +107,7 @@ public class BoardPanel extends JPanel {
 	}
 
 	private void syncStatusFromGame() {
+		errorLine.setText("");
 		Game g = controller.getGame();
 		if (controller.isGameOver()) {
 			if (g.isDraw()) {
