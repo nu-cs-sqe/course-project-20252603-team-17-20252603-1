@@ -12,6 +12,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Swing surface for drawing the chess board; model access via {@link GameController} only.
@@ -33,6 +35,13 @@ public class BoardPanel extends JPanel {
 		setOpaque(true);
 		setBackground(new Color(220, 220, 220));
 		setPreferredSize(new Dimension(PREFERRED_PX, PREFERRED_PX));
+
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// square selection and moves wired in follow-up commits
+			}
+		});
 	}
 
 	@Override
