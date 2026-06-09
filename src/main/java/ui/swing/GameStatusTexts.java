@@ -18,7 +18,7 @@ public final class GameStatusTexts {
 		Game g = controller.getGame();
 		if (controller.isGameOver()) {
 			if (g.isDraw()) {
-				return "Draw — " + summarizeDrawReason(g.getDrawReason());
+				return "Draw by " + summarizeDrawReason(g.getDrawReason());
 			}
 			if (g.getWinnerColor() != null) {
 				return "Checkmate — " + g.getWinnerColor() + " wins";

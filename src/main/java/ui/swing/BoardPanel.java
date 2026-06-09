@@ -91,10 +91,12 @@ public class BoardPanel extends JPanel {
 
 		Piece piece = controller.getGame().getBoard().getPieceAt(row, col);
 		if (piece == null) {
+			errorLine.setText("");
 			return;
 		}
 		String turn = controller.getGame().getCurrentPlayer().getColor();
 		if (!turn.equals(piece.getColor())) {
+			errorLine.setText("");
 			return;
 		}
 		selectedRow = row;
