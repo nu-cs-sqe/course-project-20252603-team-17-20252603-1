@@ -50,6 +50,12 @@ Run these before merging GUI-related work:
 9. Select a piece, then click **another friendly piece**; selection moves (no bogus illegal line).
 10. Resize the window; board stays centered and still playable.
 
+### CLI smoke checklist (`./gradlew run`)
+
+1. Run with no args; complete one legal move using **startRow startCol endRow endCol** input.
+2. Confirm an illegal coordinate set prints **Invalid move** and the loop continues.
+3. Play until **Game over**; confirm the session ends cleanly.
+
 ## Acknowledgements
 REFERENCES, SOURCE OF HELP ETC
 
