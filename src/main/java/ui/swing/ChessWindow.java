@@ -12,7 +12,7 @@ import java.awt.BorderLayout;
 
 public class ChessWindow extends JFrame {
 
-	private static final int DEFAULT_WIDTH = 720;
+	private static final int DEFAULT_WIDTH = 960;
 	private static final int DEFAULT_HEIGHT = 640;
 
 	private final GameController controller;
@@ -48,6 +48,8 @@ public class ChessWindow extends JFrame {
 		add(northStrip, BorderLayout.NORTH);
 
 		add(errorLabel, BorderLayout.SOUTH);
+
+		add(new MoveHistoryView(), BorderLayout.EAST);
 
 		add(boardPanel, BorderLayout.CENTER);
 		syncWindowTitle();
