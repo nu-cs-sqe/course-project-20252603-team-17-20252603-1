@@ -49,5 +49,6 @@ public class MoveHistoryView extends JPanel {
 			n++;
 		}
 		textArea.setText(sb.toString());
+		textArea.setCaretPosition(textArea.getDocument().getLength());
 	}
 }
