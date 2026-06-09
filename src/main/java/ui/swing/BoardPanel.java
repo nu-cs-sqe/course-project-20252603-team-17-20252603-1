@@ -113,7 +113,11 @@ public class BoardPanel extends JPanel {
 			}
 			return;
 		}
-		statusLine.setText(g.getCurrentPlayer().getColor() + " to move");
+		String line = g.getCurrentPlayer().getColor() + " to move";
+		if (g.isKingInCheck(g.getCurrentPlayer().getColor())) {
+			line = line + " — check";
+		}
+		statusLine.setText(line);
 	}
 
 	private static String summarizeDrawReason(String code) {
