@@ -24,7 +24,11 @@ public class GameController {
 	}
 
 	public boolean tryMove(int startRow, int startCol, int endRow, int endCol) {
-		return game.makeMove(startRow, startCol, endRow, endCol);
+		return tryMove(startRow, startCol, endRow, endCol, null);
+	}
+
+	public boolean tryMove(int startRow, int startCol, int endRow, int endCol, String promotionPiece) {
+		return game.makeMove(startRow, startCol, endRow, endCol, promotionPiece);
 	}
 
 	public boolean isGameOver() {
