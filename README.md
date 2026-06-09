@@ -37,6 +37,19 @@ Run these before merging GUI-related work:
 - `./gradlew test`
 - `./gradlew checkstyleMain`
 
+### GUI smoke checklist (`./gradlew run --args='gui'`)
+
+1. Window opens; north status shows **WHITE to move**; title bar matches.
+2. Select a white pawn square (highlight); click a legal forward square; piece moves and turn switches.
+3. Click an illegal destination; south shows **Invalid move**; highlight clears; north still shows correct turn.
+4. Put the side to move in **check** if you can; north shows **— check** and the title updates.
+5. Reach **checkmate** or a **draw**; north shows endgame text; board clicks do nothing.
+6. Click **New game**; starting position returns; history shows **(No moves yet.)**; you can move again.
+7. **Promotion:** advance a pawn to the last rank; pick each piece type once; board shows the chosen piece; **Cancel** leaves selection so you can retry.
+8. **Move history:** after several moves, east panel lists lines; newest is visible at the bottom; castling/capture/promotion lines look sensible when they occur.
+9. Select a piece, then click **another friendly piece**; selection moves (no bogus illegal line).
+10. Resize the window; board stays centered and still playable.
+
 ## Acknowledgements
 REFERENCES, SOURCE OF HELP ETC
 
