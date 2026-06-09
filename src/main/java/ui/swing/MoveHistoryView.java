@@ -7,8 +7,10 @@ import ui.controller.GameController;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.BorderFactory;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.util.List;
 
 /**
@@ -19,15 +21,20 @@ public class MoveHistoryView extends JPanel {
 	private static final int PREFERRED_WIDTH = 220;
 
 	private final JTextArea textArea;
+	private final JScrollPane scrollPane;
 
 	public MoveHistoryView() {
 		super(new BorderLayout());
 		textArea = new JTextArea();
 		textArea.setEditable(false);
+		textArea.setLineWrap(false);
+		textArea.setWrapStyleWord(false);
+		textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		textArea.setText("");
-		JScrollPane scroll = new JScrollPane(textArea);
-		scroll.setPreferredSize(new Dimension(PREFERRED_WIDTH, 120));
-		add(scroll, BorderLayout.CENTER);
+		scrollPane = new JScrollPane(textArea);
+		scrollPane.setPreferredSize(new Dimension(PREFERRED_WIDTH, 120));
+		scrollPane.setBorder(BorderFactory.createTitledBorder("Move history"));
+		add(scrollPane, BorderLayout.CENTER);
 	}
 
 	/** Rebuilds the log from the controller's game (no moves if no game). */
