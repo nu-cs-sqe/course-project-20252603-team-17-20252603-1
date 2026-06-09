@@ -20,6 +20,8 @@ public class ChessWindow extends JFrame {
 	private final JLabel statusLabel;
 	private final JLabel errorLabel;
 
+	private final MoveHistoryView moveHistoryView;
+
 	public ChessWindow(GameController controller) {
 		super("Chess");
 		if (controller == null) {
@@ -34,13 +36,16 @@ public class ChessWindow extends JFrame {
 		statusLabel = new JLabel(turn + " to move", SwingConstants.CENTER);
 		errorLabel = new JLabel("", SwingConstants.CENTER);
 
+		moveHistoryView = new MoveHistoryView();
+
 		final BoardPanel boardPanel = new BoardPanel(controller, statusLabel, errorLabel, this::syncWindowTitle,
-				null);
+				() -> moveHistoryView.refreshFrom(controller));
 
 		JButton newGameButton = new JButton("New game");
 		newGameButton.addActionListener(e -> {
 			controller.startNewGame();
 			boardPanel.resetUiAfterNewGame();
+			moveHistoryView.refreshFrom(controller);
 		});
 
 		JPanel northStrip = new JPanel(new BorderLayout());
@@ -50,10 +55,11 @@ public class ChessWindow extends JFrame {
 
 		add(errorLabel, BorderLayout.SOUTH);
 
-		add(new MoveHistoryView(), BorderLayout.EAST);
+		add(moveHistoryView, BorderLayout.EAST);
 
 		add(boardPanel, BorderLayout.CENTER);
 		syncWindowTitle();
+		moveHistoryView.refreshFrom(controller);
 	}
 
 	private void syncWindowTitle() {
