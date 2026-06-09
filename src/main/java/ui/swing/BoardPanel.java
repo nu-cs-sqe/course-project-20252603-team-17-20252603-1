@@ -107,7 +107,7 @@ public class BoardPanel extends JPanel {
 			if (g.isDraw()) {
 				statusLine.setText("Draw — " + summarizeDrawReason(g.getDrawReason()));
 			} else if (g.getWinnerColor() != null) {
-				statusLine.setText(g.getWinnerColor() + " wins");
+				statusLine.setText("Checkmate — " + g.getWinnerColor() + " wins");
 			} else {
 				statusLine.setText("Game over");
 			}
