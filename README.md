@@ -21,6 +21,7 @@ Chess Game
     again cancels the selection).
   - **Status:** the north label shows turn, in-check, and endgame results; invalid moves appear on
     the south label; the window title mirrors the north line.
+  - **New game:** use the **New game** button in the window header to reset the board and status.
 
 ## Acknowledgements
 REFERENCES, SOURCE OF HELP ETC
