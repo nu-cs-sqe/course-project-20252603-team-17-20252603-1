@@ -72,6 +72,8 @@ public class BoardPanel extends JPanel {
 			boolean moved = controller.tryMove(selectedRow, selectedCol, row, col);
 			if (moved) {
 				clearSelection();
+			} else {
+				statusLine.setText("Invalid move. Try again.");
 			}
 			repaint();
 			return;
