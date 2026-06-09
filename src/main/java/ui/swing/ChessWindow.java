@@ -34,7 +34,8 @@ public class ChessWindow extends JFrame {
 		statusLabel = new JLabel(turn + " to move", SwingConstants.CENTER);
 		errorLabel = new JLabel("", SwingConstants.CENTER);
 
-		final BoardPanel boardPanel = new BoardPanel(controller, statusLabel, errorLabel, this::syncWindowTitle);
+		final BoardPanel boardPanel = new BoardPanel(controller, statusLabel, errorLabel, this::syncWindowTitle,
+				null);
 
 		JButton newGameButton = new JButton("New game");
 		newGameButton.addActionListener(e -> {

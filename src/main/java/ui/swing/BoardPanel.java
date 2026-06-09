@@ -31,12 +31,13 @@ public class BoardPanel extends JPanel {
 	private final JLabel statusLine;
 	private final JLabel errorLine;
 	private final Runnable afterStatusSync;
+	private final Runnable afterMoveApplied;
 
 	private Integer selectedRow;
 	private Integer selectedCol;
 
 	public BoardPanel(GameController controller, JLabel statusLine, JLabel errorLine,
-			Runnable afterStatusSync) {
+			Runnable afterStatusSync, Runnable afterMoveApplied) {
 		if (controller == null) {
 			throw new IllegalArgumentException("controller");
 		}
@@ -50,6 +51,7 @@ public class BoardPanel extends JPanel {
 		this.statusLine = statusLine;
 		this.errorLine = errorLine;
 		this.afterStatusSync = afterStatusSync;
+		this.afterMoveApplied = afterMoveApplied;
 		setOpaque(true);
 		setBackground(new Color(220, 220, 220));
 		setPreferredSize(new Dimension(PREFERRED_PX, PREFERRED_PX));
@@ -109,6 +111,9 @@ public class BoardPanel extends JPanel {
 			if (moved) {
 				clearSelection();
 				syncStatusFromGame();
+				if (afterMoveApplied != null) {
+					afterMoveApplied.run();
+				}
 			} else {
 				clearSelection();
 				errorLine.setText("Invalid move. Try again.");
