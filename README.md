@@ -30,6 +30,13 @@ Chess Game
   - **Move history:** the east **Move history** panel lists completed moves from the game model;
     it clears on **New game** and scrolls to the latest line as you play.
 
+## Verification
+
+Run these before merging GUI-related work:
+
+- `./gradlew test`
+- `./gradlew checkstyleMain`
+
 ## Acknowledgements
 REFERENCES, SOURCE OF HELP ETC
 
