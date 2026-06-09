@@ -4,6 +4,7 @@ import board.Board;
 import board.Piece;
 import ui.controller.GameController;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -26,15 +27,20 @@ public class BoardPanel extends JPanel {
 	private static final Color DARK_SQUARE = new Color(181, 136, 99);
 
 	private final GameController controller;
+	private final JLabel statusLine;
 
 	private Integer selectedRow;
 	private Integer selectedCol;
 
-	public BoardPanel(GameController controller) {
+	public BoardPanel(GameController controller, JLabel statusLine) {
 		if (controller == null) {
 			throw new IllegalArgumentException("controller");
 		}
+		if (statusLine == null) {
+			throw new IllegalArgumentException("statusLine");
+		}
 		this.controller = controller;
+		this.statusLine = statusLine;
 		setOpaque(true);
 		setBackground(new Color(220, 220, 220));
 		setPreferredSize(new Dimension(PREFERRED_PX, PREFERRED_PX));

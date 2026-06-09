@@ -15,6 +15,8 @@ public class ChessWindow extends JFrame {
 
 	private final GameController controller;
 
+	private final JLabel statusLabel;
+
 	public ChessWindow(GameController controller) {
 		super("Chess");
 		if (controller == null) {
@@ -26,9 +28,9 @@ public class ChessWindow extends JFrame {
 		setLocationRelativeTo(null);
 
 		String turn = controller.getGame().getCurrentPlayer().getColor();
-		JLabel status = new JLabel(turn + " to move", SwingConstants.CENTER);
-		add(status, BorderLayout.NORTH);
+		statusLabel = new JLabel(turn + " to move", SwingConstants.CENTER);
+		add(statusLabel, BorderLayout.NORTH);
 
-		add(new BoardPanel(controller), BorderLayout.CENTER);
+		add(new BoardPanel(controller, statusLabel), BorderLayout.CENTER);
 	}
 }
