@@ -42,9 +42,34 @@ public class BoardPanel extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// square selection and moves wired in follow-up commits
+				onBoardMousePressed(e.getX(), e.getY());
 			}
 		});
+	}
+
+	private void onBoardMousePressed(int px, int py) {
+		BoardGeometry geo = BoardGeometry.fromSize(getWidth(), getHeight());
+		int[] sq = pixelToSquare(px, py, geo);
+		if (sq == null || controller.isGameOver()) {
+			return;
+		}
+		if (selectedRow != null) {
+			return;
+		}
+
+		int row = sq[0];
+		int col = sq[1];
+		Piece piece = controller.getGame().getBoard().getPieceAt(row, col);
+		if (piece == null) {
+			return;
+		}
+		String turn = controller.getGame().getCurrentPlayer().getColor();
+		if (!turn.equals(piece.getColor())) {
+			return;
+		}
+		selectedRow = row;
+		selectedCol = col;
+		repaint();
 	}
 
 	private void clearSelection() {
