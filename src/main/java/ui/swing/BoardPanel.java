@@ -86,6 +86,16 @@ public class BoardPanel extends JPanel {
 				repaint();
 				return;
 			}
+			Piece atDest = controller.getGame().getBoard().getPieceAt(row, col);
+			String turn = controller.getGame().getCurrentPlayer().getColor();
+			if (atDest != null && turn.equals(atDest.getColor())) {
+				selectedRow = row;
+				selectedCol = col;
+				errorLine.setText("");
+				syncStatusFromGame();
+				repaint();
+				return;
+			}
 			boolean moved = controller.tryMove(selectedRow, selectedCol, row, col);
 			if (moved) {
 				clearSelection();
