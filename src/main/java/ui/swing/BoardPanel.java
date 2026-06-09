@@ -1,10 +1,14 @@
 package ui.swing;
 
+import board.Board;
+import board.Piece;
 import ui.controller.GameController;
 
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -57,7 +61,40 @@ public class BoardPanel extends JPanel {
 			}
 		}
 
+		drawPieces(g2, ox, oy, square);
+
 		g2.dispose();
+	}
+
+	private void drawPieces(Graphics2D g2, int ox, int oy, int square) {
+		Board board = controller.getGame().getBoard();
+		int fontPx = Math.max(10, square * 5 / 10);
+		g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, fontPx));
+		FontMetrics fm = g2.getFontMetrics();
+
+		for (int row = 0; row < 8; row++) {
+			for (int col = 0; col < 8; col++) {
+				Piece piece = board.getPieceAt(row, col);
+				if (piece == null) {
+					continue;
+				}
+				boolean light = (row + col) % 2 == 0;
+				g2.setColor(light ? new Color(40, 40, 40) : new Color(250, 250, 250));
+				String label = pieceLabel(piece);
+				int cx = ox + col * square + (square - fm.stringWidth(label)) / 2;
+				int cy = oy + row * square + (square - fm.getHeight()) / 2 + fm.getAscent();
+				g2.drawString(label, cx, cy);
+			}
+		}
+	}
+
+	private static String pieceLabel(Piece piece) {
+		String colorPrefix = "WHITE".equals(piece.getColor()) ? "W" : "B";
+		String type = piece.getType();
+		if ("KNIGHT".equals(type)) {
+			return colorPrefix + "N";
+		}
+		return colorPrefix + type.charAt(0);
 	}
 
 	protected GameController getController() {
