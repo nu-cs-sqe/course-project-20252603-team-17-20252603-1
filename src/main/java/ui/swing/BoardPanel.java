@@ -61,7 +61,13 @@ public class BoardPanel extends JPanel {
 			if (selectedRow == row && selectedCol == col) {
 				clearSelection();
 				repaint();
+				return;
 			}
+			boolean moved = controller.tryMove(selectedRow, selectedCol, row, col);
+			if (moved) {
+				clearSelection();
+			}
+			repaint();
 			return;
 		}
 
