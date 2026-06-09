@@ -41,27 +41,19 @@ public class BoardPanel extends JPanel {
 		Graphics2D g2 = (Graphics2D) g.create();
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		int w = getWidth();
-		int h = getHeight();
-		int pad = 8;
-		int innerW = w - 2 * pad;
-		int innerH = h - 2 * pad;
-		int square = Math.max(1, Math.min(innerW, innerH) / 8);
-		int boardPx = square * 8;
-		int ox = (w - boardPx) / 2;
-		int oy = (h - boardPx) / 2;
+		BoardGeometry geo = BoardGeometry.fromSize(getWidth(), getHeight());
 
 		for (int row = 0; row < 8; row++) {
 			for (int col = 0; col < 8; col++) {
 				boolean light = (row + col) % 2 == 0;
 				g2.setColor(light ? LIGHT_SQUARE : DARK_SQUARE);
-				int x = ox + col * square;
-				int y = oy + row * square;
-				g2.fillRect(x, y, square, square);
+				int x = geo.originX() + col * geo.square();
+				int y = geo.originY() + row * geo.square();
+				g2.fillRect(x, y, geo.square(), geo.square());
 			}
 		}
 
-		drawPieces(g2, ox, oy, square);
+		drawPieces(g2, geo.originX(), geo.originY(), geo.square());
 
 		g2.dispose();
 	}
@@ -99,5 +91,45 @@ public class BoardPanel extends JPanel {
 
 	protected GameController getController() {
 		return controller;
+	}
+
+	/**
+	 * Pixel layout of the centered 8×8 board (shared by painting and future hit-testing).
+	 */
+	private static final class BoardGeometry {
+
+		private static final int PAD = 8;
+
+		private final int originX;
+		private final int originY;
+		private final int square;
+
+		private BoardGeometry(int originX, int originY, int square) {
+			this.originX = originX;
+			this.originY = originY;
+			this.square = square;
+		}
+
+		static BoardGeometry fromSize(int width, int height) {
+			int innerW = width - 2 * PAD;
+			int innerH = height - 2 * PAD;
+			int square = Math.max(1, Math.min(innerW, innerH) / 8);
+			int boardPx = square * 8;
+			int ox = (width - boardPx) / 2;
+			int oy = (height - boardPx) / 2;
+			return new BoardGeometry(ox, oy, square);
+		}
+
+		int originX() {
+			return originX;
+		}
+
+		int originY() {
+			return originY;
+		}
+
+		int square() {
+			return square;
+		}
 	}
 }
