@@ -91,6 +91,7 @@ public class BoardPanel extends JPanel {
 				clearSelection();
 				syncStatusFromGame();
 			} else {
+				clearSelection();
 				errorLine.setText("Invalid move. Try again.");
 			}
 			repaint();
