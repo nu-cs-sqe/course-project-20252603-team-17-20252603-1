@@ -27,6 +27,8 @@ Chess Game
     nothing until **New game**.
   - **Promotion:** when a pawn moves to the last rank, a dialog offers Queen (default), Rook,
     Bishop, or Knight; **Cancel** keeps your piece selected so you can pick another destination.
+  - **Move history:** the east **Move history** panel lists completed moves from the game model;
+    it clears on **New game** and scrolls to the latest line as you play.
 
 ## Acknowledgements
 REFERENCES, SOURCE OF HELP ETC
