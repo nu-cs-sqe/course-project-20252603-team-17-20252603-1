@@ -25,6 +25,8 @@ Chess Game
   - **Board polish:** the selected square is highlighted; click another of your pieces to change
     selection; an illegal destination clears the highlight; after checkmate/draw, board clicks do
     nothing until **New game**.
+  - **Promotion:** when a pawn moves to the last rank, a dialog offers Queen (default), Rook,
+    Bishop, or Knight; **Cancel** keeps your piece selected so you can pick another destination.
 
 ## Acknowledgements
 REFERENCES, SOURCE OF HELP ETC
