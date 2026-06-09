@@ -53,12 +53,18 @@ public class BoardPanel extends JPanel {
 		if (sq == null || controller.isGameOver()) {
 			return;
 		}
-		if (selectedRow != null) {
-			return;
-		}
 
 		int row = sq[0];
 		int col = sq[1];
+
+		if (selectedRow != null) {
+			if (selectedRow == row && selectedCol == col) {
+				clearSelection();
+				repaint();
+			}
+			return;
+		}
+
 		Piece piece = controller.getGame().getBoard().getPieceAt(row, col);
 		if (piece == null) {
 			return;
