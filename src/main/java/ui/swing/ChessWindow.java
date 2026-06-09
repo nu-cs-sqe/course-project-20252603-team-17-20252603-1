@@ -10,8 +10,8 @@ import java.awt.BorderLayout;
 
 public class ChessWindow extends JFrame {
 
-	private static final int DEFAULT_WIDTH = 640;
-	private static final int DEFAULT_HEIGHT = 480;
+	private static final int DEFAULT_WIDTH = 720;
+	private static final int DEFAULT_HEIGHT = 640;
 
 	private final GameController controller;
 
@@ -26,9 +26,9 @@ public class ChessWindow extends JFrame {
 		setLocationRelativeTo(null);
 
 		String turn = controller.getGame().getCurrentPlayer().getColor();
-		JLabel stub = new JLabel(
-				"GUI chess board (coming soon) — " + turn + " to move",
-				SwingConstants.CENTER);
-		add(stub, BorderLayout.CENTER);
+		JLabel status = new JLabel(turn + " to move", SwingConstants.CENTER);
+		add(status, BorderLayout.NORTH);
+
+		add(new BoardPanel(controller), BorderLayout.CENTER);
 	}
 }
