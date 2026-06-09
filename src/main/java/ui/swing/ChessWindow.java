@@ -2,8 +2,10 @@ package ui.swing;
 
 import ui.controller.GameController;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
@@ -30,12 +32,24 @@ public class ChessWindow extends JFrame {
 
 		String turn = controller.getGame().getCurrentPlayer().getColor();
 		statusLabel = new JLabel(turn + " to move", SwingConstants.CENTER);
-		add(statusLabel, BorderLayout.NORTH);
-
 		errorLabel = new JLabel("", SwingConstants.CENTER);
+
+		final BoardPanel boardPanel = new BoardPanel(controller, statusLabel, errorLabel, this::syncWindowTitle);
+
+		JButton newGameButton = new JButton("New game");
+		newGameButton.addActionListener(e -> {
+			controller.startNewGame();
+			boardPanel.resetUiAfterNewGame();
+		});
+
+		JPanel northStrip = new JPanel(new BorderLayout());
+		northStrip.add(statusLabel, BorderLayout.CENTER);
+		northStrip.add(newGameButton, BorderLayout.EAST);
+		add(northStrip, BorderLayout.NORTH);
+
 		add(errorLabel, BorderLayout.SOUTH);
 
-		add(new BoardPanel(controller, statusLabel, errorLabel, this::syncWindowTitle), BorderLayout.CENTER);
+		add(boardPanel, BorderLayout.CENTER);
 		syncWindowTitle();
 	}
 
