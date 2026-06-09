@@ -18,6 +18,11 @@ public class GameController {
 		return game;
 	}
 
+	/** Resets the model to a fresh standard game (same entry as CLI new games). */
+	public void startNewGame() {
+		game.startNewGame();
+	}
+
 	public boolean tryMove(int startRow, int startCol, int endRow, int endCol) {
 		return game.makeMove(startRow, startCol, endRow, endCol);
 	}
