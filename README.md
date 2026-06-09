@@ -17,6 +17,8 @@ Chess Game
 
 - CLI (default): `./gradlew run`
 - Swing shell: `./gradlew run --args='gui'`
+  - In the GUI, click a piece of the side to move, then a destination square to move (same square
+    again cancels the selection).
 
 ## Acknowledgements
 REFERENCES, SOURCE OF HELP ETC
