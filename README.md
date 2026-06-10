@@ -17,6 +17,9 @@ Chess Game
 
 - CLI (default): `./gradlew run`
 - Swing shell: `./gradlew run --args='gui'`
+  - **Locale:** GUI strings load from `src/main/resources/messages.properties` (default English).
+    For French, pass the JVM flag through Gradle before the task name, for example:
+    `./gradlew -Dchess.locale=fr run --args='gui'`
   - In the GUI, click a piece of the side to move, then a destination square to move (same square
     again cancels the selection).
   - **Status:** the north label shows turn, in-check, and endgame results; invalid moves appear on
@@ -38,7 +41,7 @@ Run these before merging GUI-related work:
 - `./gradlew checkstyleMain`
 
 `MoveHistoryFormatterTest` exercises the move-line formatter used by the east history panel (no GUI
-head required).
+head required). `UiMessagesTest` checks English/French resource bundles and `MessageFormat` wiring.
 
 ### GUI smoke checklist (`./gradlew run --args='gui'`)
 
