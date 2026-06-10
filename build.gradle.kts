@@ -42,6 +42,10 @@ tasks.test {
 
 tasks.named<JavaExec>("run") {
     standardInput = System.`in`
+    val chessLocale = System.getProperty("chess.locale")
+    if (!chessLocale.isNullOrBlank()) {
+        systemProperty("chess.locale", chessLocale)
+    }
 }
 
 spotbugs {

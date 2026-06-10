@@ -12,21 +12,21 @@ public final class PromotionChooser {
 	}
 
 	/**
-	 * @return {@code QUEEN}, {@code ROOK}, {@code BISHOP}, or {@code KNIGHT}, or {@code null} if the
-	 *         player cancels or closes the dialog.
+	 * @return model token {@code QUEEN}, {@code ROOK}, {@code BISHOP}, or {@code KNIGHT};
+	 *         {@code null} if the player cancels or closes the dialog.
 	 */
-	public static String choosePromotionType(Component parent) {
+	public static String choosePromotionType(Component parent, UiMessages messages) {
 		String[] options = {
-				"Queen (default)",
-				"Rook",
-				"Bishop",
-				"Knight",
-				"Cancel"
+				messages.get("promotion.queen"),
+				messages.get("promotion.rook"),
+				messages.get("promotion.bishop"),
+				messages.get("promotion.knight"),
+				messages.get("promotion.cancel")
 		};
 		int choice = JOptionPane.showOptionDialog(
 				parent,
-				"Pawn reached the last rank — choose promotion:",
-				"Pawn promotion",
+				messages.get("promotion.message"),
+				messages.get("promotion.title"),
 				JOptionPane.DEFAULT_OPTION,
 				JOptionPane.QUESTION_MESSAGE,
 				null,

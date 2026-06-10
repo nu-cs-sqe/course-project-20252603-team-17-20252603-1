@@ -23,7 +23,8 @@ public final class MoveHistoryFormatter {
 		String from = coord(m.getStartRow(), m.getStartCol());
 		String to = coord(m.getEndRow(), m.getEndCol());
 		String sep = m.isCapture() ? "x" : "->";
-		String line = moveNumberOneBased + ". " + colorLetter + " " + piece + " " + from + sep + to;
+		String line = moveNumberOneBased + ". " + colorLetter + " " + piece + " "
+				+ from + sep + to;
 		if (m.isEnPassant()) {
 			line = line + " e.p.";
 		}
