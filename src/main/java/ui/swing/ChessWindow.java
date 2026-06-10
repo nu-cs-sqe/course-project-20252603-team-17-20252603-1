@@ -2,18 +2,23 @@ package ui.swing;
 
 import ui.controller.GameController;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 
 public class ChessWindow extends JFrame {
 
-	private static final int DEFAULT_WIDTH = 640;
-	private static final int DEFAULT_HEIGHT = 480;
+	private static final int DEFAULT_WIDTH = 720;
+	private static final int DEFAULT_HEIGHT = 640;
 
 	private final GameController controller;
+
+	private final JLabel statusLabel;
+	private final JLabel errorLabel;
 
 	public ChessWindow(GameController controller) {
 		super("Chess");
@@ -26,9 +31,29 @@ public class ChessWindow extends JFrame {
 		setLocationRelativeTo(null);
 
 		String turn = controller.getGame().getCurrentPlayer().getColor();
-		JLabel stub = new JLabel(
-				"GUI chess board (coming soon) — " + turn + " to move",
-				SwingConstants.CENTER);
-		add(stub, BorderLayout.CENTER);
+		statusLabel = new JLabel(turn + " to move", SwingConstants.CENTER);
+		errorLabel = new JLabel("", SwingConstants.CENTER);
+
+		final BoardPanel boardPanel = new BoardPanel(controller, statusLabel, errorLabel, this::syncWindowTitle);
+
+		JButton newGameButton = new JButton("New game");
+		newGameButton.addActionListener(e -> {
+			controller.startNewGame();
+			boardPanel.resetUiAfterNewGame();
+		});
+
+		JPanel northStrip = new JPanel(new BorderLayout());
+		northStrip.add(statusLabel, BorderLayout.CENTER);
+		northStrip.add(newGameButton, BorderLayout.EAST);
+		add(northStrip, BorderLayout.NORTH);
+
+		add(errorLabel, BorderLayout.SOUTH);
+
+		add(boardPanel, BorderLayout.CENTER);
+		syncWindowTitle();
+	}
+
+	private void syncWindowTitle() {
+		setTitle(GameStatusTexts.windowTitle(controller));
 	}
 }
