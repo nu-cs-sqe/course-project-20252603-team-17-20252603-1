@@ -105,6 +105,25 @@ public class GameTests {
     }
 
     @Test
+    void makeMoveWithKnightPromotionPlacesKnight() {
+        Game game = new Game();
+        game.startNewGame();
+        Board board = game.getBoard();
+        clearBoard(board);
+        placePiece(board, 7, 4, new Piece("KING", "WHITE"));
+        placePiece(board, 0, 4, new Piece("KING", "BLACK"));
+        placePiece(board, 1, 3, new Piece("PAWN", "WHITE"));
+
+        boolean moved = game.makeMove(1, 3, 0, 3, "KNIGHT");
+
+        assertTrue(moved);
+        Piece promoted = board.getPieceAt(0, 3);
+        assertNotNull(promoted);
+        assertEquals("KNIGHT", promoted.getType());
+        assertEquals("WHITE", promoted.getColor());
+    }
+
+    @Test
     void validBlackPawnMoveSwitchesTurnBackToWhite() {
         Game game = new Game();
 

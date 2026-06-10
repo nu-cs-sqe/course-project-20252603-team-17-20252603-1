@@ -25,17 +25,19 @@ public class BoardPanel extends JPanel {
 
 	private static final Color LIGHT_SQUARE = new Color(240, 217, 181);
 	private static final Color DARK_SQUARE = new Color(181, 136, 99);
+	private static final Color SELECTION_OVERLAY = new Color(255, 220, 0, 100);
 
 	private final GameController controller;
 	private final JLabel statusLine;
 	private final JLabel errorLine;
 	private final Runnable afterStatusSync;
+	private final Runnable afterMoveApplied;
 
 	private Integer selectedRow;
 	private Integer selectedCol;
 
 	public BoardPanel(GameController controller, JLabel statusLine, JLabel errorLine,
-			Runnable afterStatusSync) {
+			Runnable afterStatusSync, Runnable afterMoveApplied) {
 		if (controller == null) {
 			throw new IllegalArgumentException("controller");
 		}
@@ -49,6 +51,7 @@ public class BoardPanel extends JPanel {
 		this.statusLine = statusLine;
 		this.errorLine = errorLine;
 		this.afterStatusSync = afterStatusSync;
+		this.afterMoveApplied = afterMoveApplied;
 		setOpaque(true);
 		setBackground(new Color(220, 220, 220));
 		setPreferredSize(new Dimension(PREFERRED_PX, PREFERRED_PX));
@@ -85,11 +88,34 @@ public class BoardPanel extends JPanel {
 				repaint();
 				return;
 			}
-			boolean moved = controller.tryMove(selectedRow, selectedCol, row, col);
+			Piece atDest = controller.getGame().getBoard().getPieceAt(row, col);
+			String turn = controller.getGame().getCurrentPlayer().getColor();
+			if (atDest != null && turn.equals(atDest.getColor())) {
+				selectedRow = row;
+				selectedCol = col;
+				errorLine.setText("");
+				syncStatusFromGame();
+				repaint();
+				return;
+			}
+			Piece moving = controller.getGame().getBoard().getPieceAt(selectedRow, selectedCol);
+			String promotionPiece = null;
+			if (isPawnPromotionAttempt(moving, row)) {
+				promotionPiece = PromotionChooser.choosePromotionType(this);
+				if (promotionPiece == null) {
+					repaint();
+					return;
+				}
+			}
+			boolean moved = controller.tryMove(selectedRow, selectedCol, row, col, promotionPiece);
 			if (moved) {
 				clearSelection();
 				syncStatusFromGame();
+				if (afterMoveApplied != null) {
+					afterMoveApplied.run();
+				}
 			} else {
+				clearSelection();
 				errorLine.setText("Invalid move. Try again.");
 			}
 			repaint();
@@ -115,6 +141,19 @@ public class BoardPanel extends JPanel {
 	private void clearSelection() {
 		selectedRow = null;
 		selectedCol = null;
+	}
+
+	private static boolean isPawnPromotionAttempt(Piece moving, int toRow) {
+		if (moving == null || !"PAWN".equals(moving.getType())) {
+			return false;
+		}
+		if ("WHITE".equals(moving.getColor())) {
+			return toRow == 0;
+		}
+		if ("BLACK".equals(moving.getColor())) {
+			return toRow == 7;
+		}
+		return false;
 	}
 
 	private void syncStatusFromGame() {
@@ -143,9 +182,21 @@ public class BoardPanel extends JPanel {
 			}
 		}
 
+		drawSelectionHighlight(g2, geo);
+
 		drawPieces(g2, geo.originX(), geo.originY(), geo.square());
 
 		g2.dispose();
+	}
+
+	private void drawSelectionHighlight(Graphics2D g2, BoardGeometry geo) {
+		if (selectedRow == null || selectedCol == null) {
+			return;
+		}
+		int x = geo.originX() + selectedCol * geo.square();
+		int y = geo.originY() + selectedRow * geo.square();
+		g2.setColor(SELECTION_OVERLAY);
+		g2.fillRect(x, y, geo.square(), geo.square());
 	}
 
 	/**

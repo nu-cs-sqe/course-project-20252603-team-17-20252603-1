@@ -103,6 +103,15 @@ public class Game {
 
 	public boolean makeMove(int startRow, int startCol, int
 			endRow, int endCol) {
+		return makeMove(startRow, startCol, endRow, endCol, null);
+	}
+
+	/**
+	 * Applies a move for the current player. For pawn moves to the promotion rank,
+	 * {@code promotionPiece} selects the promoted type ({@code QUEEN}, {@code ROOK},
+	 * {@code BISHOP}, {@code KNIGHT}); {@code null} uses the board default (queen).
+	 */
+	public boolean makeMove(int startRow, int startCol, int endRow, int endCol, String promotionPiece) {
 
 		if (gameOver) {
 			return false;
@@ -161,7 +170,8 @@ public class Game {
 					new Position(endRow, endCol),
 					new Position(startRow, endCol));
 		} else {
-			simulatedMoveSuccessful = simulatedBoard.movePiece(startRow, startCol, endRow, endCol);
+			simulatedMoveSuccessful = simulatedBoard.movePiece(startRow, startCol, endRow, endCol,
+					promotionPiece);
 		}
 
 
@@ -184,7 +194,7 @@ public class Game {
 					new Position(endRow, endCol),
 					new Position(startRow, endCol));
 		} else {
-			moveSuccessful = board.movePiece(startRow, startCol, endRow, endCol);
+			moveSuccessful = board.movePiece(startRow, startCol, endRow, endCol, promotionPiece);
 		}
 
 

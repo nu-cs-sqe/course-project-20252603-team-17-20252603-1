@@ -12,13 +12,15 @@ import java.awt.BorderLayout;
 
 public class ChessWindow extends JFrame {
 
-	private static final int DEFAULT_WIDTH = 720;
+	private static final int DEFAULT_WIDTH = 960;
 	private static final int DEFAULT_HEIGHT = 640;
 
 	private final GameController controller;
 
 	private final JLabel statusLabel;
 	private final JLabel errorLabel;
+
+	private final MoveHistoryView moveHistoryView;
 
 	public ChessWindow(GameController controller) {
 		super("Chess");
@@ -34,12 +36,16 @@ public class ChessWindow extends JFrame {
 		statusLabel = new JLabel(turn + " to move", SwingConstants.CENTER);
 		errorLabel = new JLabel("", SwingConstants.CENTER);
 
-		final BoardPanel boardPanel = new BoardPanel(controller, statusLabel, errorLabel, this::syncWindowTitle);
+		moveHistoryView = new MoveHistoryView();
+
+		final BoardPanel boardPanel = new BoardPanel(controller, statusLabel, errorLabel, this::syncWindowTitle,
+				() -> moveHistoryView.refreshFrom(controller));
 
 		JButton newGameButton = new JButton("New game");
 		newGameButton.addActionListener(e -> {
 			controller.startNewGame();
 			boardPanel.resetUiAfterNewGame();
+			moveHistoryView.refreshFrom(controller);
 		});
 
 		JPanel northStrip = new JPanel(new BorderLayout());
@@ -49,8 +55,11 @@ public class ChessWindow extends JFrame {
 
 		add(errorLabel, BorderLayout.SOUTH);
 
+		add(moveHistoryView, BorderLayout.EAST);
+
 		add(boardPanel, BorderLayout.CENTER);
 		syncWindowTitle();
+		moveHistoryView.refreshFrom(controller);
 	}
 
 	private void syncWindowTitle() {
