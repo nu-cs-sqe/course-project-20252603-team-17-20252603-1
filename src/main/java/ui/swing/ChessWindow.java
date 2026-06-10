@@ -16,6 +16,7 @@ public class ChessWindow extends JFrame {
 	private static final int DEFAULT_HEIGHT = 640;
 
 	private final GameController controller;
+	private final UiMessages messages;
 
 	private final JLabel statusLabel;
 	private final JLabel errorLabel;
@@ -23,25 +24,35 @@ public class ChessWindow extends JFrame {
 	private final MoveHistoryView moveHistoryView;
 
 	public ChessWindow(GameController controller) {
-		super("Chess");
+		super();
 		if (controller == null) {
 			throw new IllegalArgumentException("controller");
 		}
 		this.controller = controller;
+		this.messages = new UiMessages();
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setLocationRelativeTo(null);
+		setTitle(messages.get("app.title"));
 
 		String turn = controller.getGame().getCurrentPlayer().getColor();
-		statusLabel = new JLabel(turn + " to move", SwingConstants.CENTER);
+		String openingStatus = messages.format(
+				"status.to.move",
+				messages.playerColorName(turn));
+		statusLabel = new JLabel(openingStatus, SwingConstants.CENTER);
 		errorLabel = new JLabel("", SwingConstants.CENTER);
 
-		moveHistoryView = new MoveHistoryView();
+		moveHistoryView = new MoveHistoryView(messages);
 
-		final BoardPanel boardPanel = new BoardPanel(controller, statusLabel, errorLabel, this::syncWindowTitle,
+		final BoardPanel boardPanel = new BoardPanel(
+				controller,
+				messages,
+				statusLabel,
+				errorLabel,
+				this::syncWindowTitle,
 				() -> moveHistoryView.refreshFrom(controller));
 
-		JButton newGameButton = new JButton("New game");
+		JButton newGameButton = new JButton(messages.get("button.new.game"));
 		newGameButton.addActionListener(e -> {
 			controller.startNewGame();
 			boardPanel.resetUiAfterNewGame();
@@ -63,6 +74,6 @@ public class ChessWindow extends JFrame {
 	}
 
 	private void syncWindowTitle() {
-		setTitle(GameStatusTexts.windowTitle(controller));
+		setTitle(GameStatusTexts.windowTitle(controller, messages));
 	}
 }

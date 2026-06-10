@@ -28,6 +28,7 @@ public class BoardPanel extends JPanel {
 	private static final Color SELECTION_OVERLAY = new Color(255, 220, 0, 100);
 
 	private final GameController controller;
+	private final UiMessages messages;
 	private final JLabel statusLine;
 	private final JLabel errorLine;
 	private final Runnable afterStatusSync;
@@ -36,10 +37,18 @@ public class BoardPanel extends JPanel {
 	private Integer selectedRow;
 	private Integer selectedCol;
 
-	public BoardPanel(GameController controller, JLabel statusLine, JLabel errorLine,
-			Runnable afterStatusSync, Runnable afterMoveApplied) {
+	public BoardPanel(
+			GameController controller,
+			UiMessages messages,
+			JLabel statusLine,
+			JLabel errorLine,
+			Runnable afterStatusSync,
+			Runnable afterMoveApplied) {
 		if (controller == null) {
 			throw new IllegalArgumentException("controller");
+		}
+		if (messages == null) {
+			throw new IllegalArgumentException("messages");
 		}
 		if (statusLine == null) {
 			throw new IllegalArgumentException("statusLine");
@@ -48,6 +57,7 @@ public class BoardPanel extends JPanel {
 			throw new IllegalArgumentException("errorLine");
 		}
 		this.controller = controller;
+		this.messages = messages;
 		this.statusLine = statusLine;
 		this.errorLine = errorLine;
 		this.afterStatusSync = afterStatusSync;
@@ -64,7 +74,9 @@ public class BoardPanel extends JPanel {
 		});
 	}
 
-	/** Clears local selection and re-reads labels from the model (call after {@code startNewGame}). */
+	/**
+	 * Clears selection and re-reads labels from the model (after {@code startNewGame}).
+	 */
 	public void resetUiAfterNewGame() {
 		clearSelection();
 		syncStatusFromGame();
@@ -98,16 +110,25 @@ public class BoardPanel extends JPanel {
 				repaint();
 				return;
 			}
-			Piece moving = controller.getGame().getBoard().getPieceAt(selectedRow, selectedCol);
+			Piece moving = controller.getGame()
+					.getBoard()
+					.getPieceAt(selectedRow, selectedCol);
 			String promotionPiece = null;
 			if (isPawnPromotionAttempt(moving, row)) {
-				promotionPiece = PromotionChooser.choosePromotionType(this);
+				promotionPiece = PromotionChooser.choosePromotionType(
+						this,
+						messages);
 				if (promotionPiece == null) {
 					repaint();
 					return;
 				}
 			}
-			boolean moved = controller.tryMove(selectedRow, selectedCol, row, col, promotionPiece);
+			boolean moved = controller.tryMove(
+					selectedRow,
+					selectedCol,
+					row,
+					col,
+					promotionPiece);
 			if (moved) {
 				clearSelection();
 				syncStatusFromGame();
@@ -116,7 +137,7 @@ public class BoardPanel extends JPanel {
 				}
 			} else {
 				clearSelection();
-				errorLine.setText("Invalid move. Try again.");
+				errorLine.setText(messages.get("board.invalid.move"));
 			}
 			repaint();
 			return;
@@ -158,7 +179,7 @@ public class BoardPanel extends JPanel {
 
 	private void syncStatusFromGame() {
 		errorLine.setText("");
-		statusLine.setText(GameStatusTexts.primaryStatusLine(controller));
+		statusLine.setText(GameStatusTexts.primaryStatusLine(controller, messages));
 		if (afterStatusSync != null) {
 			afterStatusSync.run();
 		}
@@ -168,7 +189,9 @@ public class BoardPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g.create();
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(
+				RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
 
 		BoardGeometry geo = BoardGeometry.fromSize(getWidth(), getHeight());
 
@@ -200,7 +223,7 @@ public class BoardPanel extends JPanel {
 	}
 
 	/**
-	 * @return {@code {row, col}} for the board square under the pixel, or {@code null} if outside.
+	 * @return board square {@code {row, col}} under the pixel, or {@code null} if outside.
 	 */
 	private int[] pixelToSquare(int px, int py, BoardGeometry geo) {
 		int edgeX = geo.originX() + 8 * geo.square();
@@ -226,10 +249,13 @@ public class BoardPanel extends JPanel {
 					continue;
 				}
 				boolean light = (row + col) % 2 == 0;
-				g2.setColor(light ? new Color(40, 40, 40) : new Color(250, 250, 250));
+				Color fg = light ? new Color(40, 40, 40) : new Color(250, 250, 250);
+				g2.setColor(fg);
 				String label = pieceLabel(piece);
-				int cx = ox + col * square + (square - fm.stringWidth(label)) / 2;
-				int cy = oy + row * square + (square - fm.getHeight()) / 2 + fm.getAscent();
+				int halfLabel = (square - fm.stringWidth(label)) / 2;
+				int cx = ox + col * square + halfLabel;
+				int textBaseline = (square - fm.getHeight()) / 2 + fm.getAscent();
+				int cy = oy + row * square + textBaseline;
 				g2.drawString(label, cx, cy);
 			}
 		}

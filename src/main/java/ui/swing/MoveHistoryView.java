@@ -20,11 +20,16 @@ public class MoveHistoryView extends JPanel {
 
 	private static final int PREFERRED_WIDTH = 220;
 
+	private final UiMessages messages;
 	private final JTextArea textArea;
 	private final JScrollPane scrollPane;
 
-	public MoveHistoryView() {
+	public MoveHistoryView(UiMessages messages) {
 		super(new BorderLayout());
+		if (messages == null) {
+			throw new IllegalArgumentException("messages");
+		}
+		this.messages = messages;
 		textArea = new JTextArea();
 		textArea.setEditable(false);
 		textArea.setLineWrap(false);
@@ -33,7 +38,8 @@ public class MoveHistoryView extends JPanel {
 		textArea.setText("");
 		scrollPane = new JScrollPane(textArea);
 		scrollPane.setPreferredSize(new Dimension(PREFERRED_WIDTH, 120));
-		scrollPane.setBorder(BorderFactory.createTitledBorder("Move history"));
+		String historyTitle = messages.get("history.title");
+		scrollPane.setBorder(BorderFactory.createTitledBorder(historyTitle));
 		add(scrollPane, BorderLayout.CENTER);
 	}
 
@@ -50,7 +56,7 @@ public class MoveHistoryView extends JPanel {
 		}
 		List<Move> history = g.getMoveHistory();
 		if (history.isEmpty()) {
-			textArea.setText("(No moves yet.)");
+			textArea.setText(messages.get("history.empty"));
 			textArea.setCaretPosition(0);
 			return;
 		}

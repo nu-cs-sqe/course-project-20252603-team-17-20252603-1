@@ -14,20 +14,23 @@ public final class GameStatusTexts {
 	/**
 	 * Single-line summary for the primary status label (turn, check, game over).
 	 */
-	public static String primaryStatusLine(GameController controller) {
+	public static String primaryStatusLine(GameController controller, UiMessages messages) {
 		Game g = controller.getGame();
 		if (controller.isGameOver()) {
 			if (g.isDraw()) {
-				return "Draw by " + summarizeDrawReason(g.getDrawReason());
+				String reason = messages.drawReasonLabel(g.getDrawReason());
+				return messages.format("status.draw.by", reason);
 			}
 			if (g.getWinnerColor() != null) {
-				return "Checkmate — " + g.getWinnerColor() + " wins";
+				String winner = messages.playerColorName(g.getWinnerColor());
+				return messages.format("status.checkmate", winner);
 			}
-			return "Game over";
+			return messages.get("status.game.over");
 		}
-		String line = g.getCurrentPlayer().getColor() + " to move";
+		String current = messages.playerColorName(g.getCurrentPlayer().getColor());
+		String line = messages.format("status.to.move", current);
 		if (g.isKingInCheck(g.getCurrentPlayer().getColor())) {
-			line = line + " — check";
+			line = line + messages.get("status.check.suffix");
 		}
 		return line;
 	}
@@ -35,25 +38,7 @@ public final class GameStatusTexts {
 	/**
 	 * Short window caption mirroring the primary status line.
 	 */
-	public static String windowTitle(GameController controller) {
-		return "Chess — " + primaryStatusLine(controller);
-	}
-
-	private static String summarizeDrawReason(String code) {
-		if (code == null) {
-			return "draw";
-		}
-		switch (code) {
-			case "STALEMATE":
-				return "stalemate";
-			case "INSUFFICIENT_MATERIAL":
-				return "insufficient material";
-			case "FIFTY_MOVE":
-				return "fifty-move rule";
-			case "THREEFOLD_REPETITION":
-				return "threefold repetition";
-			default:
-				return code.toLowerCase().replace('_', ' ');
-		}
+	public static String windowTitle(GameController controller, UiMessages messages) {
+		return messages.format("window.suffix", primaryStatusLine(controller, messages));
 	}
 }
