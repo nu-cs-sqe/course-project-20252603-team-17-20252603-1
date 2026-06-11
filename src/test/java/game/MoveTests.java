@@ -52,6 +52,16 @@ class MoveTests {
 	}
 
 	@Test
+	void equalsReturnsFalseForNull() {
+		Move move = new Move(1, 2, 3, 4, "PAWN", "WHITE",
+				false, null, false, false, null);
+
+		assertNotEquals(null, move);
+	}
+
+
+
+	@Test
 	void hashCodeDiffersForDifferentMoves() {
 		Move first = new Move(1, 2, 3, 4,
 				"PAWN", "WHITE",

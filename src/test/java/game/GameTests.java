@@ -456,6 +456,101 @@ class GameTests {
     }
 
     @Test
+    void stalemateWithNullBoardCoversNoLegalMovePath() {
+        Game game = new Game(null, whitePlayer, blackPlayer);
+
+        assertTrue(game.isStalemate("WHITE"));
+    }
+
+    @Test
+    void legalPieceOnlyOnLastBoardSquarePreventsStalemate() {
+        Board board = EasyMock.niceMock(Board.class);
+        Board simulatedBoard = EasyMock.niceMock(Board.class);
+
+        Map<String, Piece> state = new HashMap<>();
+        state.put(key(7, 7), new Piece("KING", "BLACK"));
+
+        stubAllInBounds(board);
+        stubBoardState(board, state);
+
+        stubAllInBounds(simulatedBoard);
+        stubBoardState(simulatedBoard, state);
+
+        EasyMock.expect(board.copy()).andStubReturn(simulatedBoard);
+        EasyMock.expect(simulatedBoard.movePiece(
+                        EasyMock.anyInt(), EasyMock.anyInt(), EasyMock.anyInt(), EasyMock.anyInt()))
+                .andStubReturn(true);
+
+        EasyMock.replay(board, simulatedBoard);
+
+        Game game = new Game(board, whitePlayer, blackPlayer);
+
+        assertFalse(game.isStalemate("BLACK"));
+    }
+
+    @Test
+    void queensideCastlingRejectedWhenKingCannotMoveThroughMiddleSquare() {
+        Board board = EasyMock.niceMock(Board.class);
+        Board throughProbe = EasyMock.niceMock(Board.class);
+        Board simulatedBoard = EasyMock.niceMock(Board.class);
+
+        Map<String, Piece> state = new HashMap<>();
+        state.put(key(7, 4), new Piece("KING", "WHITE"));
+        state.put(key(7, 0), new Piece("ROOK", "WHITE"));
+        state.put(key(0, 3), new Piece("ROOK", "BLACK"));
+
+        stubAllInBounds(board);
+        stubBoardState(board, state);
+
+        stubAllInBounds(throughProbe);
+        stubBoardState(throughProbe, state);
+
+        stubAllInBounds(simulatedBoard);
+        stubBoardState(simulatedBoard, state);
+
+        EasyMock.expect(board.copy()).andReturn(throughProbe);
+        EasyMock.expect(throughProbe.movePiece(7, 4, 7, 3)).andReturn(false);
+
+        EasyMock.replay(board, throughProbe, simulatedBoard);
+
+        Game game = new Game(board, whitePlayer, blackPlayer);
+
+        assertFalse(game.makeMove(7, 4, 7, 2));
+    }
+
+    @Test
+    void invalidColorKingTwoSquareMoveIsNotRecordedAsCastling() {
+        Board board = EasyMock.niceMock(Board.class);
+        Board simulatedBoard = EasyMock.niceMock(Board.class);
+
+        Player greenPlayer = EasyMock.niceMock(Player.class);
+        EasyMock.expect(greenPlayer.getColor()).andStubReturn("GREEN");
+        EasyMock.replay(greenPlayer);
+
+        Map<String, Piece> state = new HashMap<>();
+        state.put(key(4, 4), new Piece("KING", "GREEN"));
+
+        stubAllInBounds(board);
+        stubBoardState(board, state);
+
+        stubAllInBounds(simulatedBoard);
+        stubBoardState(simulatedBoard, state);
+
+        EasyMock.expect(board.copy()).andStubReturn(simulatedBoard);
+        EasyMock.expect(simulatedBoard.movePiece(4, 4, 4, 6, null)).andStubReturn(true);
+        EasyMock.expect(board.movePiece(4, 4, 4, 6, null)).andStubReturn(true);
+        EasyMock.expect(board.piecePlacementKey()).andStubReturn("green-king");
+        EasyMock.expect(board.castlingRightsKey()).andStubReturn("0000");
+
+        EasyMock.replay(board, simulatedBoard);
+
+        Game game = new Game(board, greenPlayer, blackPlayer);
+
+        assertTrue(game.makeMove(4, 4, 4, 6));
+        assertFalse(game.getMoveHistory().get(0).isCastling());
+    }
+
+    @Test
     void blockedBishopDoesNotAttackSquare() {
         Board board = EasyMock.niceMock(Board.class);
 
