@@ -72,11 +72,11 @@ public class Game {
 		clearGameState();
 	}
 
-	Game(Board board, Player whitePlayer, Player blackPlayer, Player currentPlayer) {
+	Game(Board board, Player whitePlayer, Player blackPlayer) {
 		this.board = board;
 		this.whitePlayer = whitePlayer;
 		this.blackPlayer = blackPlayer;
-		this.currentPlayer = currentPlayer;
+		this.currentPlayer = whitePlayer;
 		clearGameState();
 	}
 

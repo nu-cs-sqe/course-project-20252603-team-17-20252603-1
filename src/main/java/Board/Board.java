@@ -61,6 +61,19 @@ public class Board {
         this.state = new Piece[BOARD_SIZE][BOARD_SIZE];
     }
 
+    Board(Piece[][] state) {
+        this.state = state;
+    }
+
+    Board(Piece[][] state, boolean whiteCastleKingSide, boolean whiteCastleQueenSide,
+          boolean blackCastleKingSide, boolean blackCastleQueenSide) {
+        this.state = state;
+        this.whiteCastleKingSide = whiteCastleKingSide;
+        this.whiteCastleQueenSide = whiteCastleQueenSide;
+        this.blackCastleKingSide = blackCastleKingSide;
+        this.blackCastleQueenSide = blackCastleQueenSide;
+    }
+
     public void initializeBoard() {
         this.state = new Piece[BOARD_SIZE][BOARD_SIZE];
 
