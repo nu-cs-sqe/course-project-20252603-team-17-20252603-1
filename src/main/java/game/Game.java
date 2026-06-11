@@ -10,7 +10,37 @@ import board.Piece;
 import board.Position;
 
 
+
+
 public class Game {
+
+	private static final int BOARD_SIZE = 8;
+	private static final int WHITE_HOME_ROW = 7;
+	private static final int BLACK_HOME_ROW = 0;
+	private static final int WHITE_EN_PASSANT_ROW = 3;
+	private static final int BLACK_EN_PASSANT_ROW = 4;
+	private static final int KING_START_COL = 4;
+	private static final int QUEENSIDE_CASTLE_COL = 2;
+	private static final int KINGSIDE_CASTLE_COL = 6;
+	private static final int CASTLING_COL_DELTA = 2;
+	private static final int PAWN_DOUBLE_MOVE_ROWS = 2;
+	private static final int THREEFOLD_REPETITION_COUNT = 3;
+	private static final int FIFTY_MOVE_RULE_HALF_MOVES = 100;
+
+	private static final String WHITE = "WHITE";
+	private static final String BLACK = "BLACK";
+
+	private static final String KING = "KING";
+	private static final String QUEEN = "QUEEN";
+	private static final String ROOK = "ROOK";
+	private static final String BISHOP = "BISHOP";
+	private static final String KNIGHT = "KNIGHT";
+	private static final String PAWN = "PAWN";
+
+	private static final String DRAW_STALEMATE = "STALEMATE";
+	private static final String DRAW_INSUFFICIENT_MATERIAL = "INSUFFICIENT_MATERIAL";
+	private static final String DRAW_FIFTY_MOVE = "FIFTY_MOVE";
+	private static final String DRAW_THREEFOLD_REPETITION = "THREEFOLD_REPETITION";
 
 	private Player currentPlayer;
 	private Player whitePlayer;
