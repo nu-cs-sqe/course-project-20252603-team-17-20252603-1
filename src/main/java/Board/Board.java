@@ -2,6 +2,54 @@ package board;
 
 public class Board {
 
+    private static final int BOARD_SIZE = 8;
+    private static final int POSITION_KEY_CAPACITY = 256;
+
+    private static final int BLACK_BACK_ROW = 0;
+    private static final int BLACK_PAWN_ROW = 1;
+    private static final int WHITE_PAWN_ROW = 6;
+    private static final int WHITE_BACK_ROW = 7;
+
+    private static final int ROOK_QUEENSIDE_COL = 0;
+    private static final int KNIGHT_QUEENSIDE_COL = 1;
+    private static final int BISHOP_QUEENSIDE_COL = 2;
+    private static final int QUEEN_START_COL = 3;
+    private static final int KING_START_COL = 4;
+    private static final int BISHOP_KINGSIDE_COL = 5;
+    private static final int KNIGHT_KINGSIDE_COL = 6;
+    private static final int ROOK_KINGSIDE_COL = 7;
+
+    private static final int QUEENSIDE_CASTLE_COL = 2;
+    private static final int KINGSIDE_CASTLE_COL = 6;
+    private static final int QUEENSIDE_CASTLE_KING_PATH_COL = 3;
+    private static final int KINGSIDE_CASTLE_KING_PATH_COL = 5;
+    private static final int CASTLING_COL_DELTA = 2;
+
+    private static final int WHITE_PAWN_DIRECTION = -1;
+    private static final int BLACK_PAWN_DIRECTION = 1;
+    private static final int PAWN_DOUBLE_MOVE_DISTANCE = 2;
+
+    private static final int KING_MOVE_LIMIT = 1;
+    private static final int KNIGHT_LONG_MOVE = 2;
+    private static final int KNIGHT_SHORT_MOVE = 1;
+
+    private static final String WHITE = "WHITE";
+    private static final String BLACK = "BLACK";
+
+    private static final String KING = "KING";
+    private static final String QUEEN = "QUEEN";
+    private static final String ROOK = "ROOK";
+    private static final String BISHOP = "BISHOP";
+    private static final String KNIGHT = "KNIGHT";
+    private static final String PAWN = "PAWN";
+
+    private static final String EMPTY_PROMOTION = "";
+    private static final String EMPTY_SQUARE_KEY = "--";
+    private static final String POSITION_SEPARATOR = ";";
+    private static final String PIECE_SEPARATOR = ",";
+    private static final String CASTLING_RIGHT_AVAILABLE = "1";
+    private static final String CASTLING_RIGHT_UNAVAILABLE = "0";
+
     private Piece[][] state;
 
     private boolean whiteCastleKingSide;
@@ -10,11 +58,12 @@ public class Board {
     private boolean blackCastleQueenSide;
 
     public Board() {
-        this.state = new Piece[8][8];
+        this.state = new Piece[BOARD_SIZE][BOARD_SIZE];
     }
 
+
     public void initializeBoard() {
-        this.state = new Piece[8][8];
+        this.state = new Piece[BOARD_SIZE][BOARD_SIZE];
         // first create the top row, which will be the first
         // row at the top assuming that you are sitting on the
         // white side.
