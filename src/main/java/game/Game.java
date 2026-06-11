@@ -69,7 +69,7 @@ public class Game {
 		this.whitePlayer = new Player("White Player", WHITE);
 		this.blackPlayer = new Player("Black Player", BLACK);
 		this.currentPlayer = this.whitePlayer;
-		clearGameState();
+
 	}
 
 	Game(Board board, Player whitePlayer, Player blackPlayer) {
@@ -77,7 +77,7 @@ public class Game {
 		this.whitePlayer = whitePlayer;
 		this.blackPlayer = blackPlayer;
 		this.currentPlayer = whitePlayer;
-		clearGameState();
+
 	}
 
 	private void clearGameState() {
@@ -183,7 +183,8 @@ public class Game {
 
 		String opponentColor = getOpponentColor(currentPlayer.getColor());
 
-		if (updateGameEndingState(opponentColor)) {
+		updateGameEndingState(opponentColor);
+		if (gameOver) {
 			return true;
 		}
 
@@ -205,30 +206,28 @@ public class Game {
 		updateHalfmoveClock(piece, destinationPiece, enPassantMove);
 	}
 
-	private boolean updateGameEndingState(String opponentColor) {
+	private void updateGameEndingState(String opponentColor) {
 		if (isCheckmate(opponentColor)) {
 			gameOver = true;
 			winnerColor = currentPlayer.getColor();
 			drawReason = null;
-			return true;
+			return;
 		}
 
 		if (isStalemate(opponentColor)) {
 			setDraw(DRAW_STALEMATE);
-			return true;
+			return;
 		}
 
 		if (isDeadPositionInsufficientMaterial()) {
 			setDraw(DRAW_INSUFFICIENT_MATERIAL);
-			return true;
+			return;
 		}
 
 		if (halfmoveClock >= FIFTY_MOVE_RULE_HALF_MOVES) {
 			setDraw(DRAW_FIFTY_MOVE);
-			return true;
+			return;
 		}
-
-		return false;
 	}
 
 	private void setDraw(String reason) {
@@ -404,13 +403,8 @@ public class Game {
 	}
 
 	private boolean isPawnPromotionRank(String color, int endRow) {
-		if (WHITE.equals(color)) {
-			return endRow == BLACK_HOME_ROW;
-		}
-		if (BLACK.equals(color)) {
-			return endRow == WHITE_HOME_ROW;
-		}
-		return false;
+		return (WHITE.equals(color) && endRow == BLACK_HOME_ROW)
+				|| (BLACK.equals(color) && endRow == WHITE_HOME_ROW);
 	}
 
 	public List<Move> getMoveHistory() {
@@ -427,13 +421,11 @@ public class Game {
 		}
 
 		if (WHITE.equals(piece.getColor())) {
-			return startRow == WHITE_HOME_ROW
-					&& (endCol == QUEENSIDE_CASTLE_COL || endCol == KINGSIDE_CASTLE_COL);
+			return startRow == WHITE_HOME_ROW;
 		}
 
 		if (BLACK.equals(piece.getColor())) {
-			return startRow == BLACK_HOME_ROW
-					&& (endCol == QUEENSIDE_CASTLE_COL || endCol == KINGSIDE_CASTLE_COL);
+			return startRow == BLACK_HOME_ROW;
 		}
 
 		return false;
@@ -622,74 +614,7 @@ public class Game {
 		return !isKingInCheck(color) && !hasAnyLegalMove(color);
 	}
 
-	private boolean kingHasLegalMove(String color) {
-		int[] kingPosition = findKingPosition(color);
-
-		if (kingPosition == null) {
-			return false;
-		}
-
-		int kingRow = kingPosition[0];
-		int kingCol = kingPosition[1];
-
-		for (int rowDelta = -1; rowDelta <= 1; rowDelta++) {
-			for (int colDelta = -1; colDelta <= 1; colDelta++) {
-				if (rowDelta == 0 && colDelta == 0) {
-					continue;
-				}
-
-				int targetRow = kingRow + rowDelta;
-				int targetCol = kingCol + colDelta;
-
-				if (kingCanMoveTo(color, kingRow, kingCol, targetRow, targetCol)) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	private int[] findKingPosition(String color) {
-		if (board == null) {
-			return null;
-		}
-
-		for (int row = 0; row < BOARD_SIZE; row++) {
-			for (int col = 0; col < BOARD_SIZE; col++) {
-				Piece piece = board.getPieceAt(row, col);
-
-				if (piece != null
-						&& KING.equals(piece.getType())
-						&& color.equals(piece.getColor())) {
-					return new int[] { row, col };
-				}
-			}
-		}
-
-		return null;
-	}
-
-	private boolean kingCanMoveTo(String color, int startRow, int startCol, int endRow, int endCol) {
-		if (!board.isWithinBounds(endRow, endCol)) {
-			return false;
-		}
-
-		Piece destination = board.getPieceAt(endRow, endCol);
-
-		if (destination != null && color.equals(destination.getColor())) {
-			return false;
-		}
-
-		Board simulatedBoard = board.copy();
-
-		if (!simulatedBoard.movePiece(startRow, startCol, endRow, endCol)) {
-			return false;
-		}
-
-		return !isKingInCheckOnBoard(simulatedBoard, color);
-	}
-
+	
 	private boolean hasAnyLegalMove(String color) {
 		if (board == null) {
 			return false;
