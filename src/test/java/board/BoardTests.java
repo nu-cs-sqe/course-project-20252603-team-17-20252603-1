@@ -1179,6 +1179,203 @@ public class BoardTests {
         assertNull(board.getPieceAt(2, 3));
     }
 
+    @Test
+    void piecePlacementKeyReturnsNonEmptyFullBoardKey() {
+        Piece[][] state = new Piece[8][8];
+        state[0][0] = new Piece("ROOK", "BLACK");
+        state[7][4] = new Piece("KING", "WHITE");
+
+        Board board = new Board(state);
+
+        String key = board.piecePlacementKey();
+
+        assertFalse(key.isEmpty());
+        assertTrue(key.contains("ROOK,BLACK"));
+        assertTrue(key.contains("KING,WHITE"));
+        assertEquals(64, key.split(";", -1).length - 1);
+    }
+
+    @Test
+    void castlingRightsKeyReflectsAllFourRights() {
+        Board board = new Board(new Piece[8][8], true, false, true, false);
+
+        assertEquals("1010", board.castlingRightsKey());
+    }
+
+    @Test
+    void castlingRightsKeyReflectsOppositeFourRights() {
+        Board board = new Board(new Piece[8][8], false, true, false, true);
+
+        assertEquals("0101", board.castlingRightsKey());
+    }
+
+    @Test
+    void movePieceRejectsUnknownPieceType() {
+        Piece[][] state = new Piece[8][8];
+        state[4][4] = new Piece("DRAGON", "WHITE");
+
+        Board board = new Board(state);
+
+        assertFalse(board.movePiece(4, 4, 4, 5));
+    }
+
+    @Test
+    void movePieceRejectsInvalidKnightMove() {
+        Piece[][] state = new Piece[8][8];
+        state[4][4] = new Piece("KNIGHT", "WHITE");
+
+        Board board = new Board(state);
+
+        assertFalse(board.movePiece(4, 4, 4, 5));
+    }
+
+    @Test
+    void movePieceRejectsInvalidQueenMove() {
+        Piece[][] state = new Piece[8][8];
+        state[4][4] = new Piece("QUEEN", "WHITE");
+
+        Board board = new Board(state);
+
+        assertFalse(board.movePiece(4, 4, 6, 5));
+    }
+
+    @Test
+    void movePieceRejectsInvalidRookDiagonalMove() {
+        Piece[][] state = new Piece[8][8];
+        state[4][4] = new Piece("ROOK", "WHITE");
+
+        Board board = new Board(state);
+
+        assertFalse(board.movePiece(4, 4, 5, 5));
+    }
+
+    @Test
+    void movePieceRejectsInvalidBishopStraightMove() {
+        Piece[][] state = new Piece[8][8];
+        state[4][4] = new Piece("BISHOP", "WHITE");
+
+        Board board = new Board(state);
+
+        assertFalse(board.movePiece(4, 4, 4, 6));
+    }
+
+    @Test
+    void whitePawnCannotDoubleMoveWhenIntermediateSquareIsBlocked() {
+        Piece[][] state = new Piece[8][8];
+        state[6][0] = new Piece("PAWN", "WHITE");
+        state[5][0] = new Piece("KNIGHT", "BLACK");
+
+        Board board = new Board(state);
+
+        assertFalse(board.movePiece(6, 0, 4, 0));
+        assertEquals("PAWN", board.getPieceAt(6, 0).getType());
+        assertEquals("KNIGHT", board.getPieceAt(5, 0).getType());
+    }
+
+    @Test
+    void blackPawnCannotDoubleMoveWhenIntermediateSquareIsBlocked() {
+        Piece[][] state = new Piece[8][8];
+        state[1][0] = new Piece("PAWN", "BLACK");
+        state[2][0] = new Piece("KNIGHT", "WHITE");
+
+        Board board = new Board(state);
+
+        assertFalse(board.movePiece(1, 0, 3, 0));
+        assertEquals("PAWN", board.getPieceAt(1, 0).getType());
+        assertEquals("KNIGHT", board.getPieceAt(2, 0).getType());
+    }
+
+    @Test
+    void movePieceRejectsPawnWithInvalidColor() {
+        Piece[][] state = new Piece[8][8];
+        state[4][4] = new Piece("PAWN", "GREEN");
+
+        Board board = new Board(state);
+
+        assertFalse(board.movePiece(4, 4, 3, 4));
+    }
+
+    @Test
+    void movePieceRejectsCastlingForInvalidKingColor() {
+        Piece[][] state = new Piece[8][8];
+        state[7][4] = new Piece("KING", "GREEN");
+        state[7][7] = new Piece("ROOK", "GREEN");
+
+        Board board = new Board(state);
+
+        assertFalse(board.movePiece(7, 4, 7, 6));
+    }
+
+    @Test
+    void movingWhiteQueensideRookRemovesWhiteQueensideCastlingRight() {
+        Piece[][] state = new Piece[8][8];
+        state[7][0] = new Piece("ROOK", "WHITE");
+
+        Board board = new Board(state, true, true, true, true);
+
+        assertTrue(board.movePiece(7, 0, 7, 1));
+        assertEquals("1011", board.castlingRightsKey());
+    }
+
+    @Test
+    void movingBlackKingsideRookRemovesBlackKingsideCastlingRight() {
+        Piece[][] state = new Piece[8][8];
+        state[0][7] = new Piece("ROOK", "BLACK");
+
+        Board board = new Board(state, true, true, true, true);
+
+        assertTrue(board.movePiece(0, 7, 0, 6));
+        assertEquals("1101", board.castlingRightsKey());
+    }
+
+    @Test
+    void capturingWhiteQueensideRookRemovesWhiteQueensideCastlingRight() {
+        Piece[][] state = new Piece[8][8];
+        state[7][0] = new Piece("ROOK", "WHITE");
+        state[7][1] = new Piece("ROOK", "BLACK");
+
+        Board board = new Board(state, true, true, true, true);
+
+        assertTrue(board.movePiece(7, 1, 7, 0));
+        assertEquals("1011", board.castlingRightsKey());
+    }
+
+    @Test
+    void capturingWhiteKingsideRookRemovesWhiteKingsideCastlingRight() {
+        Piece[][] state = new Piece[8][8];
+        state[7][7] = new Piece("ROOK", "WHITE");
+        state[7][6] = new Piece("ROOK", "BLACK");
+
+        Board board = new Board(state, true, true, true, true);
+
+        assertTrue(board.movePiece(7, 6, 7, 7));
+        assertEquals("0111", board.castlingRightsKey());
+    }
+
+    @Test
+    void capturingBlackQueensideRookRemovesBlackQueensideCastlingRight() {
+        Piece[][] state = new Piece[8][8];
+        state[0][0] = new Piece("ROOK", "BLACK");
+        state[0][1] = new Piece("ROOK", "WHITE");
+
+        Board board = new Board(state, true, true, true, true);
+
+        assertTrue(board.movePiece(0, 1, 0, 0));
+        assertEquals("1110", board.castlingRightsKey());
+    }
+
+    @Test
+    void capturingBlackKingsideRookRemovesBlackKingsideCastlingRight() {
+        Piece[][] state = new Piece[8][8];
+        state[0][7] = new Piece("ROOK", "BLACK");
+        state[0][6] = new Piece("ROOK", "WHITE");
+
+        Board board = new Board(state, true, true, true, true);
+
+        assertTrue(board.movePiece(0, 6, 0, 7));
+        assertEquals("1101", board.castlingRightsKey());
+    }
+
 
 
 }
