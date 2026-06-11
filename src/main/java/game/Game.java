@@ -178,22 +178,8 @@ public class Game {
 			return false;
 		}
 
-		if (isCastlingMove(startRow, startCol, endRow, endCol, piece)) {
-			if (isKingInCheck(currentPlayer.getColor())) {
-				return false;
-			}
-			int midCol = startCol + Integer.signum(endCol - startCol);
-			Board throughProbe = board.copy();
-			if (!throughProbe.movePiece(startRow, startCol, startRow, midCol)) {
-				return false;
-			}
-			Board saved = board;
-			board = throughProbe;
-			if (isKingInCheck(currentPlayer.getColor())) {
-				board = saved;
-				return false;
-			}
-			board = saved;
+		if (!isCastlingPathLegal(startRow, startCol, endRow, endCol, piece)) {
+			return false;
 		}
 
 		Board originalBoard = board;
@@ -721,6 +707,24 @@ public class Game {
 	}
 
 
+	private boolean isCastlingPathLegal(int startRow, int startCol, int endRow, int endCol, Piece piece) {
+		if (!isCastlingMove(startRow, startCol, endRow, endCol, piece)) {
+			return true;
+		}
+
+		if (isKingInCheck(currentPlayer.getColor())) {
+			return false;
+		}
+
+		int midCol = startCol + Integer.signum(endCol - startCol);
+		Board throughProbe = board.copy();
+
+		if (!throughProbe.movePiece(startRow, startCol, startRow, midCol)) {
+			return false;
+		}
+
+		return !isKingInCheckOnBoard(throughProbe, currentPlayer.getColor());
+	}
 
 
 
