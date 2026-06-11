@@ -37,11 +37,6 @@ public class Game {
 	private static final String KNIGHT = "KNIGHT";
 	private static final String PAWN = "PAWN";
 
-	private static final String DRAW_STALEMATE = "STALEMATE";
-	private static final String DRAW_INSUFFICIENT_MATERIAL = "INSUFFICIENT_MATERIAL";
-	private static final String DRAW_FIFTY_MOVE = "FIFTY_MOVE";
-	private static final String DRAW_THREEFOLD_REPETITION = "THREEFOLD_REPETITION";
-
 	private Player currentPlayer;
 	private Player whitePlayer;
 	private Player blackPlayer;
@@ -262,7 +257,7 @@ public class Game {
 			return true;
 		}
 
-		if (halfmoveClock >= 100) {
+		if (halfmoveClock >= FIFTY_MOVE_RULE_HALF_MOVES) {
 			gameOver = true;
 			winnerColor = null;
 			draw = true;
@@ -291,7 +286,7 @@ public class Game {
 	private void appendRepetitionAndCheckThreefold(String sideToMoveNext) {
 		String repSig = buildPositionSignature(sideToMoveNext);
 		positionRepetitionHistory.add(repSig);
-		if (Collections.frequency(positionRepetitionHistory, repSig) >= 3) {
+		if (Collections.frequency(positionRepetitionHistory, repSig) >= THREEFOLD_REPETITION_COUNT) {
 			gameOver = true;
 			winnerColor = null;
 			draw = true;
@@ -313,8 +308,8 @@ public class Game {
 		int total = 0;
 		int kings = 0;
 		int minors = 0;
-		for (int r = 0; r < 8; r++) {
-			for (int c = 0; c < 8; c++) {
+		for (int r = 0; r < BOARD_SIZE; r++) {
+			for (int c = 0; c < BOARD_SIZE; c++) {
 				Piece p = board.getPieceAt(r, c);
 				if (p == null) {
 					continue;
@@ -323,7 +318,7 @@ public class Game {
 				String t = p.getType();
 				if (KING.equals(t)) {
 					kings++;
-				} else if ("KNIGHT".equals(t) || "BISHOP".equals(t)) {
+				} else if (KNIGHT.equals(t) || BISHOP.equals(t)) {
 					minors++;
 				} else {
 					return false;
@@ -345,10 +340,10 @@ public class Game {
 	private boolean isSameSquareColorBishopPair() {
 		Integer squareColor = null;
 		int bishops = 0;
-		for (int r = 0; r < 8; r++) {
-			for (int c = 0; c < 8; c++) {
+		for (int r = 0; r < BOARD_SIZE; r++) {
+			for (int c = 0; c < BOARD_SIZE; c++) {
 				Piece p = board.getPieceAt(r, c);
-				if (p == null || !"BISHOP".equals(p.getType())) {
+				if (p == null || !BISHOP.equals(p.getType())) {
 					continue;
 				}
 				bishops++;
@@ -370,11 +365,11 @@ public class Game {
 
 		int direction = WHITE.equals(piece.getColor()) ? -1 : 1;
 
-		if (WHITE.equals(piece.getColor()) && startRow != 3) {
+		if (WHITE.equals(piece.getColor()) && startRow != WHITE_EN_PASSANT_ROW) {
 			return false;
 		}
 
-		if (BLACK.equals(piece.getColor()) && startRow != 4) {
+		if (BLACK.equals(piece.getColor()) && startRow != BLACK_EN_PASSANT_ROW) {
 			return false;
 		}
 
@@ -386,7 +381,7 @@ public class Game {
 				&& !piece.getColor().equals(lastMovedPiece.getColor())
 				&& lastMoveStart != null
 				&& lastMoveEnd != null
-				&& Math.abs(lastMoveEnd.getRow() - lastMoveStart.getRow()) == 2
+				&& Math.abs(lastMoveEnd.getRow() - lastMoveStart.getRow()) == PAWN_DOUBLE_MOVE_ROWS
 				&& lastMoveEnd.getRow() == startRow
 				&& lastMoveEnd.getCol() == endCol;
 	}
@@ -423,10 +418,10 @@ public class Game {
 
 	private boolean isPawnPromotionRank(String color, int endRow) {
 		if (WHITE.equals(color)) {
-			return endRow == 0;
+			return endRow == BLACK_HOME_ROW;
 		}
 		if (BLACK.equals(color)) {
-			return endRow == 7;
+			return endRow == WHITE_HOME_ROW;
 		}
 		return false;
 	}
@@ -438,18 +433,22 @@ public class Game {
 
 
 	private boolean isCastlingMove(int startRow, int startCol, int endRow, int endCol, Piece piece) {
-		if (!KING.equals(piece.getType())) {
+		if (startRow != endRow
+				|| Math.abs(endCol - startCol) != CASTLING_COL_DELTA
+				|| startCol != KING_START_COL) {
 			return false;
 		}
-		if (startRow != endRow || Math.abs(endCol - startCol) != 2 || startCol != 4) {
-			return false;
-		}
+
 		if (WHITE.equals(piece.getColor())) {
-			return startRow == 7 && (endCol == 2 || endCol == 6);
+			return startRow == WHITE_HOME_ROW
+					&& (endCol == QUEENSIDE_CASTLE_COL || endCol == KINGSIDE_CASTLE_COL);
 		}
+
 		if (BLACK.equals(piece.getColor())) {
-			return startRow == 0 && (endCol == 2 || endCol == 6);
+			return startRow == BLACK_HOME_ROW
+					&& (endCol == QUEENSIDE_CASTLE_COL || endCol == KINGSIDE_CASTLE_COL);
 		}
+
 		return false;
 	}
 
@@ -460,8 +459,8 @@ public class Game {
 			return false;
 		}
 
-		for (int row = 0; row < 8; row++) {
-			for (int col = 0; col < 8; col++) {
+		for (int row = 0; row < BOARD_SIZE; row++) {
+			for (int col = 0; col < BOARD_SIZE; col++) {
 				Piece piece = board.getPieceAt(row, col);
 
 				if (piece != null
@@ -481,27 +480,27 @@ public class Game {
 			return false;
 		}
 
-		for (int startRow = 0; startRow < 8; startRow++) {
-			for (int startCol = 0; startCol < 8; startCol++) {
+		for (int startRow = 0; startRow < BOARD_SIZE; startRow++) {
+			for (int startCol = 0; startCol < BOARD_SIZE; startCol++) {
 				Piece piece = board.getPieceAt(startRow, startCol);
 
 				if (piece != null && byColor.equals(piece.getColor())) {
-					if ("ROOK".equals(piece.getType())
+					if (ROOK.equals(piece.getType())
 							&& rookAttacksSquare(startRow, startCol, row, col)) {
 						return true;
 					}
 
-					if ("BISHOP".equals(piece.getType())
+					if (BISHOP.equals(piece.getType())
 							&& bishopAttacksSquare(startRow, startCol, row, col)) {
 						return true;
 					}
 
-					if ("KNIGHT".equals(piece.getType())
+					if (KNIGHT.equals(piece.getType())
 							&& knightAttacksSquare(startRow, startCol, row, col)) {
 						return true;
 					}
 
-					if ("QUEEN".equals(piece.getType())
+					if (QUEEN.equals(piece.getType())
 							&& queenAttacksSquare(startRow, startCol, row, col)) {
 						return true;
 					}
@@ -638,8 +637,8 @@ public class Game {
 			return null;
 		}
 
-		for (int row = 0; row < 8; row++) {
-			for (int col = 0; col < 8; col++) {
+		for (int row = 0; row < BOARD_SIZE; row++) {
+			for (int col = 0; col < BOARD_SIZE; col++) {
 				Piece piece = board.getPieceAt(row, col);
 
 				if (piece != null
@@ -684,16 +683,16 @@ public class Game {
 			return false;
 		}
 
-		for (int startRow = 0; startRow < 8; startRow++) {
-			for (int startCol = 0; startCol < 8; startCol++) {
+		for (int startRow = 0; startRow < BOARD_SIZE; startRow++) {
+			for (int startCol = 0; startCol < BOARD_SIZE; startCol++) {
 				Piece piece = board.getPieceAt(startRow, startCol);
 
 				if (piece == null || !color.equals(piece.getColor())) {
 					continue;
 				}
 
-				for (int endRow = 0; endRow < 8; endRow++) {
-					for (int endCol = 0; endCol < 8; endCol++) {
+				for (int endRow = 0; endRow < BOARD_SIZE; endRow++) {
+					for (int endCol = 0; endCol < BOARD_SIZE; endCol++) {
 						if (pieceCanMoveWithoutLeavingCheck(color, startRow, startCol, endRow, endCol)) {
 							return true;
 						}
