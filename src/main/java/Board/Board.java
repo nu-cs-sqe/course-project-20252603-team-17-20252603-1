@@ -426,6 +426,7 @@ public class Board {
         return true;
     }
 
+
     private boolean isLegalPawnMove(int startRow, int startCol, int endRow, int endCol) {
         Piece piece = state[startRow][startCol];
         Piece destination = state[endRow][endCol];
