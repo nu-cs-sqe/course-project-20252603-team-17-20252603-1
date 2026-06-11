@@ -37,6 +37,12 @@ public class Game {
 	private static final String KNIGHT = "KNIGHT";
 	private static final String PAWN = "PAWN";
 
+
+	private static final String DRAW_STALEMATE = "STALEMATE";
+	private static final String DRAW_INSUFFICIENT_MATERIAL = "INSUFFICIENT_MATERIAL";
+	private static final String DRAW_FIFTY_MOVE = "FIFTY_MOVE";
+	private static final String DRAW_THREEFOLD_REPETITION = "THREEFOLD_REPETITION";
+
 	private Player currentPlayer;
 	private Player whitePlayer;
 	private Player blackPlayer;
@@ -148,33 +154,16 @@ public class Game {
 	 * {@code BISHOP}, {@code KNIGHT}); {@code null} uses the board default (queen).
 	 */
 	public boolean makeMove(int startRow, int startCol, int endRow, int endCol, String promotionPiece) {
-
-		if (gameOver) {
-			return false;
-		}
-
-		if (board == null || currentPlayer == null) {
-			return false;
-		}
-
-		if (!board.isWithinBounds(startRow, startCol) || !board.isWithinBounds(endRow, endCol)) {
+		if (!canAttemptMove(startRow, startCol, endRow, endCol)) {
 			return false;
 		}
 
 		Piece piece = board.getPieceAt(startRow, startCol);
-		if (piece == null) {
-			return false;
-		}
-
-		if (!piece.getColor().equals(currentPlayer.getColor())) {
-			return false;
-		}
-
 		Piece destinationPiece = board.getPieceAt(endRow, endCol);
 
 		boolean enPassantMove = isEnPassantMove(startRow, startCol, endRow, endCol, piece);
 
-		if (destinationPiece != null && KING.equals(destinationPiece.getType())) {
+		if (wouldCaptureKing(destinationPiece)) {
 			return false;
 		}
 
@@ -182,46 +171,11 @@ public class Game {
 			return false;
 		}
 
-		Board originalBoard = board;
-		Board simulatedBoard = board.copy();
-
-		boolean simulatedMoveSuccessful;
-		if (enPassantMove) {
-			simulatedMoveSuccessful = simulatedBoard.movePieceEnPassant(
-					new Position(startRow, startCol),
-					new Position(endRow, endCol),
-					new Position(startRow, endCol));
-		} else {
-			simulatedMoveSuccessful = simulatedBoard.movePiece(startRow, startCol, endRow, endCol,
-					promotionPiece);
-		}
-
-
-		if (!simulatedMoveSuccessful) {
+		if (wouldLeaveOwnKingInCheck(startRow, startCol, endRow, endCol, promotionPiece, enPassantMove)) {
 			return false;
 		}
 
-		board = simulatedBoard;
-		boolean leavesOwnKingInCheck = isKingInCheck(currentPlayer.getColor());
-		board = originalBoard;
-
-		if (leavesOwnKingInCheck) {
-			return false;
-		}
-
-		boolean moveSuccessful;
-		if (enPassantMove) {
-			moveSuccessful = board.movePieceEnPassant(
-					new Position(startRow, startCol),
-					new Position(endRow, endCol),
-					new Position(startRow, endCol));
-		} else {
-			moveSuccessful = board.movePiece(startRow, startCol, endRow, endCol, promotionPiece);
-		}
-
-
-
-		if (!moveSuccessful) {
+		if (!applyMove(startRow, startCol, endRow, endCol, promotionPiece, enPassantMove)) {
 			return false;
 		}
 
@@ -242,7 +196,7 @@ public class Game {
 			gameOver = true;
 			winnerColor = null;
 			draw = true;
-			drawReason = "STALEMATE";
+			drawReason = DRAW_STALEMATE;
 			return true;
 		}
 
@@ -250,7 +204,7 @@ public class Game {
 			gameOver = true;
 			winnerColor = null;
 			draw = true;
-			drawReason = "INSUFFICIENT_MATERIAL";
+			drawReason = DRAW_INSUFFICIENT_MATERIAL;
 			return true;
 		}
 
@@ -258,7 +212,7 @@ public class Game {
 			gameOver = true;
 			winnerColor = null;
 			draw = true;
-			drawReason = "FIFTY_MOVE";
+			drawReason = DRAW_FIFTY_MOVE;
 			return true;
 		}
 
@@ -270,7 +224,27 @@ public class Game {
 		switchTurn();
 
 		return true;
+	}
 
+	private boolean wouldLeaveOwnKingInCheck(int startRow, int startCol, int endRow, int endCol,
+	                                         String promotionPiece, boolean enPassantMove) {
+		Board simulatedBoard = board.copy();
+
+		boolean moved;
+		if (enPassantMove) {
+			moved = simulatedBoard.movePieceEnPassant(
+					new Position(startRow, startCol),
+					new Position(endRow, endCol),
+					new Position(startRow, endCol));
+		} else {
+			moved = simulatedBoard.movePiece(startRow, startCol, endRow, endCol, promotionPiece);
+		}
+
+		if (!moved) {
+			return true;
+		}
+
+		return isKingInCheckOnBoard(simulatedBoard, currentPlayer.getColor());
 	}
 
 	private String buildPositionSignature(String sideToMoveNext) {
@@ -448,6 +422,37 @@ public class Game {
 
 		return false;
 	}
+
+	private boolean canAttemptMove(int startRow, int startCol, int endRow, int endCol) {
+		if (gameOver || board == null || currentPlayer == null) {
+			return false;
+		}
+
+		if (!board.isWithinBounds(startRow, startCol) || !board.isWithinBounds(endRow, endCol)) {
+			return false;
+		}
+
+		Piece piece = board.getPieceAt(startRow, startCol);
+		return piece != null && currentPlayer.getColor().equals(piece.getColor());
+	}
+
+	private boolean wouldCaptureKing(Piece destinationPiece) {
+		return destinationPiece != null && KING.equals(destinationPiece.getType());
+	}
+
+	private boolean applyMove(int startRow, int startCol, int endRow, int endCol,
+	                          String promotionPiece, boolean enPassantMove) {
+		if (enPassantMove) {
+			return board.movePieceEnPassant(
+					new Position(startRow, startCol),
+					new Position(endRow, endCol),
+					new Position(startRow, endCol));
+		}
+
+		return board.movePiece(startRow, startCol, endRow, endCol, promotionPiece);
+	}
+
+
 
 
 
