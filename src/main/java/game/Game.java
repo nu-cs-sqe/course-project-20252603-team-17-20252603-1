@@ -674,19 +674,13 @@ public class Game {
 			return false;
 		}
 
-		Board originalBoard = board;
 		Board simulatedBoard = board.copy();
 
-		boolean moved = simulatedBoard.movePiece(startRow, startCol, endRow, endCol);
-		if (!moved) {
+		if (!simulatedBoard.movePiece(startRow, startCol, endRow, endCol)) {
 			return false;
 		}
 
-		board = simulatedBoard;
-		boolean stillInCheck = isKingInCheck(color);
-		board = originalBoard;
-
-		return !stillInCheck;
+		return !isKingInCheckOnBoard(simulatedBoard, color);
 	}
 
 	private boolean hasAnyLegalMove(String color) {
@@ -716,20 +710,14 @@ public class Game {
 	}
 
 	private boolean pieceCanMoveWithoutLeavingCheck(String color, int startRow, int startCol,
-													int endRow, int endCol) {
-		Board originalBoard = board;
+	                                                int endRow, int endCol) {
 		Board simulatedBoard = board.copy();
 
-		boolean moved = simulatedBoard.movePiece(startRow, startCol, endRow, endCol);
-		if (!moved) {
+		if (!simulatedBoard.movePiece(startRow, startCol, endRow, endCol)) {
 			return false;
 		}
 
-		board = simulatedBoard;
-		boolean leavesKingInCheck = isKingInCheck(color);
-		board = originalBoard;
-
-		return !leavesKingInCheck;
+		return !isKingInCheckOnBoard(simulatedBoard, color);
 	}
 
 
@@ -739,5 +727,15 @@ public class Game {
 
 	public boolean isGameOver() {
 		return gameOver;
+	}
+
+	private boolean isKingInCheckOnBoard(Board boardToCheck, String color) {
+		Board originalBoard = board;
+		board = boardToCheck;
+
+		boolean inCheck = isKingInCheck(color);
+
+		board = originalBoard;
+		return inCheck;
 	}
 }
