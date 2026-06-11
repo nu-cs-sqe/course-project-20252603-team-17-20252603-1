@@ -19,7 +19,9 @@ repositories {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.easymock:easymock:5.6.0")
 }
+
 
 application {
     mainClass.set("ui.Main")
