@@ -179,40 +179,11 @@ public class Game {
 			return false;
 		}
 
-		recordLastMove(piece, startRow, startCol, endRow, endCol);
-		appendCompletedMove(piece, startRow, startCol, endRow, endCol, destinationPiece, enPassantMove);
-		updateHalfmoveClock(piece, destinationPiece, enPassantMove);
+		recordCompletedMove(piece, destinationPiece, startRow, startCol, endRow, endCol, enPassantMove);
 
-		String opponentColor = WHITE.equals(currentPlayer.getColor()) ? BLACK : WHITE;
+		String opponentColor = getOpponentColor(currentPlayer.getColor());
 
-		if (isCheckmate(opponentColor)) {
-			gameOver = true;
-			winnerColor = currentPlayer.getColor();
-			drawReason = null;
-			return true;
-		}
-
-		if (isStalemate(opponentColor)) {
-			gameOver = true;
-			winnerColor = null;
-			draw = true;
-			drawReason = DRAW_STALEMATE;
-			return true;
-		}
-
-		if (isDeadPositionInsufficientMaterial()) {
-			gameOver = true;
-			winnerColor = null;
-			draw = true;
-			drawReason = DRAW_INSUFFICIENT_MATERIAL;
-			return true;
-		}
-
-		if (halfmoveClock >= FIFTY_MOVE_RULE_HALF_MOVES) {
-			gameOver = true;
-			winnerColor = null;
-			draw = true;
-			drawReason = DRAW_FIFTY_MOVE;
+		if (updateGameEndingState(opponentColor)) {
 			return true;
 		}
 
@@ -224,6 +195,51 @@ public class Game {
 		switchTurn();
 
 		return true;
+	}
+
+
+	private void recordCompletedMove(Piece piece, Piece destinationPiece,
+	                                 int startRow, int startCol, int endRow, int endCol, boolean enPassantMove) {
+		recordLastMove(piece, startRow, startCol, endRow, endCol);
+		appendCompletedMove(piece, startRow, startCol, endRow, endCol, destinationPiece, enPassantMove);
+		updateHalfmoveClock(piece, destinationPiece, enPassantMove);
+	}
+
+	private boolean updateGameEndingState(String opponentColor) {
+		if (isCheckmate(opponentColor)) {
+			gameOver = true;
+			winnerColor = currentPlayer.getColor();
+			drawReason = null;
+			return true;
+		}
+
+		if (isStalemate(opponentColor)) {
+			setDraw(DRAW_STALEMATE);
+			return true;
+		}
+
+		if (isDeadPositionInsufficientMaterial()) {
+			setDraw(DRAW_INSUFFICIENT_MATERIAL);
+			return true;
+		}
+
+		if (halfmoveClock >= FIFTY_MOVE_RULE_HALF_MOVES) {
+			setDraw(DRAW_FIFTY_MOVE);
+			return true;
+		}
+
+		return false;
+	}
+
+	private void setDraw(String reason) {
+		gameOver = true;
+		winnerColor = null;
+		draw = true;
+		drawReason = reason;
+	}
+
+	private String getOpponentColor(String color) {
+		return WHITE.equals(color) ? BLACK : WHITE;
 	}
 
 	private boolean wouldLeaveOwnKingInCheck(int startRow, int startCol, int endRow, int endCol,
