@@ -30,7 +30,7 @@ Chess Game
     nothing until **New game**.
   - **Promotion:** when a pawn moves to the last rank, a dialog offers Queen (default), Rook,
     Bishop, or Knight; **Cancel** keeps your piece selected so you can pick another destination.
-  - **Move history:** the east **Move history** panel lists completed moves from the game model;
+  - **Team Defined Feature: Move history:** the east **Move history** panel lists completed moves from the game model;
     it clears on **New game** and scrolls to the latest line as you play.
 
 ## Verification
@@ -55,6 +55,8 @@ head required). `UiMessagesTest` checks English/French resource bundles and `Mes
 8. **Move history:** after several moves, east panel lists lines; newest is visible at the bottom; castling/capture/promotion lines look sensible when they occur.
 9. Select a piece, then click **another friendly piece**; selection moves (no bogus illegal line).
 10. Resize the window; board stays centered and still playable.
+
+
 
 ### CLI smoke checklist (`./gradlew run`)
 
