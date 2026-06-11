@@ -275,15 +275,15 @@ public class Board {
             return false;
         }
 
-        if (WHITE.equals(color) && startRow != WHITE_BACK_ROW) {
-            return false;
+        if (WHITE.equals(color)) {
+            return startRow == WHITE_BACK_ROW;
         }
 
-        if (BLACK.equals(color) && startRow != BLACK_BACK_ROW) {
-            return false;
+        if (BLACK.equals(color)) {
+            return startRow == BLACK_BACK_ROW;
         }
 
-        return endCol == QUEENSIDE_CASTLE_COL || endCol == KINGSIDE_CASTLE_COL;
+        return false;
     }
 
     private boolean isLegalCastling(int startRow, int startCol, int endRow, int endCol, String color) {
@@ -345,15 +345,8 @@ public class Board {
     }
 
     private boolean isPawnPromotionRank(String color, int endRow) {
-        if (WHITE.equals(color)) {
-            return endRow == BLACK_BACK_ROW;
-        }
-
-        if (BLACK.equals(color)) {
-            return endRow == WHITE_BACK_ROW;
-        }
-
-        return false;
+        return (WHITE.equals(color) && endRow == BLACK_BACK_ROW)
+                || (BLACK.equals(color) && endRow == WHITE_BACK_ROW);
     }
 
     private String resolvePromotionType(String promoTrim) {
@@ -455,7 +448,7 @@ public class Board {
                 return true;
             }
 
-            if (rowDelta == PAWN_DOUBLE_MOVE_DISTANCE * direction && startRow == startRank) {
+            if (rowDelta == direction + direction && startRow == startRank) {
                 return state[startRow + direction][startCol] == null;
             }
         }
