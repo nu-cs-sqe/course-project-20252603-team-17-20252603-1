@@ -65,8 +65,8 @@ public class Game {
 
 
 	public void startNewGame() {
-		whitePlayer = new Player("White Player", "WHITE");
-		blackPlayer = new Player("Black Player", "BLACK");
+		whitePlayer = new Player("White Player", WHITE);
+		blackPlayer = new Player("Black Player", BLACK);
 
 		lastMovedPiece = null;
 		lastMoveStart = null;
@@ -168,7 +168,7 @@ public class Game {
 
 		boolean enPassantMove = isEnPassantMove(startRow, startCol, endRow, endCol, piece);
 
-		if (destinationPiece != null && "KING".equals(destinationPiece.getType())) {
+		if (destinationPiece != null && KING.equals(destinationPiece.getType())) {
 			return false;
 		}
 
@@ -237,7 +237,7 @@ public class Game {
 		appendCompletedMove(piece, startRow, startCol, endRow, endCol, destinationPiece, enPassantMove);
 		updateHalfmoveClock(piece, destinationPiece, enPassantMove);
 
-		String opponentColor = "WHITE".equals(currentPlayer.getColor()) ? "BLACK" : "WHITE";
+		String opponentColor = WHITE.equals(currentPlayer.getColor()) ? BLACK : WHITE;
 
 		if (isCheckmate(opponentColor)) {
 			gameOver = true;
@@ -302,7 +302,7 @@ public class Game {
 	private void updateHalfmoveClock(Piece moved, Piece destinationBeforeMove,
 			boolean enPassantMove) {
 		boolean capture = enPassantMove || destinationBeforeMove != null;
-		if ("PAWN".equals(moved.getType()) || capture) {
+		if (PAWN.equals(moved.getType()) || capture) {
 			halfmoveClock = 0;
 		} else {
 			halfmoveClock++;
@@ -321,7 +321,7 @@ public class Game {
 				}
 				total++;
 				String t = p.getType();
-				if ("KING".equals(t)) {
+				if (KING.equals(t)) {
 					kings++;
 				} else if ("KNIGHT".equals(t) || "BISHOP".equals(t)) {
 					minors++;
@@ -364,17 +364,17 @@ public class Game {
 	}
 
 	private boolean isEnPassantMove(int startRow, int startCol, int endRow, int endCol, Piece piece) {
-		if (!"PAWN".equals(piece.getType()) || board.getPieceAt(endRow, endCol) != null) {
+		if (!PAWN.equals(piece.getType()) || board.getPieceAt(endRow, endCol) != null) {
 			return false;
 		}
 
-		int direction = "WHITE".equals(piece.getColor()) ? -1 : 1;
+		int direction = WHITE.equals(piece.getColor()) ? -1 : 1;
 
-		if ("WHITE".equals(piece.getColor()) && startRow != 3) {
+		if (WHITE.equals(piece.getColor()) && startRow != 3) {
 			return false;
 		}
 
-		if ("BLACK".equals(piece.getColor()) && startRow != 4) {
+		if (BLACK.equals(piece.getColor()) && startRow != 4) {
 			return false;
 		}
 
@@ -382,7 +382,7 @@ public class Game {
 		return endRow - startRow == direction
 				&& Math.abs(endCol - startCol) == 1
 				&& lastMovedPiece != null
-				&& "PAWN".equals(lastMovedPiece.getType())
+				&& PAWN.equals(lastMovedPiece.getType())
 				&& !piece.getColor().equals(lastMovedPiece.getColor())
 				&& lastMoveStart != null
 				&& lastMoveEnd != null
@@ -403,12 +403,12 @@ public class Game {
 		boolean capture = enPassantMove || destinationBeforeMove != null;
 		String capturedType = null;
 		if (enPassantMove) {
-			capturedType = "PAWN";
+			capturedType = PAWN;
 		} else if (destinationBeforeMove != null) {
 			capturedType = destinationBeforeMove.getType();
 		}
 		String promotionPieceType = null;
-		if ("PAWN".equals(moved.getType()) && isPawnPromotionRank(moved.getColor(), endRow)) {
+		if (PAWN.equals(moved.getType()) && isPawnPromotionRank(moved.getColor(), endRow)) {
 			Piece atDestination = board.getPieceAt(endRow, endCol);
 			if (atDestination != null) {
 				promotionPieceType = atDestination.getType();
@@ -422,10 +422,10 @@ public class Game {
 	}
 
 	private boolean isPawnPromotionRank(String color, int endRow) {
-		if ("WHITE".equals(color)) {
+		if (WHITE.equals(color)) {
 			return endRow == 0;
 		}
-		if ("BLACK".equals(color)) {
+		if (BLACK.equals(color)) {
 			return endRow == 7;
 		}
 		return false;
@@ -438,16 +438,16 @@ public class Game {
 
 
 	private boolean isCastlingMove(int startRow, int startCol, int endRow, int endCol, Piece piece) {
-		if (!"KING".equals(piece.getType())) {
+		if (!KING.equals(piece.getType())) {
 			return false;
 		}
 		if (startRow != endRow || Math.abs(endCol - startCol) != 2 || startCol != 4) {
 			return false;
 		}
-		if ("WHITE".equals(piece.getColor())) {
+		if (WHITE.equals(piece.getColor())) {
 			return startRow == 7 && (endCol == 2 || endCol == 6);
 		}
-		if ("BLACK".equals(piece.getColor())) {
+		if (BLACK.equals(piece.getColor())) {
 			return startRow == 0 && (endCol == 2 || endCol == 6);
 		}
 		return false;
@@ -465,9 +465,9 @@ public class Game {
 				Piece piece = board.getPieceAt(row, col);
 
 				if (piece != null
-						&& "KING".equals(piece.getType())
+						&& KING.equals(piece.getType())
 						&& color.equals(piece.getColor())) {
-					String opponentColor = "WHITE".equals(color) ? "BLACK" : "WHITE";
+					String opponentColor = WHITE.equals(color) ? BLACK : WHITE;
 					return isSquareUnderAttack(row, col, opponentColor);
 				}
 			}
@@ -505,12 +505,12 @@ public class Game {
 							&& queenAttacksSquare(startRow, startCol, row, col)) {
 						return true;
 					}
-					if ("PAWN".equals(piece.getType())
+					if (PAWN.equals(piece.getType())
 							&& pawnAttacksSquare(startRow, startCol, row, col)) {
 						return true;
 					}
 
-					if ("KING".equals(piece.getType())
+					if (KING.equals(piece.getType())
 							&& kingAttacksSquare(startRow, startCol, row, col)) {
 						return true;
 					}
@@ -534,9 +534,9 @@ public class Game {
 		Piece pawn = board.getPieceAt(startRow, startCol);
 
 		int direction;
-		if ("WHITE".equals(pawn.getColor())) {
+		if (WHITE.equals(pawn.getColor())) {
 			direction = -1;
-		} else if ("BLACK".equals(pawn.getColor())) {
+		} else if (BLACK.equals(pawn.getColor())) {
 			direction = 1;
 		} else {
 			return false;
@@ -643,7 +643,7 @@ public class Game {
 				Piece piece = board.getPieceAt(row, col);
 
 				if (piece != null
-						&& "KING".equals(piece.getType())
+						&& KING.equals(piece.getType())
 						&& color.equals(piece.getColor())) {
 					return new int[] { row, col };
 				}
