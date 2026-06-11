@@ -112,15 +112,15 @@ public class Board {
             if (!isLegalRookMove(startRow, startCol, endRow, endCol)) {
                 return false;
             }
-        } else if  ("BISHOP".equals(piece.getType())) {
+        } else if ("BISHOP".equals(piece.getType())) {
             if (!isLegalBishopMove(startRow, startCol, endRow, endCol)) {
                 return false;
             }
-        } else if ("KNIGHT".equals(piece.getType())){
+        } else if ("KNIGHT".equals(piece.getType())) {
             if (!isLegalKnightMove(startRow, startCol, endRow, endCol)) {
                 return false;
             }
-        }  else if ("QUEEN".equals(piece.getType())) {
+        } else if ("QUEEN".equals(piece.getType())) {
             if (!isLegalQueenMove(startRow, startCol, endRow, endCol)) {
                 return false;
             }
@@ -350,7 +350,6 @@ public class Board {
     }
 
 
-
     private boolean isLegalPawnMove(int startRow, int startCol, int endRow, int endCol) {
         Piece piece = state[startRow][startCol];
         Piece destination = state[endRow][endCol];
@@ -390,10 +389,6 @@ public class Board {
 
         return false;
     }
-
-
-
-
 
 
     private Piece[] generateBoundaryRows(String color) {
@@ -486,13 +481,6 @@ public class Board {
         state[start.getRow()][start.getCol()] = null;
         state[capturedPawnPosition.getRow()][capturedPawnPosition.getCol()] = null;
     }
-
-
-
-
-
-
-
 
 
 }
