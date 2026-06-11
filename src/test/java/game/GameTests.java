@@ -71,26 +71,6 @@ public class GameTests {
 
         assertNotNull(board.getPieceAt(6, 0));
     }
-    @Test
-    void startNewGameAgainResetsBoard() {
-        Game game = new Game();
-
-        game.startNewGame();
-        Board firstBoard = game.getBoard();
-
-        game.startNewGame();
-        Board secondBoard = game.getBoard();
-
-        assertNotNull(secondBoard);
-        assertNotSame(firstBoard, secondBoard);
-    }
-
-    @Test
-    void getBoardReturnsNullBeforeGameStarts() {
-        Game game = new Game();
-
-        assertNull(game.getBoard());
-    }
 
     @Test
     void validWhitePawnMoveSwitchesTurnToBlack() {

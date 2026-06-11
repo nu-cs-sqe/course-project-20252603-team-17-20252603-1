@@ -58,29 +58,40 @@ public class Game {
 
 	private final List<String> positionRepetitionHistory = new ArrayList<>();
 
+	public Game() {
+		this.board = new Board();
+		this.whitePlayer = new Player("White Player", WHITE);
+		this.blackPlayer = new Player("Black Player", BLACK);
+		this.currentPlayer = this.whitePlayer;
+		clearGameState();
+	}
 
-	public void startNewGame() {
-		whitePlayer = new Player("White Player", WHITE);
-		blackPlayer = new Player("Black Player", BLACK);
+	Game(Board board, Player whitePlayer, Player blackPlayer, Player currentPlayer) {
+		this.board = board;
+		this.whitePlayer = whitePlayer;
+		this.blackPlayer = blackPlayer;
+		this.currentPlayer = currentPlayer;
+		clearGameState();
+	}
 
+	private void clearGameState() {
 		lastMovedPiece = null;
 		lastMoveStart = null;
 		lastMoveEnd = null;
 
 		moveHistory.clear();
-
 		positionRepetitionHistory.clear();
-
-		this.board = new Board();
-		this.board.initializeBoard();
-
-		currentPlayer = whitePlayer;
 
 		gameOver = false;
 		draw = false;
 		winnerColor = null;
 		drawReason = null;
 		halfmoveClock = 0;
+	}
+
+	public void startNewGame() {
+		board.initializeBoard();
+		clearGameState();
 	}
 
 	public Board getBoard() {
