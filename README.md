@@ -43,8 +43,15 @@ Run these before merging GUI-related work:
 `MoveHistoryFormatterTest` exercises the move-line formatter used by the east history panel (no GUI
 head required). `UiMessagesTest` checks English/French resource bundles and `MessageFormat` wiring.
 
-### GUI smoke checklist (`./gradlew run --args='gui'`)
+## Mutation Testing
 
+The remaining survived mutants look like equivalent mutants rather than actual missing test cases. In the castling check, we already require the king to start on column 4 and move exactly two columns, so the destination can only be column 2 or 6. That makes the final `endCol == 2 || endCol == 6` check redundant, which is why replacing it with `true` does not change behavior.
+
+The pawn double-move mutant is similar. Since pawn direction is always `1` or `-1`, `2 * direction` and `2 / direction` evaluate to the same value in every valid case. So that mutation also does not create a real behavioral difference.
+
+I handled these by refactoring the code to remove the equivalent mutation points instead of writing meaningless tests just to satisfy PIT.
+
+### GUI smoke checklist (`./gradlew run --args='gui'`)
 1. Window opens; north status shows **WHITE to move**; title bar matches.
 2. Select a white pawn square (highlight); click a legal forward square; piece moves and turn switches.
 3. Click an illegal destination; south shows **Invalid move**; highlight clears; north still shows correct turn.
