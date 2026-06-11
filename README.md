@@ -72,5 +72,6 @@ I handled these by refactoring the code to remove the equivalent mutation points
 3. Play until **Game over**; confirm the session ends cleanly.
 
 ## Acknowledgements
-REFERENCES, SOURCE OF HELP ETC
+
+We used generative AI for coding assistance, documentation drafts, and debugging ideas. All outputs were reviewed and revised by the team before use.
 
