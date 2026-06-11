@@ -75,3 +75,14 @@ I handled these by refactoring the code to remove the equivalent mutation points
 
 We used generative AI for coding assistance, documentation drafts, and debugging ideas. All outputs were reviewed and revised by the team before use.
 
+## Notes / Exceptions
+
+A few project process notes are worth mentioning for grading context.
+
+First, we completed the weekly reports retroactively with permission. This was allowed by the instructor, so the reports may not perfectly line up with the original week-by-week commit timing, but they still reflect the work that was completed across the project.
+
+Second, despite repeated attempts to improve mutation coverage, we were not able to get past 99%. The remaining survived mutants appear to be either equivalent mutants or defensive-code cases where the mutated behavior is not realistically observable through normal program execution. We still reviewed these cases carefully and refactored several pieces of logic to remove redundant mutation points where possible.
+
+Finally, some of the commit history from June 10 specifically does not show the TDD process as cleanly as we would have liked. A lot of the original development was done through integration-style tests written in a TDD workflow. During our meeting with the professor, she suggested refactoring the design to make the code more unit-testable. After that, many of the original integration tests were converted or split into unit tests. Because of this, the June 10 commits sometimes look like larger refactoring commits rather than small red-green-refactor commits. However, the actual feature development was still driven by tests; the commit history is just less granular during the integration-test-to-unit-test refactor stage.
+
+
