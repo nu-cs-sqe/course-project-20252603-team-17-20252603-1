@@ -614,7 +614,7 @@ public class Game {
 		return !isKingInCheck(color) && !hasAnyLegalMove(color);
 	}
 
-	
+
 	private boolean hasAnyLegalMove(String color) {
 		if (board == null) {
 			return false;
