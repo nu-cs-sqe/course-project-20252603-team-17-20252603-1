@@ -1376,6 +1376,82 @@ public class BoardTests {
         assertEquals("1101", board.castlingRightsKey());
     }
 
+    @Test
+    void whiteKingCannotCastleFromWrongRow() {
+        Board board = new Board(new Piece[8][8]);
+        board.getPieceAt(0, 0); // remove if you do not need board access check
+
+        Piece[][] state = new Piece[8][8];
+        state[6][4] = new Piece("KING", "WHITE");
+        state[6][7] = new Piece("ROOK", "WHITE");
+
+        Board customBoard = new Board(state, true, true, true, true);
+
+        assertFalse(customBoard.movePiece(6, 4, 6, 6));
+    }
+
+    @Test
+    void blackKingCannotCastleFromWrongRow() {
+        Piece[][] state = new Piece[8][8];
+        state[1][4] = new Piece("KING", "BLACK");
+        state[1][7] = new Piece("ROOK", "BLACK");
+
+        Board board = new Board(state, true, true, true, true);
+
+        assertFalse(board.movePiece(1, 4, 1, 6));
+    }
+
+    @Test
+    void whiteQueensideCastleRejectedWhenRookMissing() {
+        Piece[][] state = new Piece[8][8];
+        state[7][4] = new Piece("KING", "WHITE");
+
+        Board board = new Board(state, true, true, true, true);
+
+        assertFalse(board.movePiece(7, 4, 7, 2));
+    }
+
+    @Test
+    void blackKingsideCastleRejectedWhenRookMissing() {
+        Piece[][] state = new Piece[8][8];
+        state[0][4] = new Piece("KING", "BLACK");
+
+        Board board = new Board(state, true, true, true, true);
+
+        assertFalse(board.movePiece(0, 4, 0, 6));
+    }
+
+    @Test
+    void blackQueensideCastleRejectedWhenRookMissing() {
+        Piece[][] state = new Piece[8][8];
+        state[0][4] = new Piece("KING", "BLACK");
+
+        Board board = new Board(state, true, true, true, true);
+
+        assertFalse(board.movePiece(0, 4, 0, 2));
+    }
+
+    @Test
+    void castlingRejectedWhenCornerPieceIsNotRook() {
+        Piece[][] state = new Piece[8][8];
+        state[7][4] = new Piece("KING", "WHITE");
+        state[7][7] = new Piece("KNIGHT", "WHITE");
+
+        Board board = new Board(state, true, true, true, true);
+
+        assertFalse(board.movePiece(7, 4, 7, 6));
+    }
+
+    @Test
+    void promotionRejectedForPawnWithInvalidColor() {
+        Piece[][] state = new Piece[8][8];
+        state[6][0] = new Piece("PAWN", "GREEN");
+
+        Board board = new Board(state);
+
+        assertFalse(board.movePiece(6, 0, 5, 0, "QUEEN"));
+    }
+
 
 
 }

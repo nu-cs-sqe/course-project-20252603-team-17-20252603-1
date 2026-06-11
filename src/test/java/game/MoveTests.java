@@ -29,6 +29,46 @@ class MoveTests {
 	}
 
 	@Test
+	void equalsReturnsTrueForSameObject() {
+		Move move = new Move(1, 2, 3, 4,
+				"PAWN", "WHITE",
+				false, null,
+				false, false,
+				null);
+
+		assertEquals(move, move);
+	}
+
+	@Test
+	void equalsReturnsFalseForNullAndDifferentClass() {
+		Move move = new Move(1, 2, 3, 4,
+				"PAWN", "WHITE",
+				false, null,
+				false, false,
+				null);
+
+		assertNotEquals(null, move);
+		assertNotEquals("not a move", move);
+	}
+
+	@Test
+	void hashCodeDiffersForDifferentMoves() {
+		Move first = new Move(1, 2, 3, 4,
+				"PAWN", "WHITE",
+				false, null,
+				false, false,
+				null);
+
+		Move second = new Move(1, 2, 3, 5,
+				"PAWN", "WHITE",
+				false, null,
+				false, false,
+				null);
+
+		assertNotEquals(first.hashCode(), second.hashCode());
+	}
+
+	@Test
 	void captureStoresCapturedType() {
 		Move m = new Move(4, 4, 3, 4, "PAWN", "WHITE",
 				true, "PAWN", false, false, null);
